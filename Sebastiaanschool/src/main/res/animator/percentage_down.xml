@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+There's no way to obtain the screen width from within an objectAnimator because of reasons. So
+we animate a float from 0.0 to 100.0 and put custom code in the fragment to turn this into
+an x position based on the actual screen width. Things shouldn't be this hard, but they are.
+
+Idea borrowed from http://www.youtube.com/watch?v=xbl5cxfA1n4
+-->
+<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="500"
+    android:interpolator="@android:interpolator/decelerate_quad"
+    android:propertyName="horizontalOffsetFraction"
+    android:valueFrom="1.0"
+    android:valueTo="0.0"
+    android:valueType="floatType">
+
+</objectAnimator>

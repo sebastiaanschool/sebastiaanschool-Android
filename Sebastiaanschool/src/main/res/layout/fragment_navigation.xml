@@ -1,0 +1,108 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:filterTouchesWhenObscured="true"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".NavigationFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+        <ImageView
+            android:id="@+id/navigate__home"
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:layout_gravity="fill_horizontal"
+            android:clickable="true"
+            android:contentDescription="Website"
+            android:focusable="true"
+            android:gravity="center"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/navigate__twitter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ic_launcher"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:text="\@KBSebastiaan" />
+
+        <TextView
+            android:id="@+id/navigate__yurl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ic_launcher"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:text="Yurl Site" />
+
+        <TextView
+            android:id="@+id/navigate__agenda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ic_launcher"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:text="Agenda" />
+
+        <TextView
+            android:id="@+id/navigate__team"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ic_launcher"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:text="Team" />
+
+        <TextView
+            android:id="@+id/navigate__call"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ic_launcher"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:text="Call" />
+
+        <TextView
+            android:id="@+id/navigate__newsletter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ic_launcher"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:text="Newsletter" />
+
+        <TextView
+            android:id="@+id/navigate__bulletin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ic_launcher"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:text="Bulletin" />
+
+    </LinearLayout>
+</ScrollView>
