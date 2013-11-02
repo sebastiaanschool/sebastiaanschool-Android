@@ -40,7 +40,7 @@ public abstract class HorizontalSlidingFragment extends Fragment {
      */
     public FragmentTransaction addWithAnimation(FragmentTransaction tx, int containerResId, String backStackLabel) {
         return tx.addToBackStack(backStackLabel)
-                .setCustomAnimations(R.animator.percentage_down, 0, 0, R.animator.percentage_up)
+                .setCustomAnimations(R.animator.hsl_slide_in, 0, 0, R.animator.hsl_slide_out)
                 .add(containerResId, this);
     }
 }
