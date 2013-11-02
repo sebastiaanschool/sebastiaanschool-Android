@@ -27,6 +27,13 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.navigate__agenda).setOnClickListener(this);
+        view.findViewById(R.id.navigate__bulletin).setOnClickListener(this);
+        view.findViewById(R.id.navigate__call).setOnClickListener(this);
+        view.findViewById(R.id.navigate__home).setOnClickListener(this);
+        view.findViewById(R.id.navigate__newsletter).setOnClickListener(this);
+        view.findViewById(R.id.navigate__team).setOnClickListener(this);
+        view.findViewById(R.id.navigate__twitter).setOnClickListener(this);
+        view.findViewById(R.id.navigate__yurl).setOnClickListener(this);
     }
 
     @Override
@@ -48,6 +55,27 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                 case R.id.navigate__agenda:
                     callback.onItemSelected(Callback.ITEM_AGENDA);
                     break;
+                case R.id.navigate__bulletin:
+                    callback.onItemSelected(Callback.ITEM_BULLETIN);
+                    break;
+                case R.id.navigate__call:
+                    callback.onItemSelected(Callback.ITEM_CALL);
+                    break;
+                case R.id.navigate__home:
+                    callback.onItemSelected(Callback.ITEM_HOME);
+                    break;
+                case R.id.navigate__newsletter:
+                    callback.onItemSelected(Callback.ITEM_NEWSLETTER);
+                    break;
+                case R.id.navigate__team:
+                    callback.onItemSelected(Callback.ITEM_TEAM);
+                    break;
+                case R.id.navigate__twitter:
+                    callback.onItemSelected(Callback.ITEM_TWITTER);
+                    break;
+                case R.id.navigate__yurl:
+                    callback.onItemSelected(Callback.ITEM_YURLS);
+                    break;
             }
         }
     }
@@ -56,10 +84,11 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         final int ITEM_AGENDA = 1;
         final int ITEM_BULLETIN = 2;
         final int ITEM_CALL = 3;
-        final int ITEM_NEWSLETTER = 4;
-        final int ITEM_TEAM = 5;
-        final int ITEM_TWITTER = 6;
-        final int ITEM_YURL = 7;
+        final int ITEM_HOME = 4;
+        final int ITEM_NEWSLETTER = 5;
+        final int ITEM_TEAM = 6;
+        final int ITEM_TWITTER = 7;
+        final int ITEM_YURLS = 8;
 
         void onItemSelected(int item);
     }

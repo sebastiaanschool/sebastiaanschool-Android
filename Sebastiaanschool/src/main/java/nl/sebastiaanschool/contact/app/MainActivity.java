@@ -2,11 +2,17 @@ package nl.sebastiaanschool.contact.app;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Window;
+
+import java.util.List;
 
 public class MainActivity extends Activity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener {
 
@@ -28,6 +34,32 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
             case ITEM_AGENDA:
                 pushFragment(new AgendaFragment(), "Agenda");
                 break;
+            case ITEM_CALL:
+                callSebastiaan();
+                break;
+        }
+    }
+
+    private void callSebastiaan() {
+        final String number = getResources().getString(R.string.call_url);
+        final Intent dial = new Intent(Intent.ACTION_DIAL, Uri.parse(number));
+        dial.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        List<ResolveInfo> handlers = getPackageManager().queryIntentActivities(dial, 0);
+        boolean fail = handlers.isEmpty();
+        if (!fail) {
+            try {
+                startActivity(dial);
+            } catch (Exception e) {
+                fail = true;
+            }
+        }
+        if (fail) {
+            // Unlikely to occur. Tablets generally register their contacts app to handle tel: URI's.
+            new AlertDialog.Builder(this)
+                    .setCancelable(true)
+                    .setMessage(R.string.call_failed_dialog_body)
+                    .setNegativeButton(R.string.call_failed_dialog_button, null)
+                    .show();
         }
     }
 
