@@ -17,9 +17,9 @@
 
         <ImageView
             android:id="@+id/navigate__home"
-            android:layout_width="match_parent"
+            android:layout_width="96dp"
             android:layout_height="96dp"
-            android:layout_gravity="fill_horizontal"
+            android:layout_gravity="center_horizontal"
             android:clickable="true"
             android:contentDescription="@string/navigation__homepage"
             android:focusable="true"
