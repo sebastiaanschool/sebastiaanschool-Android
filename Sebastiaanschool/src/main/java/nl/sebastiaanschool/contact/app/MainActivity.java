@@ -2,8 +2,8 @@ package nl.sebastiaanschool.contact.app;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Window;
@@ -30,13 +30,12 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         }
     }
 
-    private void pushFragment(Fragment fragment, String label) {
-        if (detailFragmentVisible) return;
-        getFragmentManager().beginTransaction()
-                .addToBackStack(label)
-                .setCustomAnimations(R.animator.percentage_down, 0, 0, R.animator.percentage_up)
-                .add(R.id.main__content_container, fragment)
-                .commit();
+    private void pushFragment(HorizontalSlidingFragment fragment, String label) {
+        if (detailFragmentVisible)
+            return;
+        FragmentTransaction tx = getFragmentManager().beginTransaction();
+        fragment.addWithAnimation(tx, R.id.main__content_container, label);
+        tx.commit();
     }
 
     private void popFragment() {
