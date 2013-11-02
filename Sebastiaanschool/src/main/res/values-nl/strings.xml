@@ -6,7 +6,7 @@
     <string name="navigation__yurl">Yurl site</string>
     <string name="navigation__agenda">Agenda</string>
     <string name="navigation__team">Team</string>
-    <string name="navigation__call">Call</string>
-    <string name="navigation__newsletter">Newsletter</string>
-    <string name="navigation__bulletin">Bulletin</string>
+    <string name="navigation__call">Bel</string>
+    <string name="navigation__newsletter">Nieuwsbrief</string>
+    <string name="navigation__bulletin">Mededeling</string>
 </resources>

@@ -16,6 +16,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        getActionBar().setIcon(R.drawable.ic_sebastiaan_48dp_white);
         setContentView(R.layout.activity_main);
         getFragmentManager().addOnBackStackChangedListener(this);
         getFragmentManager().beginTransaction().add(R.id.main__content_container, new NavigationFragment()).commit();

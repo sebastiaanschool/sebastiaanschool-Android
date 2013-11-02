@@ -25,20 +25,20 @@ public class HorizontalSlidingLayout extends FrameLayout {
 
     public HorizontalSlidingLayout(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public HorizontalSlidingLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
     public HorizontalSlidingLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
+        init(context);
     }
 
-    private void init() {
+    private void init(Context context) {
         if (isInEditMode()) {
             // Ensure content is visible in edit mode.
             percentOnScreen = 1.0f;
@@ -47,7 +47,7 @@ public class HorizontalSlidingLayout extends FrameLayout {
             percentOnScreen = 0.0f;
             shadowPaint = new Paint();
             shadowPaint.setAlpha(0x00);
-            shadowPaint.setColor(0x000000);
+            shadowPaint.setColor(context.getResources().getColor(R.color.hsl_shadow_color));
             shadowPaint.setStyle(Paint.Style.FILL);
         }
     }

@@ -3,6 +3,34 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light">
         <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:actionBarStyle">@style/AppActionBar</item>
     </style>
 
+    <style name="AppActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
+        <item name="android:background">@color/sebastiaan_blue</item>
+        <item name="android:titleTextStyle">@style/AppActionBarTitleText</item>
+    </style>
+
+    <style name="AppActionBarTitleText" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="NavigationItem" parent="android:TextAppearance.Holo.Large">
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:background">@drawable/navigation_item_background</item>
+        <item name="android:textColor">@drawable/navigation_item_textcolor</item>
+        <item name="android:textIsSelectable">false</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <color name="sebastiaan_blue">#31b5e7</color>
+    <color name="hsl_shadow_color">#11526b</color>
+    <integer name="hsl_animation_duration">300</integer>
 </resources>
