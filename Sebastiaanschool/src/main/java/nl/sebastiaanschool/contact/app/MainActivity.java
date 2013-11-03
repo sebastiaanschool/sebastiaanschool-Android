@@ -14,7 +14,7 @@ import android.view.Window;
 
 import java.util.List;
 
-public class MainActivity extends Activity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener {
+public class MainActivity extends Activity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener, HorizontalSlidingFragment.Callback {
 
     private boolean detailFragmentVisible;
 
@@ -112,10 +112,20 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     @Override
     public void onBackStackChanged() {
         detailFragmentVisible = getFragmentManager().getBackStackEntryCount() > 0;
+    }
+
+    @Override
+    public void onSlidingFragmentBeginAnimation(HorizontalSlidingFragment source, boolean willOpen) {
         ActionBar actionBar = getActionBar();
-        // TODO don't present up navigation until after the detail fragment finished its entry animation.
-        // TODO detach the navigation fragment when the sliding animation completes.
-        actionBar.setHomeButtonEnabled(detailFragmentVisible);
-        actionBar.setDisplayHomeAsUpEnabled(detailFragmentVisible);
+        actionBar.setHomeButtonEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        // TODO optimize GPU overdraw: -> toggle navigationFragment's view visibility before/after sliding animation.
+    }
+
+    @Override
+    public void onSlidingFragmentEndAnimation(HorizontalSlidingFragment source, boolean hasOpened) {
+        ActionBar actionBar = getActionBar();
+        actionBar.setHomeButtonEnabled(hasOpened);
+        actionBar.setDisplayHomeAsUpEnabled(hasOpened);
     }
 }

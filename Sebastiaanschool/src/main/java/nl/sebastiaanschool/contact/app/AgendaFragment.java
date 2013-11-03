@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.Date;
-
 /**
  * Created by Barend on 1-11-13.
  */
