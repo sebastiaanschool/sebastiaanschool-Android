@@ -15,9 +15,19 @@ repositories {
 android {
     compileSdkVersion 19
     buildToolsVersion "19.0.0"
+
+    productFlavors {
+        parse {
+            packageName "nl.sebastiaanschool.contact.app"
+        }
+        stubbed {
+            packageName "nl.sebastiaanschool.contact.app.stubbed"
+        }
+    }
 }
 
 dependencies {
 //    compile 'com.android.support:support-v4:+'
 //    compile 'com.android.support:support-v13:+'
+    compile files('libs/Parse-1.3.5.jar')
 }

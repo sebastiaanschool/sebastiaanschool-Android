@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Seb@stiaan</string>
     <string name="call_failed_dialog_body">Kon niet automatisch bellen. Belt u a.u.b. zelf. Het nummer is:\n\n+31 55 533 53 55</string>
     <string name="close_button">Sluiten</string>
     <string name="navigation__homepage">Homepage</string>

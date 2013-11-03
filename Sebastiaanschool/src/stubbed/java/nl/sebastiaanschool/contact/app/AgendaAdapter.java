@@ -15,7 +15,15 @@ public class AgendaAdapter extends ArrayAdapter<AgendaItem> {
 
     public AgendaAdapter(Context context) {
         super(context, R.layout.view_agenda_item);
-        inflater = LayoutInflater.from(context);
+        this.inflater = LayoutInflater.from(context);
+        this.addAll(
+            new AgendaItem("Kerstvakantie 2013", 1387756800000L, 1388707200000L),
+            new AgendaItem("Voorjaarsvakantie 2014", 1392595200000L, 1392940800000L),
+            new AgendaItem("Goede Vrijdag 2014", 1397779200000L));
+    }
+
+    public void setDataLoadingCallback(DataLoadingCallback ignored) {
+        // We don't do no stinkin' network.
     }
 
     @Override

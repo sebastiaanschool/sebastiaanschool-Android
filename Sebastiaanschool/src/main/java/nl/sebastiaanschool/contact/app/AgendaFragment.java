@@ -1,5 +1,6 @@
 package nl.sebastiaanschool.contact.app;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +13,28 @@ import android.widget.ListView;
  * Created by Barend on 1-11-13.
  */
 public class AgendaFragment extends HorizontalSlidingFragment implements AdapterView.OnItemClickListener {
+
+    private DataLoadingCallback dataLoadingCallback;
+    private AgendaAdapter adapter;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.dataLoadingCallback = (DataLoadingCallback) activity;
+        if (this.adapter != null) {
+            this.adapter.setDataLoadingCallback(this.dataLoadingCallback);
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        this.dataLoadingCallback = null;
+        if (this.adapter != null) {
+            this.adapter.setDataLoadingCallback(null);
+        }
+    }
+
     @Override
     public View onCreateView2(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_agenda, container, false);
@@ -20,11 +43,8 @@ public class AgendaFragment extends HorizontalSlidingFragment implements Adapter
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        AgendaAdapter adapter = new AgendaAdapter(getActivity());
-        adapter.addAll(
-                new AgendaItem("Kerstvakantie 2013", 1387756800000L, 1388707200000L),
-                new AgendaItem("Voorjaarsvakantie 2014", 1392595200000L, 1392940800000L),
-                new AgendaItem("Goede Vrijdag 2014", 1397779200000L));
+        adapter = new AgendaAdapter(getActivity());
+        adapter.setDataLoadingCallback(this.dataLoadingCallback);
         ListView listView = (ListView) view.findViewById(android.R.id.list);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);

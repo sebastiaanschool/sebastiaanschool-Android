@@ -14,7 +14,7 @@ import android.view.Window;
 
 import java.util.List;
 
-public class MainActivity extends Activity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener, HorizontalSlidingFragment.Callback {
+public class MainActivity extends Activity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener, HorizontalSlidingFragment.Callback, DataLoadingCallback {
 
     private boolean detailFragmentVisible;
 
@@ -22,6 +22,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getActionBar().setIcon(R.drawable.ic_sebastiaan_48dp_white);
         setContentView(R.layout.activity_main);
         getFragmentManager().addOnBackStackChangedListener(this);
@@ -127,5 +128,15 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         ActionBar actionBar = getActionBar();
         actionBar.setHomeButtonEnabled(hasOpened);
         actionBar.setDisplayHomeAsUpEnabled(hasOpened);
+    }
+
+    @Override
+    public void onStartLoading() {
+        this.setProgressBarIndeterminateVisibility(true);
+    }
+
+    @Override
+    public void onStopLoading(Exception e) {
+        this.setProgressBarIndeterminateVisibility(false);
     }
 }
