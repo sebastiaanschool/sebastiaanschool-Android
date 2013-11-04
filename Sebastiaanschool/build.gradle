@@ -26,6 +26,33 @@ android {
     }
 }
 
+/*
+ The next bit of code adds a doLast to the generateParse{Debug|Release}BuildConfig tasks to
+ generate a ParseConfig.java file alongside the BuildConfig.java file. I'm pretty sure there
+ must be a better way to tie it together than by responding to the whenTaskAdded event, but
+ this will do for now.
+ */
+tasks.whenTaskAdded { theTask ->
+    if (theTask.name.startsWith('generateParse') && theTask.name.endsWith('BuildConfig')) {
+        theTask << {
+            def theFile = new java.io.File(it.sourceOutputDir, "nl/sebastiaanschool/contact/app/ParseConfig.java")
+            if (theFile.exists()) {
+                theFile.delete()
+            }
+            theFile.append """
+            package nl.sebastiaanschool.contact.app;
+
+            // The strings in this file are populated during build with the values of the
+            // PARSE_APPLICATION_ID and PARSE_CLIENT_KEY environment variables.
+            class ParseConfig {
+                static final String APPLICATION_ID = "${System.env.PARSE_APPLICATION_ID}";
+                static final String CLIENT_KEY = "${System.env.PARSE_CLIENT_KEY}";
+            }
+            """.stripIndent();
+        }
+    }
+}
+
 dependencies {
 //    compile 'com.android.support:support-v4:+'
 //    compile 'com.android.support:support-v13:+'
