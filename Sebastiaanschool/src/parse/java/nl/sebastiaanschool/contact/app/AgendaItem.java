@@ -37,6 +37,7 @@ public class AgendaItem extends ParseObject {
     }
 
     public boolean hasEndDate() {
-        return getEndTimestamp() != Long.MAX_VALUE;
+        long endTimestamp = getEndTimestamp();
+        return endTimestamp != Long.MAX_VALUE && endTimestamp != getStartTimestamp();
     }
 }
