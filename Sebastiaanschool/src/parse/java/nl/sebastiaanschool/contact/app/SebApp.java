@@ -16,5 +16,6 @@ public class SebApp extends Application {
         ParseObject.registerSubclass(AgendaItem.class);
         Parse.setLogLevel(BuildConfig.DEBUG ? Parse.LOG_LEVEL_DEBUG : Parse.LOG_LEVEL_NONE);
         Parse.initialize(this, ParseConfig.APPLICATION_ID, ParseConfig.CLIENT_KEY);
+        // TODO handle app crashes with analytics.
     }
 }

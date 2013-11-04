@@ -27,6 +27,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         setContentView(R.layout.activity_main);
         getFragmentManager().addOnBackStackChangedListener(this);
         getFragmentManager().beginTransaction().add(R.id.main__content_container, new NavigationFragment()).commit();
+        Analytics.trackAppOpened(getIntent());
     }
 
     @Override
@@ -92,12 +93,14 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     private void pushFragment(HorizontalSlidingFragment fragment, String label) {
         if (detailFragmentVisible)
             return;
+        Analytics.trackEvent("Navigate to " + label);
         FragmentTransaction tx = getFragmentManager().beginTransaction();
         fragment.addWithAnimation(tx, R.id.main__content_container, label);
         tx.commit();
     }
 
     private void popFragment() {
+        Analytics.trackEvent("Navigate to home");
         getFragmentManager().popBackStack();
     }
 
@@ -137,6 +140,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
 
     @Override
     public void onStopLoading(Exception e) {
+        // TODO report exceptions to analytics
         this.setProgressBarIndeterminateVisibility(false);
     }
 }
