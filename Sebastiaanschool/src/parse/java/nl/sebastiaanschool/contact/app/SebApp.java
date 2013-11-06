@@ -14,6 +14,7 @@ public class SebApp extends Application {
     public void onCreate() {
         super.onCreate();
         ParseObject.registerSubclass(AgendaItem.class);
+        ParseObject.registerSubclass(Newsletter.class);
         ParseObject.registerSubclass(TeamMember.class);
         Parse.setLogLevel(BuildConfig.DEBUG ? Parse.LOG_LEVEL_DEBUG : Parse.LOG_LEVEL_NONE);
         Parse.initialize(this, ParseConfig.APPLICATION_ID, ParseConfig.CLIENT_KEY);

@@ -40,16 +40,19 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
                 callSebastiaan();
                 break;
             case ITEM_HOME:
-                openUrl(getString(R.string.home_url));
+                GrabBag.openUri(this, getString(R.string.home_url));
+                break;
+            case ITEM_NEWSLETTER:
+                pushFragment(new NewsletterFragment(), getString(R.string.navigation__newsletter));
                 break;
             case ITEM_TEAM:
                 pushFragment(new TeamFragment(), getString(R.string.navigation__team));
                 break;
             case ITEM_TWITTER:
-                openUrl(getString(R.string.twitter_url));
+                GrabBag.openUri(this, getString(R.string.twitter_url));
                 break;
             case ITEM_YURLS:
-                openUrl(getString(R.string.yurls_url));
+                GrabBag.openUri(this, getString(R.string.yurls_url));
                 break;
         }
     }
@@ -72,22 +75,6 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
             new AlertDialog.Builder(this)
                     .setCancelable(true)
                     .setMessage(R.string.call_failed_dialog_body)
-                    .setNegativeButton(R.string.close_button, null)
-                    .show();
-        }
-    }
-
-    private void openUrl(String uri) {
-        Intent browse = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-        browse.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        // Need to check if a browser is present, as it can be disabled entirely using child safety features on a tablet.
-        List<ResolveInfo> handlers = getPackageManager().queryIntentActivities(browse, 0);
-        if (!handlers.isEmpty()) {
-            startActivity(browse);
-        } else {
-            new AlertDialog.Builder(this)
-                    .setCancelable(true)
-                    .setMessage(uri)
                     .setNegativeButton(R.string.close_button, null)
                     .show();
         }

@@ -1,19 +1,14 @@
 package nl.sebastiaanschool.contact.app;
 
 import android.content.Context;
-import android.os.Build;
-import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.Locale;
 
 /**
  * Created by barend on 3-11-13.
  */
 public class AgendaItemView extends LinearLayout {
-    private static final String DATE_PATTERN = getDatePattern();
     private TextView eventTitle;
     private TextView eventDate;
 
@@ -49,21 +44,11 @@ public class AgendaItemView extends LinearLayout {
     private static CharSequence formatDates(AgendaItem event) {
         StringBuilder result = new StringBuilder(32);
 
-        result.append(DateFormat.format(DATE_PATTERN, event.getStartTimestamp()));
+        result.append(GrabBag.formatDate(event.getStartTimestamp()));
         if (event.hasEndDate()) {
             result.append(" – ");
-            result.append(DateFormat.format(DATE_PATTERN, event.getEndTimestamp()));
+            result.append(GrabBag.formatDate(event.getEndTimestamp()));
         }
         return result;
-    }
-
-    private static String getDatePattern() {
-        if (Build.VERSION.SDK_INT >= 18) {
-            return DateFormat.getBestDateTimePattern(Locale.getDefault(), "dMMMMyyyy");
-        } else if ("nl".equals(Locale.getDefault().getLanguage())) {
-            return "d MMMM yyyy";
-        } else {
-            return "MMMM d, yyyy";
-        }
     }
 }

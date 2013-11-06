@@ -1,13 +1,9 @@
 package nl.sebastiaanschool.contact.app;
 
-import android.os.Build;
-import android.text.format.DateFormat;
-
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by barend on 3-11-13.
