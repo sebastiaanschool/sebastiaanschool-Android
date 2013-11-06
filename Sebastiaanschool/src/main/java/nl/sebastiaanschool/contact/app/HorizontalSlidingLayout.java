@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 /**
@@ -94,9 +95,15 @@ public class HorizontalSlidingLayout extends FrameLayout {
 
     @SuppressWarnings("unused")
     public void setPercentOnScreen(float fraction) {
-        this.percentOnScreen = fraction;
         shift = (int)(fraction < 1.0 ? fraction * screenWidth : screenWidth);
         setX(-shift);
         invalidate(shift, 0, screenWidth, screenHeight);
+
+        // If we're closing and attached to the view hierarchy, invalidate our parent to work
+        // around the issue in http://stackoverflow.com/q/19742350/49489
+        if (this.percentOnScreen > fraction && getParent() instanceof ViewGroup) {
+            ((ViewGroup) getParent()).invalidate();
+        }
+        this.percentOnScreen = fraction;
     }
 }
