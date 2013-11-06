@@ -57,9 +57,18 @@
     <style name="ListItemTitle" parent="android:TextAppearance.Holo.Medium">
         <item name="android:textIsSelectable">false</item>
         <item name="android:textColor">@drawable/list_item_textcolor</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="ListItemDetail" parent="android:TextAppearance.Holo.Small">
+    <style name="ListItemDate" parent="android:TextAppearance.Holo.Small">
+        <item name="android:textIsSelectable">false</item>
+        <item name="android:textColor">@drawable/list_item_textcolor</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="ListItemText" parent="android:TextAppearance.Holo.Medium">
         <item name="android:textIsSelectable">false</item>
         <item name="android:textColor">@drawable/list_item_textcolor</item>
     </style>

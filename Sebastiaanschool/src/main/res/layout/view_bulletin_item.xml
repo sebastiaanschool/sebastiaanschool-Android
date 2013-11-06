@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<nl.sebastiaanschool.contact.app.TeamMemberView xmlns:android="http://schemas.android.com/apk/res/android"
+<nl.sebastiaanschool.contact.app.BulletinItemView xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/team__displayName"
+        android:id="@+id/bulletin__item_title"
         style="@style/ListItemTitle"
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
 
     <TextView
-        android:id="@+id/team__detailText"
+        android:id="@+id/bulletin__item_date"
         style="@style/ListItemDate"
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
-</nl.sebastiaanschool.contact.app.TeamMemberView>
+
+    <TextView
+        android:id="@+id/bulletin__item_text"
+        style="@style/ListItemText"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+</nl.sebastiaanschool.contact.app.BulletinItemView>

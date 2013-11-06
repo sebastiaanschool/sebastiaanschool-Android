@@ -36,6 +36,9 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
             case ITEM_AGENDA:
                 pushFragment(new AgendaFragment(), getString(R.string.navigation__agenda));
                 break;
+            case ITEM_BULLETIN:
+                pushFragment(new BulletinFragment(), getString(R.string.navigation__bulletin));
+                break;
             case ITEM_CALL:
                 callSebastiaan();
                 break;

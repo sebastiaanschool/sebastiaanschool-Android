@@ -13,7 +13,7 @@
 
     <TextView
         android:id="@+id/agenda__event_date"
-        style="@style/ListItemDetail"
+        style="@style/ListItemDate"
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
 </nl.sebastiaanschool.contact.app.AgendaItemView>
