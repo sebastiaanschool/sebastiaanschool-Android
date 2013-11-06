@@ -41,6 +41,21 @@ public abstract class SebListFragment<T> extends HorizontalSlidingFragment imple
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.list_refresh, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu__refresh) {
+            this.adapter.loadData();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
