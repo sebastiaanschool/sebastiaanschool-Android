@@ -10,4 +10,5 @@
     <string name="navigation__call">Bel</string>
     <string name="navigation__newsletter">Nieuwsbrief</string>
     <string name="navigation__bulletin">Mededeling</string>
+    <string name="team_email_body">Beste %1$s,</string>
 </resources>

@@ -42,6 +42,9 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
             case ITEM_HOME:
                 openUrl(getString(R.string.home_url));
                 break;
+            case ITEM_TEAM:
+                pushFragment(new TeamFragment(), getString(R.string.navigation__team));
+                break;
             case ITEM_TWITTER:
                 openUrl(getString(R.string.twitter_url));
                 break;

@@ -14,4 +14,5 @@
     <string name="navigation__call">Call</string>
     <string name="navigation__newsletter">Newsletter</string>
     <string name="navigation__bulletin">Bulletin</string>
+    <string name="team_email_body">Dear %1$s,</string>
 </resources>
