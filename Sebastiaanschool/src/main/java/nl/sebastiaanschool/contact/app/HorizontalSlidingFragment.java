@@ -36,7 +36,7 @@ public abstract class HorizontalSlidingFragment extends Fragment implements Anim
      * @param savedInstanceState nullable.
      * @return the subclass' content view.
      */
-    public abstract View onCreateView2(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
+    protected abstract View onCreateView2(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
 
     /**
      * Configures a fragment transaction to make the sliding appearance work.

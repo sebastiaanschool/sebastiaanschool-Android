@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <nl.sebastiaanschool.contact.app.AgendaItemView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/AgendaItem"
+    style="@style/ListItem"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/agenda__event_title"
-        style="@style/AgendaItemTitle"
+        style="@style/ListItemTitle"
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
 
     <TextView
         android:id="@+id/agenda__event_date"
-        style="@style/AgendaItemDate"
+        style="@style/ListItemDetail"
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
 </nl.sebastiaanschool.contact.app.AgendaItemView>

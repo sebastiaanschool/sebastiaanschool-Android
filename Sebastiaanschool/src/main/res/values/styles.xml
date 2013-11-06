@@ -42,24 +42,24 @@
         <item name="android:clickable">true</item>
     </style>
 
-    <style name="AgendaList" parent="SlidingFragment">
+    <style name="ListFragment" parent="SlidingFragment">
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
         <item name="android:divider">@android:color/black</item>
         <item name="android:dividerHeight">1px</item>
     </style>
 
-    <style name="AgendaItem">
+    <style name="ListItem">
         <item name="android:background">@drawable/list_item_background</item>
         <item name="android:padding">4dp</item>
     </style>
 
-    <style name="AgendaItemTitle" parent="android:TextAppearance.Holo.Medium">
+    <style name="ListItemTitle" parent="android:TextAppearance.Holo.Medium">
         <item name="android:textIsSelectable">false</item>
         <item name="android:textColor">@drawable/list_item_textcolor</item>
     </style>
 
-    <style name="AgendaItemDate" parent="android:TextAppearance.Holo.Small">
+    <style name="ListItemDetail" parent="android:TextAppearance.Holo.Small">
         <item name="android:textIsSelectable">false</item>
         <item name="android:textColor">@drawable/list_item_textcolor</item>
     </style>

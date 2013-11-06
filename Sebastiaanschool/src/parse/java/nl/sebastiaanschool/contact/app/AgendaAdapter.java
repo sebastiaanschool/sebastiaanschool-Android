@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by barend on 3-11-13.
  */
-public class AgendaAdapter extends ParseQueryAdapter<AgendaItem> implements ParseQueryAdapter.OnQueryLoadListener<AgendaItem> {
+public class AgendaAdapter extends ParseQueryAdapter<AgendaItem> implements SebListAdapter, ParseQueryAdapter.OnQueryLoadListener<AgendaItem> {
 
     private DataLoadingCallback dataLoadingCallback;
     private LayoutInflater inflater;
@@ -58,5 +58,10 @@ public class AgendaAdapter extends ParseQueryAdapter<AgendaItem> implements Pars
         if (dataLoadingCallback != null) {
             dataLoadingCallback.onStopLoading(e);
         }
+    }
+
+    @Override
+    public void loadData() {
+        this.loadObjects();
     }
 }

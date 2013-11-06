@@ -34,7 +34,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     public void onItemSelected(int item) {
         switch (item) {
             case ITEM_AGENDA:
-                pushFragment(new AgendaFragment(), "Agenda");
+                pushFragment(new AgendaFragment(), getString(R.string.navigation__agenda));
                 break;
             case ITEM_CALL:
                 callSebastiaan();

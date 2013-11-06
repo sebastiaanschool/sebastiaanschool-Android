@@ -13,7 +13,7 @@ import java.util.Locale;
  * Created by barend on 3-11-13.
  */
 public class AgendaItemView extends LinearLayout {
-    public static final String DATE_PATTERN = getDatePattern();
+    private static final String DATE_PATTERN = getDatePattern();
     private TextView eventTitle;
     private TextView eventDate;
 

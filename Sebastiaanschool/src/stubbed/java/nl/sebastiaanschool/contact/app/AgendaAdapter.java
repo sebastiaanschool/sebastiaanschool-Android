@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 /**
  * Created by barend on 3-11-13.
  */
-public class AgendaAdapter extends ArrayAdapter<AgendaItem> {
+public class AgendaAdapter extends ArrayAdapter<AgendaItem> implements SebListAdapter {
 
     private LayoutInflater inflater;
 
@@ -34,5 +34,10 @@ public class AgendaAdapter extends ArrayAdapter<AgendaItem> {
                 : inflater.inflate(R.layout.view_agenda_item, parent, false));
         view.setEvent(item);
         return view;
+    }
+
+    @Override
+    public void loadData() {
+        //Ignored
     }
 }
