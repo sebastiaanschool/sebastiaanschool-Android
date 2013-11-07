@@ -17,9 +17,7 @@ android {
     buildToolsVersion "19.0.0"
 
     productFlavors {
-        parse {
-            packageName "nl.sebastiaanschool.contact.app"
-        }
+        parse
         stubbed {
             packageName "nl.sebastiaanschool.contact.app.stubbed"
         }
@@ -35,6 +33,9 @@ android {
 tasks.whenTaskAdded { theTask ->
     if (theTask.name.startsWith('generateParse') && theTask.name.endsWith('BuildConfig')) {
         theTask << {
+            if (System.env.PARSE_APPLICATION_ID == null || System.env.PARSE_CLIENT_KEY == null) {
+                throw new RuntimeException("Error: missing Parse.com API credentials. Cannot not assemble the app for the parse.com back-end.\n\nPlease define the environment variables PARSE_APPLICATION_ID and PARSE_CLIENT_KEY.")
+            }
             def theFile = new java.io.File(it.sourceOutputDir, "nl/sebastiaanschool/contact/app/ParseConfig.java")
             if (theFile.exists()) {
                 theFile.delete()
