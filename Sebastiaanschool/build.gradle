@@ -16,6 +16,17 @@ android {
     compileSdkVersion 19
     buildToolsVersion "19.0.0"
 
+    buildTypes {
+        release {
+            project.ext.set('parseAppIdVar', 'PARSE_APPLICATION_ID')
+            project.ext.set('parseClientKeyVar', 'PARSE_CLIENT_KEY')
+        }
+        debug {
+            project.ext.set('parseAppIdVar', 'DEV_PARSE_APPLICATION_ID')
+            project.ext.set('parseClientKeyVar', 'DEV_PARSE_CLIENT_KEY')
+        }
+    }
+
     productFlavors {
         parse
         stubbed {
@@ -33,8 +44,10 @@ android {
 tasks.whenTaskAdded { theTask ->
     if (theTask.name.startsWith('generateParse') && theTask.name.endsWith('BuildConfig')) {
         theTask << {
-            if (System.env.PARSE_APPLICATION_ID == null || System.env.PARSE_CLIENT_KEY == null) {
-                throw new RuntimeException("Error: missing Parse.com API credentials. Cannot not assemble the app for the parse.com back-end.\n\nPlease define the environment variables PARSE_APPLICATION_ID and PARSE_CLIENT_KEY.")
+            def parseAppId = System.env.get(project.ext.parseAppIdVar)
+            def parseClientKey = System.env.get(project.ext.parseClientKeyVar)
+            if (parseAppId == null || parseClientKey == null) {
+                throw new RuntimeException("Error: missing Parse.com API credentials. Cannot not assemble the app for the parse.com back-end.\n\nPlease define the environment variables ${project.ext.parseAppIdVar} and ${project.ext.parseClientKeyVar}.")
             }
             def theFile = new java.io.File(it.sourceOutputDir, "nl/sebastiaanschool/contact/app/ParseConfig.java")
             if (theFile.exists()) {
@@ -46,8 +59,8 @@ tasks.whenTaskAdded { theTask ->
             // The strings in this file are populated during build with the values of the
             // PARSE_APPLICATION_ID and PARSE_CLIENT_KEY environment variables.
             class ParseConfig {
-                static final String APPLICATION_ID = "${System.env.PARSE_APPLICATION_ID}";
-                static final String CLIENT_KEY = "${System.env.PARSE_CLIENT_KEY}";
+                static final String APPLICATION_ID = "${parseAppId}";
+                static final String CLIENT_KEY = "${parseClientKey}";
             }
             """.stripIndent();
         }
