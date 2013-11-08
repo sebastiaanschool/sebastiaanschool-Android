@@ -86,6 +86,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     private void pushFragment(HorizontalSlidingFragment fragment, String label) {
         if (detailFragmentVisible)
             return;
+        detailFragmentVisible = true;
         Analytics.trackEvent("Navigate to " + label);
         FragmentTransaction tx = getFragmentManager().beginTransaction();
         fragment.addWithAnimation(tx, R.id.main__content_container, label);
