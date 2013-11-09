@@ -102,7 +102,7 @@ public abstract class HorizontalSlidingFragment extends Fragment implements Anim
     }
 
     public interface Callback {
-        void onSlidingFragmentBeginAnimation(HorizontalSlidingFragment source, boolean willOpen);
-        void onSlidingFragmentEndAnimation(HorizontalSlidingFragment source, boolean hasOpened);
+        void onSlidingFragmentBeginAnimation(HorizontalSlidingFragment source, boolean willSlideIntoView);
+        void onSlidingFragmentEndAnimation(HorizontalSlidingFragment source, boolean didSlideIntoView);
     }
 }

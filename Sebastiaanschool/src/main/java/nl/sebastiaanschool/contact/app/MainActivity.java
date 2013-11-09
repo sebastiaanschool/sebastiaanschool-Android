@@ -115,22 +115,22 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     }
 
     @Override
-    public void onSlidingFragmentBeginAnimation(HorizontalSlidingFragment source, boolean willOpen) {
+    public void onSlidingFragmentBeginAnimation(HorizontalSlidingFragment source, boolean willSlideIntoView) {
         ActionBar actionBar = getActionBar();
         actionBar.setHomeButtonEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(false);
-        if (!willOpen) {
+        if (!willSlideIntoView) {
             // Before the detail fragment begins moving out of screen, make the underlying navigation fragment visible.
             navigationFragment.setVisible(true);
         }
     }
 
     @Override
-    public void onSlidingFragmentEndAnimation(HorizontalSlidingFragment source, boolean hasOpened) {
+    public void onSlidingFragmentEndAnimation(HorizontalSlidingFragment source, boolean didSlideIntoView) {
         ActionBar actionBar = getActionBar();
-        actionBar.setHomeButtonEnabled(hasOpened);
-        actionBar.setDisplayHomeAsUpEnabled(hasOpened);
-        if (hasOpened) {
+        actionBar.setHomeButtonEnabled(didSlideIntoView);
+        actionBar.setDisplayHomeAsUpEnabled(didSlideIntoView);
+        if (didSlideIntoView) {
             // After the detail fragment has appeared on top of the navigation fragment, hide the latter to reduce GPU overdraw.
             navigationFragment.setVisible(false);
         }
