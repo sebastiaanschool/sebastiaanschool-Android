@@ -16,6 +16,7 @@ import java.util.List;
 
 public class MainActivity extends Activity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener, HorizontalSlidingFragment.Callback, DataLoadingCallback {
 
+    private String NAVIGATION_FRAGMENT_TAG = "navFrag";
     private NavigationFragment navigationFragment;
     private boolean detailFragmentVisible;
 
@@ -27,8 +28,12 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         getActionBar().setIcon(R.drawable.ic_sebastiaan_48dp_white);
         setContentView(R.layout.activity_main);
         getFragmentManager().addOnBackStackChangedListener(this);
-        navigationFragment = new NavigationFragment();
-        getFragmentManager().beginTransaction().add(R.id.main__content_container, navigationFragment).commit();
+        if (savedInstanceState == null) {
+            navigationFragment = new NavigationFragment();
+            getFragmentManager().beginTransaction().add(R.id.main__content_container, navigationFragment, NAVIGATION_FRAGMENT_TAG).commit();
+        } else {
+            navigationFragment = (NavigationFragment) getFragmentManager().findFragmentByTag(NAVIGATION_FRAGMENT_TAG);
+        }
         Analytics.trackAppOpened(getIntent());
     }
 
