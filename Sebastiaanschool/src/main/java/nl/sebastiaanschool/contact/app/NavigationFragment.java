@@ -48,6 +48,13 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         super.onDetach();
     }
 
+    void setVisible(boolean visible) {
+        View view = getView();
+        if (view != null) {
+            view.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
     @Override
     public void onClick(View view) {
         if (callback != null) {

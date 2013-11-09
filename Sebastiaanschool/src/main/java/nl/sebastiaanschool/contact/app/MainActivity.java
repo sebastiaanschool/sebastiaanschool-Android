@@ -16,6 +16,7 @@ import java.util.List;
 
 public class MainActivity extends Activity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener, HorizontalSlidingFragment.Callback, DataLoadingCallback {
 
+    private NavigationFragment navigationFragment;
     private boolean detailFragmentVisible;
 
     @Override
@@ -26,7 +27,8 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         getActionBar().setIcon(R.drawable.ic_sebastiaan_48dp_white);
         setContentView(R.layout.activity_main);
         getFragmentManager().addOnBackStackChangedListener(this);
-        getFragmentManager().beginTransaction().add(R.id.main__content_container, new NavigationFragment()).commit();
+        navigationFragment = new NavigationFragment();
+        getFragmentManager().beginTransaction().add(R.id.main__content_container, navigationFragment).commit();
         Analytics.trackAppOpened(getIntent());
     }
 
@@ -117,7 +119,10 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         ActionBar actionBar = getActionBar();
         actionBar.setHomeButtonEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(false);
-        // TODO optimize GPU overdraw: -> toggle navigationFragment's view visibility before/after sliding animation.
+        if (!willOpen) {
+            // Before the detail fragment begins moving out of screen, make the underlying navigation fragment visible.
+            navigationFragment.setVisible(true);
+        }
     }
 
     @Override
@@ -125,6 +130,10 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         ActionBar actionBar = getActionBar();
         actionBar.setHomeButtonEnabled(hasOpened);
         actionBar.setDisplayHomeAsUpEnabled(hasOpened);
+        if (hasOpened) {
+            // After the detail fragment has appeared on top of the navigation fragment, hide the latter to reduce GPU overdraw.
+            navigationFragment.setVisible(false);
+        }
     }
 
     @Override
