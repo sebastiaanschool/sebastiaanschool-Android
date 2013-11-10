@@ -46,8 +46,10 @@ tasks.whenTaskAdded { theTask ->
         theTask << {
             def parseAppId = System.env.get(project.ext.parseAppIdVar)
             def parseClientKey = System.env.get(project.ext.parseClientKeyVar)
+            parseAppId = parseAppId == null ? "null" : "\"${parseAppId}\""
+            parseClientKey = parseClientKey == null ? "null" : "\"${parseClientKey}\""
             if (parseAppId == null || parseClientKey == null) {
-                throw new RuntimeException("Error: missing Parse.com API credentials. Cannot not assemble the app for the parse.com back-end.\n\nPlease define the environment variables ${project.ext.parseAppIdVar} and ${project.ext.parseClientKeyVar}.")
+                logger.warn("*****\n\nMissing Parse.com API credentials. The generated app will be non-functional.\n\nTo resolve this, please define the environment variables ${project.ext.parseAppIdVar} and ${project.ext.parseClientKeyVar}.\n\n*****")
             }
             def theFile = new java.io.File(it.sourceOutputDir, "nl/sebastiaanschool/contact/app/ParseConfig.java")
             if (theFile.exists()) {
@@ -57,10 +59,11 @@ tasks.whenTaskAdded { theTask ->
             package nl.sebastiaanschool.contact.app;
 
             // The strings in this file are populated during build with the values of the
-            // PARSE_APPLICATION_ID and PARSE_CLIENT_KEY environment variables.
+            // PARSE_APPLICATION_ID and PARSE_CLIENT_KEY environment variables. If they're
+            // null below, your build env was not set correctly (check the readme file).
             class ParseConfig {
-                static final String APPLICATION_ID = "${parseAppId}";
-                static final String CLIENT_KEY = "${parseClientKey}";
+                static final String APPLICATION_ID = ${parseAppId};
+                static final String CLIENT_KEY = ${parseClientKey};
             }
             """.stripIndent();
         }
