@@ -1,3 +1,8 @@
+/**
+ Copyright (c) 2013 Barend Garvelink
+
+ This program code can be used subject to the MIT license. See the LICENSE file for details.
+ */
 package nl.sebastiaanschool.contact.app;
 
 import android.animation.Animator;
