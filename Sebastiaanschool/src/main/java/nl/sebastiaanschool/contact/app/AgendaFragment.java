@@ -19,6 +19,7 @@ public class AgendaFragment extends SebListFragment<AgendaItem> {
     }
 
     private void publishCalendarEvent(AgendaItem item) {
+        Analytics.trackEvent("Navigate to device calendar");
         Intent intent = new Intent(Intent.ACTION_EDIT);
         intent.setType("vnd.android.cursor.item/event");
         intent.putExtra("title", item.getTitle());

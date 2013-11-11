@@ -23,6 +23,7 @@ public final class GrabBag {
     }
 
     public static void openUri(Context context, String uriString) {
+        Analytics.trackEvent("Navigate to " + uriString);
         Intent browse = new Intent(Intent.ACTION_VIEW, Uri.parse(uriString));
         browse.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         // Need to check if a browser is present, as it can be disabled entirely using child safety features on a tablet.

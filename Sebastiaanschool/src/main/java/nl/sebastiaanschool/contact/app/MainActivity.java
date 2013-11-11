@@ -68,6 +68,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     }
 
     private void callSebastiaan() {
+        Analytics.trackEvent("Navigate to dialer");
         final String number = getResources().getString(R.string.call_url);
         final Intent dial = new Intent(Intent.ACTION_DIAL, Uri.parse(number));
         dial.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
