@@ -21,5 +21,6 @@
         android:id="@+id/bulletin__item_text"
         style="@style/ListItemText"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
+        android:layout_width="match_parent"
+        android:paddingTop="8dp"/>
 </nl.sebastiaanschool.contact.app.BulletinItemView>
