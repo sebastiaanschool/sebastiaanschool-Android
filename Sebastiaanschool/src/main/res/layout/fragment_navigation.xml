@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="fill_horizontal"
-            android:drawableLeft="@drawable/ic_todo"
+            android:drawableLeft="@drawable/ic_newsletter"
             android:text="@string/navigation__newsletter" />
 
         <TextView
