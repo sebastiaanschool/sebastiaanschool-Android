@@ -12,4 +12,7 @@
     <string name="navigation__newsletter">Nieuwsbrief</string>
     <string name="navigation__bulletin">Mededeling</string>
     <string name="team_email_body">Beste %1$s,</string>
+    <string name="download_newsletter_description">Sebastiaanschool Nieuwsbrief</string>
+    <string name="download_failed">Download niet gelukt</string>
+    <string name="open_uri_failed">Openen niet gelukt</string>
 </resources>
