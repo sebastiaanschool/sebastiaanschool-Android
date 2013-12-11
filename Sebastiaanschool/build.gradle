@@ -48,7 +48,7 @@ tasks.whenTaskAdded { theTask ->
             def parseClientKey = System.env.get(project.ext.parseClientKeyVar)
             parseAppId = parseAppId == null ? "null" : "\"${parseAppId}\""
             parseClientKey = parseClientKey == null ? "null" : "\"${parseClientKey}\""
-            if (parseAppId == null || parseClientKey == null) {
+            if (parseAppId == "null" || parseClientKey == "null") {
                 logger.warn("*****\n\nMissing Parse.com API credentials. The generated app will be non-functional.\n\nTo resolve this, please define the environment variables ${project.ext.parseAppIdVar} and ${project.ext.parseClientKeyVar}.\n\n*****")
             }
             def theFile = new java.io.File(it.sourceOutputDir, "nl/sebastiaanschool/contact/app/ParseConfig.java")
