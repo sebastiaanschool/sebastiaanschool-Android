@@ -18,10 +18,14 @@ android {
 
     buildTypes {
         release {
+            runProguard true
+            proguardFile file('proguard-shrink-only.txt')
             project.ext.set('parseAppIdVar', 'PARSE_APPLICATION_ID')
             project.ext.set('parseClientKeyVar', 'PARSE_CLIENT_KEY')
         }
         debug {
+            runProguard true
+            proguardFile file('proguard-shrink-only.txt')
             project.ext.set('parseAppIdVar', 'DEV_PARSE_APPLICATION_ID')
             project.ext.set('parseClientKeyVar', 'DEV_PARSE_CLIENT_KEY')
         }
