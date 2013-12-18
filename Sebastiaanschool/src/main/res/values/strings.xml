@@ -26,4 +26,5 @@
     <string name="download_newsletter_referer" translatable="false">Sebastiaan Android v%d</string>
     <string name="download_failed">Download failed</string>
     <string name="open_uri_failed">Could not open</string>
+    <string name="navigation__home_as_up_desc">double-tap to return to main menu</string>
 </resources>

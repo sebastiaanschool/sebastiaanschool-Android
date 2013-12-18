@@ -13,6 +13,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Window;
@@ -31,6 +32,9 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getActionBar().setIcon(R.drawable.ic_sebastiaan_48dp_white);
+        if (Build.VERSION.SDK_INT >= 18) {
+            getActionBar().setHomeActionContentDescription(R.string.navigation__home_as_up_desc);
+        }
         setContentView(R.layout.activity_main);
         getFragmentManager().addOnBackStackChangedListener(this);
         if (savedInstanceState == null) {
@@ -46,10 +50,10 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     public void onItemSelected(int item) {
         switch (item) {
             case ITEM_AGENDA:
-                pushFragment(new AgendaFragment(), getString(R.string.navigation__agenda));
+                pushFragment(new AgendaFragment());
                 break;
             case ITEM_BULLETIN:
-                pushFragment(new BulletinFragment(), getString(R.string.navigation__bulletin));
+                pushFragment(new BulletinFragment());
                 break;
             case ITEM_CALL:
                 callSebastiaan();
@@ -58,10 +62,10 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
                 GrabBag.openUri(this, getString(R.string.home_url));
                 break;
             case ITEM_NEWSLETTER:
-                pushFragment(new NewsletterFragment(), getString(R.string.navigation__newsletter));
+                pushFragment(new NewsletterFragment());
                 break;
             case ITEM_TEAM:
-                pushFragment(new TeamFragment(), getString(R.string.navigation__team));
+                pushFragment(new TeamFragment());
                 break;
             case ITEM_TWITTER:
                 GrabBag.openUri(this, getString(R.string.twitter_url));
@@ -96,10 +100,11 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         }
     }
 
-    private void pushFragment(HorizontalSlidingFragment fragment, String label) {
+    private void pushFragment(HorizontalSlidingFragment fragment) {
         if (detailFragmentVisible)
             return;
         detailFragmentVisible = true;
+        String label = getString(fragment.getTitleResId());
         Analytics.trackEvent("Navigate to " + label);
         FragmentTransaction tx = getFragmentManager().beginTransaction();
         fragment.addWithAnimation(tx, R.id.main__content_container, label);
@@ -130,6 +135,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         ActionBar actionBar = getActionBar();
         actionBar.setHomeButtonEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setSubtitle(null);
         if (!willSlideIntoView) {
             // Before the detail fragment begins moving out of screen, make the underlying navigation fragment visible.
             navigationFragment.setVisible(true);
@@ -144,6 +150,9 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         if (didSlideIntoView) {
             // After the detail fragment has appeared on top of the navigation fragment, hide the latter to reduce GPU overdraw.
             navigationFragment.setVisible(false);
+            if (source.getTitleResId() != 0) {
+                actionBar.setSubtitle(source.getTitleResId());
+            }
         }
     }
 

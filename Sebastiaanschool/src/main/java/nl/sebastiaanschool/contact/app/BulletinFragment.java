@@ -21,4 +21,9 @@ public class BulletinFragment extends SebListFragment<Bulletin> {
     protected void onItemClick(Bulletin item) {
         // Nothing
     }
+
+    @Override
+    public int getTitleResId() {
+        return R.string.navigation__bulletin;
+    }
 }

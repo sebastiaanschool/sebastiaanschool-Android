@@ -33,6 +33,11 @@ public class NewsletterFragment extends SebListFragment<Newsletter> {
     }
 
     @Override
+    public int getTitleResId() {
+        return R.string.navigation__newsletter;
+    }
+
+    @Override
     protected void onItemClick(Newsletter item) {
         final Activity activity = getActivity();
         if (activity == null) {

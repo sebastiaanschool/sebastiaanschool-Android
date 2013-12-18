@@ -96,6 +96,10 @@ public abstract class HorizontalSlidingFragment extends Fragment implements Anim
         }
     }
 
+    public int getTitleResId() {
+        return 0;
+    }
+
     @Override
     public void onAnimationCancel(Animator animator) {
         // Ignored

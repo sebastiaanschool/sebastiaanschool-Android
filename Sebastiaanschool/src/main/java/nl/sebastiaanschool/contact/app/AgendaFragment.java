@@ -23,6 +23,11 @@ public class AgendaFragment extends SebListFragment<AgendaItem> {
         publishCalendarEvent(item);
     }
 
+    @Override
+    public int getTitleResId() {
+        return R.string.navigation__agenda;
+    }
+
     private void publishCalendarEvent(AgendaItem item) {
         Analytics.trackEvent("Navigate to device calendar");
         Intent intent = new Intent(Intent.ACTION_EDIT);

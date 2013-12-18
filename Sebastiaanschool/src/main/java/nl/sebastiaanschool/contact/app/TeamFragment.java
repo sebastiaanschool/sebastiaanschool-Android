@@ -24,6 +24,11 @@ public class TeamFragment extends SebListFragment<TeamMember> {
         composeEmail(item);
     }
 
+    @Override
+    public int getTitleResId() {
+        return R.string.navigation__team;
+    }
+
     private void composeEmail(TeamMember item) {
         Analytics.trackEvent("Navigate to email client");
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", item.getEmail(), null));

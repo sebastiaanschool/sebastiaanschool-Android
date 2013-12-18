@@ -21,4 +21,5 @@
     <string name="download_newsletter_description">Sebastiaanschool Nieuwsbrief</string>
     <string name="download_failed">Download niet gelukt</string>
     <string name="open_uri_failed">Openen niet gelukt</string>
+    <string name="navigation__home_as_up_desc">dubbel-tikken om naar het hoofdmenu terug te keren</string>
 </resources>
