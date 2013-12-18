@@ -15,14 +15,19 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.accessibility.AccessibilityEventCompat;
+import android.support.v4.view.accessibility.AccessibilityRecordCompat;
 import android.view.MenuItem;
 import android.view.Window;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 
 import java.util.List;
 
 public class MainActivity extends Activity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener, HorizontalSlidingFragment.Callback, DataLoadingCallback {
 
     private String NAVIGATION_FRAGMENT_TAG = "navFrag";
+    private AccessibilityManager accessibilityManager;
     private NavigationFragment navigationFragment;
     private boolean detailFragmentVisible;
 
@@ -43,6 +48,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         } else {
             navigationFragment = (NavigationFragment) getFragmentManager().findFragmentByTag(NAVIGATION_FRAGMENT_TAG);
         }
+        accessibilityManager = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
         Analytics.trackAppOpened(getIntent());
     }
 
@@ -150,10 +156,36 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         if (didSlideIntoView) {
             // After the detail fragment has appeared on top of the navigation fragment, hide the latter to reduce GPU overdraw.
             navigationFragment.setVisible(false);
-            if (source.getTitleResId() != 0) {
-                actionBar.setSubtitle(source.getTitleResId());
+            final int titleResId = source.getTitleResId();
+            if (titleResId != 0) {
+                final String title = getString(titleResId);
+                actionBar.setSubtitle(title);
+                announce(getString(R.string.accessibility__announce_open_page, title));
             }
+        } else {
+            announce(getString(R.string.accessibility__announce_return_home));
         }
+    }
+
+    /**
+     * AccessibilityService voodoo lifted from http://stackoverflow.com/a/18502185/49489.
+     */
+    private void announce(final CharSequence announcement) {
+        if (!accessibilityManager.isEnabled()) {
+            return;
+        }
+        final int eventType = Build.VERSION.SDK_INT < 16
+                ? AccessibilityEvent.TYPE_VIEW_FOCUSED
+                : AccessibilityEventCompat.TYPE_ANNOUNCEMENT;
+        AccessibilityEvent event = AccessibilityEvent.obtain(eventType);
+        event.setEventTime(System.currentTimeMillis());
+        event.setEnabled(true);
+        event.setClassName(MainActivity.class.getName());
+        event.setPackageName(getPackageName());
+        event.getText().add(announcement);
+        final AccessibilityRecordCompat record = new AccessibilityRecordCompat(event);
+        record.setSource(this.findViewById(android.R.id.content));
+        accessibilityManager.sendAccessibilityEvent(event);
     }
 
     @Override

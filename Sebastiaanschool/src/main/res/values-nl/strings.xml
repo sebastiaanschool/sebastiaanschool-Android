@@ -22,4 +22,6 @@
     <string name="download_failed">Download niet gelukt</string>
     <string name="open_uri_failed">Openen niet gelukt</string>
     <string name="navigation__home_as_up_desc">dubbel-tikken om naar het hoofdmenu terug te keren</string>
+    <string name="accessibility__announce_return_home">Het hoofdmenu wordt getoond</string>
+    <string name="accessibility__announce_open_page">De %1$s pagina wordt getoond</string>
 </resources>

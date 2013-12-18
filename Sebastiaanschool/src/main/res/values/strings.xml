@@ -27,4 +27,6 @@
     <string name="download_failed">Download failed</string>
     <string name="open_uri_failed">Could not open</string>
     <string name="navigation__home_as_up_desc">double-tap to return to main menu</string>
+    <string name="accessibility__announce_return_home">Now showing the main menu</string>
+    <string name="accessibility__announce_open_page">Now showing the %1$s page</string>
 </resources>
