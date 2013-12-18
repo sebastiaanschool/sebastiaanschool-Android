@@ -29,6 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="fill_horizontal"
+            android:clickable="true"
+            android:contentDescription="@string/navigation__twitter_desc"
             android:drawableLeft="@drawable/ic_twitter"
             android:text="@string/navigation__twitter" />
 
@@ -38,6 +40,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="fill_horizontal"
+            android:clickable="true"
+            android:contentDescription="@string/navigation__yurl_desc"
             android:drawableLeft="@drawable/ic_yurls"
             android:text="@string/navigation__yurl" />
 
@@ -47,6 +51,8 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_gravity="fill_horizontal"
+            android:clickable="true"
+            android:contentDescription="@string/navigation__agenda_desc"
             android:drawableLeft="@drawable/ic_agenda"
             android:text="@string/navigation__agenda" />
 
@@ -56,6 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="fill_horizontal"
+            android:clickable="true"
+            android:contentDescription="@string/navigation__team_desc"
             android:drawableLeft="@drawable/ic_team"
             android:text="@string/navigation__team" />
 
@@ -65,6 +73,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="fill_horizontal"
+            android:clickable="true"
+            android:contentDescription="@string/navigation__call_desc"
             android:drawableLeft="@drawable/ic_call"
             android:text="@string/navigation__call" />
 
@@ -74,6 +84,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="fill_horizontal"
+            android:clickable="true"
+            android:contentDescription="@string/navigation__newsletter_desc"
             android:drawableLeft="@drawable/ic_newsletter"
             android:text="@string/navigation__newsletter" />
 
@@ -83,6 +95,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="fill_horizontal"
+            android:clickable="true"
+            android:contentDescription="@string/navigation__bulletin_desc"
             android:drawableLeft="@drawable/ic_bulletin"
             android:text="@string/navigation__bulletin" />
 

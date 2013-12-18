@@ -8,12 +8,19 @@
     <string name="yurls_url" translatable="false">http://sebastiaan.yurls.net/</string>
     <string name="navigation__homepage">Homepage</string>
     <string name="navigation__twitter">\@KBSebastiaan</string>
-    <string name="navigation__yurl">Yurl site</string>
+    <string name="navigation__twitter_desc">Twitter, button</string>
+    <string name="navigation__yurl">Yurls site</string>
+    <string name="navigation__yurl_desc">Yurls site, button</string>
     <string name="navigation__agenda">Agenda</string>
+    <string name="navigation__agenda_desc">Agenda, button</string>
     <string name="navigation__team">Team</string>
+    <string name="navigation__team_desc">Team, button</string>
     <string name="navigation__call">Call</string>
+    <string name="navigation__call_desc">Call, button</string>
     <string name="navigation__newsletter">Newsletter</string>
+    <string name="navigation__newsletter_desc">Newsletter, button</string>
     <string name="navigation__bulletin">Bulletin</string>
+    <string name="navigation__bulletin_desc">Bulletin, button</string>
     <string name="team_email_body">Dear %1$s,</string>
     <string name="download_newsletter_description">Sebastiaanschool Newsletter</string>
     <string name="download_newsletter_referer" translatable="false">Sebastiaan Android v%d</string>
