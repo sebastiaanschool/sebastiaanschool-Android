@@ -160,7 +160,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
             if (titleResId != 0) {
                 final String title = getString(titleResId);
                 actionBar.setSubtitle(title);
-                announce(getString(R.string.accessibility__announce_open_page, title));
+                announce(getString(source.getAnnouncementResId(), title));
             }
         } else {
             announce(getString(R.string.accessibility__announce_return_home));

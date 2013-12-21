@@ -38,6 +38,11 @@ public class NewsletterFragment extends SebListFragment<Newsletter> {
     }
 
     @Override
+    public int getAnnouncementResId() {
+        return R.string.accessibility__announce_open_newsletter;
+    }
+
+    @Override
     protected void onItemClick(Newsletter item) {
         final Activity activity = getActivity();
         if (activity == null) {

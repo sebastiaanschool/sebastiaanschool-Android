@@ -29,6 +29,11 @@ public class TeamFragment extends SebListFragment<TeamMember> {
         return R.string.navigation__team;
     }
 
+    @Override
+    public int getAnnouncementResId() {
+        return R.string.accessibility__announce_open_team;
+    }
+
     private void composeEmail(TeamMember item) {
         Analytics.trackEvent("Navigate to email client");
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", item.getEmail(), null));

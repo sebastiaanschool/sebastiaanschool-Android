@@ -96,8 +96,20 @@ public abstract class HorizontalSlidingFragment extends Fragment implements Anim
         }
     }
 
+    /**
+     * Returns the string resource ID to show in the ActionBar Subtitle when navigating to this fragment.
+     * @return defaults to {@code 0}, for no subtitle.
+     */
     public int getTitleResId() {
         return 0;
+    }
+
+    /**
+     * Returns the string resource ID for an accessibility announcement to be spoken when navigating to this fragment.
+     * @return defaults to {@code R.string.accessibility__announce_open_page}.
+     */
+    public int getAnnouncementResId() {
+        return R.string.accessibility__announce_open_page;
     }
 
     @Override
