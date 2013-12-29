@@ -68,6 +68,10 @@ public class HorizontalSlidingLayout extends FrameLayout {
             View child = getChildAt(i);
             child.measure(widthMeasureSpec, heightMeasureSpec);
         }
+        // (Re-)initialize this.shift for the new screen dimensions, to make the contents appear
+        // correctly if animations are disabled in the Developer Options.
+        shift = (int)(percentOnScreen < 1.0 ? percentOnScreen * screenWidth : screenWidth);
+        setX(-shift);
     }
 
     /** Lays out the children in the right half of the view. */
@@ -98,7 +102,6 @@ public class HorizontalSlidingLayout extends FrameLayout {
         return percentOnScreen;
     }
 
-    @SuppressWarnings("unused")
     public void setPercentOnScreen(float fraction) {
         shift = (int)(fraction < 1.0 ? fraction * screenWidth : screenWidth);
         setX(-shift);

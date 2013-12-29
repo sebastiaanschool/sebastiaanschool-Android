@@ -16,14 +16,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Base class for fragments that slide into the screen from right to left.
  * Created by Barend on 2-11-13.
  */
 public abstract class HorizontalSlidingFragment extends Fragment implements Animator.AnimatorListener {
 
+    /**
+     * If the animation lasted shorter than this, assume that animations have been disabled in the developer options.
+     */
+    private static final long MIN_ANIM_DURATION_NANOS = TimeUnit.MILLISECONDS.toNanos(100L);
     private Callback callback;
     private HorizontalSlidingLayout slidingContainer;
+    private long animStartNanos;
+    private boolean animEntering;
 
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,6 +80,7 @@ public abstract class HorizontalSlidingFragment extends Fragment implements Anim
 
     @Override
     public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
+        animEntering = enter;
         int id = enter? R.animator.hsl_slide_in : R.animator.hsl_slide_out;
         Animator animator = AnimatorInflater.loadAnimator(getActivity(), id);
         if (animator != null) {
@@ -82,17 +91,24 @@ public abstract class HorizontalSlidingFragment extends Fragment implements Anim
 
     @Override
     public void onAnimationStart(Animator animator) {
+        animStartNanos = System.nanoTime();
         if (callback != null) {
             boolean willOpen = slidingContainer.getPercentOnScreen() <= 0.0f;
-            callback.onSlidingFragmentBeginAnimation(this, willOpen);
+            callback.onSlidingFragmentBeginAnimation(this, animEntering);
         }
     }
 
     @Override
     public void onAnimationEnd(Animator animator) {
+        long elapsedNanos = System.nanoTime() - animStartNanos;
+        if (elapsedNanos < MIN_ANIM_DURATION_NANOS) {
+            if (slidingContainer.getMeasuredWidth() == 0) {
+                slidingContainer.requestLayout();
+            }
+            slidingContainer.setPercentOnScreen(animEntering ? 1.0f : 0.0f);
+        }
         if (callback != null) {
-            boolean hasOpened = slidingContainer.getPercentOnScreen() >= 1.0f;
-            callback.onSlidingFragmentEndAnimation(this, hasOpened);
+            callback.onSlidingFragmentEndAnimation(this, animEntering);
         }
     }
 
