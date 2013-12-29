@@ -183,7 +183,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         event.setClassName(MainActivity.class.getName());
         event.setPackageName(getPackageName());
         event.getText().add(announcement);
-        final AccessibilityRecordCompat record = new AccessibilityRecordCompat(event);
+        final AccessibilityRecordCompat record = AccessibilityEventCompat.asRecord(event);
         record.setSource(this.findViewById(android.R.id.content));
         accessibilityManager.sendAccessibilityEvent(event);
     }
