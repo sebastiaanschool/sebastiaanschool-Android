@@ -26,6 +26,6 @@ public class SebApp extends Application {
         // The .toString() calls force an app crash at startup if the required environment variables were
         // not set during build. This is the closest I could get to Fail Fast Behaviour without rendering
         // Android Studio unusable.
-        Parse.initialize(this, ParseConfig.APPLICATION_ID.toString(), ParseConfig.CLIENT_KEY.toString());
+        Parse.initialize(this, BuildConfig.APPLICATION_ID.toString(), BuildConfig.CLIENT_KEY.toString());
     }
 }
