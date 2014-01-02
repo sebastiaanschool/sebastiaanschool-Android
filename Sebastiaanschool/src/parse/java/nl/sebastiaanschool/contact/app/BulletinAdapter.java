@@ -27,7 +27,7 @@ public class BulletinAdapter extends ParseQueryAdapter<Bulletin> implements SebL
         super(context, new QueryFactory<Bulletin>() {
             @Override
             public ParseQuery<Bulletin> create() {
-                ParseQuery<Bulletin> query = new ParseQuery<Bulletin>(Bulletin.class);
+                ParseQuery<Bulletin> query = new ParseQuery<>(Bulletin.class);
                 query.orderByDescending("createdAt");
                 query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
                 return query;

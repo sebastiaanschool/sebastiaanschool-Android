@@ -27,7 +27,7 @@ public class NewsletterAdapter extends ParseQueryAdapter<Newsletter> implements 
         super(context, new QueryFactory<Newsletter>() {
             @Override
             public ParseQuery<Newsletter> create() {
-                ParseQuery<Newsletter> query = new ParseQuery<Newsletter>(Newsletter.class);
+                ParseQuery<Newsletter> query = new ParseQuery<>(Newsletter.class);
                 query.orderByDescending("publishedAt");
                 query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
                 return query;

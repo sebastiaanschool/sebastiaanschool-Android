@@ -27,7 +27,7 @@ public class AgendaAdapter extends ParseQueryAdapter<AgendaItem> implements SebL
         super(context, new QueryFactory<AgendaItem>() {
             @Override
             public ParseQuery<AgendaItem> create() {
-                ParseQuery<AgendaItem> query = new ParseQuery<AgendaItem>(AgendaItem.class);
+                ParseQuery<AgendaItem> query = new ParseQuery<>(AgendaItem.class);
                 query.addAscendingOrder("start");
                 query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
                 return query;

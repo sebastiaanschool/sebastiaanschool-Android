@@ -27,7 +27,7 @@ public class TeamAdapter extends ParseQueryAdapter<TeamMember> implements SebLis
         super(context, new QueryFactory<TeamMember>() {
             @Override
             public ParseQuery<TeamMember> create() {
-                ParseQuery<TeamMember> query = new ParseQuery<TeamMember>(TeamMember.class);
+                ParseQuery<TeamMember> query = new ParseQuery<>(TeamMember.class);
                 query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
                 return query;
             }
