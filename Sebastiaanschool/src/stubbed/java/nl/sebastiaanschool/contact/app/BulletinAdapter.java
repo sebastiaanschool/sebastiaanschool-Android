@@ -22,7 +22,7 @@ public class BulletinAdapter extends ArrayAdapter<Bulletin> implements SebListAd
         super(context, R.layout.view_agenda_item);
         this.inflater = LayoutInflater.from(context);
         this.addAll(
-            new Bulletin("Eerste bulletin", "Dit is een lang verhaal over van alles en nog wat. Het voornaamste is dat het ook op grote telefoons niet op één scherm te vatten is.", 1387756800000L),
+            new Bulletin("Eerste bulletin", "Dit is een lang verhaal over van alles en nog wat. Het voornaamste is dat het ook op grote telefoons niet op één scherm te vatten is. Mailtjes naar noreply@bol.com worden waarschijnlijk niet gelezen. Om het leuk te maken zitten er http://url.es/ in die aanklikbaar.com/zouden?moeten=zijn&dat=werkt#dus misschien.", 1387756800000L),
             new Bulletin("Tweede bulletin", "Dit is alweer zo'n lang verhaal, maar wel iets minder oeverloos.", 1388707200000L));
     }
 
