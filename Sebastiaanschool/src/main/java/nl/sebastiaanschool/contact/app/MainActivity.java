@@ -5,6 +5,7 @@
  */
 package nl.sebastiaanschool.contact.app;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,6 +33,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     private boolean detailFragmentVisible;
 
     @Override
+    @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);

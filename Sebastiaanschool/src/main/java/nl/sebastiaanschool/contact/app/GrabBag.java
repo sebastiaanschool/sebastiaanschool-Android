@@ -5,6 +5,7 @@
  */
 package nl.sebastiaanschool.contact.app;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -49,6 +50,7 @@ public final class GrabBag {
         }
     }
 
+    @SuppressLint("NewApi")
     private static String getDatePattern() {
         if (Build.VERSION.SDK_INT >= 18) {
             return DateFormat.getBestDateTimePattern(Locale.getDefault(), "dMMMMyyyy");
