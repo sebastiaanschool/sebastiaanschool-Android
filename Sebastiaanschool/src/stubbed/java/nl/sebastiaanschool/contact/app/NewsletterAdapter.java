@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-import nl.sebastiaanschool.contact.app.Newsletter;
-
 /**
  * Created by barend on 3-11-13.
  */
@@ -27,8 +25,8 @@ public class NewsletterAdapter extends ArrayAdapter<Newsletter> implements SebLi
             new Newsletter("PDF URL (404)", "https://github.com/barend/sebastiaanschool/bestaatniet.pdf", 1387756800000L),
             new Newsletter("Non-PDF URL", "https://github.com/barend/sebastiaanschool", 1388707200000L),
             new Newsletter("PDF URL (2.2MB)", "http://downloads.bbc.co.uk/schools/teachers/shakespeare_unlocked/mnd.pdf", 1388706400000L),
-            new Newsletter("Invalid PDF URL (unknown scheme)", "jvooi453hfsafdj://example.com/failure.pdf", 1388706400000L),
-            new Newsletter("Invalid Non-PDF URL (unknown scheme)", "jvooi453hfsafdj://example.com/failure.txt", 1388705200000L)
+            new Newsletter("Invalid PDF URL", "jvooi453hfsafdj://example.com/failure.pdf", 1388706400000L),
+            new Newsletter("Invalid Non-PDF URL", "jvooi453hfsafdj://example.com/failure.txt", 1388705200000L)
         );
     }
 

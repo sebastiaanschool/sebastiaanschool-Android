@@ -29,7 +29,7 @@ android {
             project.ext.set('parseClientKeyVar', 'PARSE_CLIENT_KEY')
         }
         debug {
-            runProguard true
+            runProguard false
             proguardFile file('proguard-shrink-only.txt')
             project.ext.set('parseAppIdVar', 'DEV_PARSE_APPLICATION_ID')
             project.ext.set('parseClientKeyVar', 'DEV_PARSE_CLIENT_KEY')
@@ -45,6 +45,10 @@ android {
         stubbed {
             packageName "nl.sebastiaanschool.contact.app.stubbed"
         }
+    }
+
+    defaultConfig {
+        testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
     }
 }
 
@@ -81,4 +85,5 @@ def readParseCredentialsFromEnvironment() {
 dependencies {
     compile 'com.android.support:support-v4:+'
     compile files('libs/Parse-1.3.9.jar')
+    instrumentTestCompile files('libs/espresso-1.0-SNAPSHOT-bundled.jar')
 }
