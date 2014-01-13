@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name" translatable="false">Seb@stiaan</string>
     <string name="call_url" translatable="false">tel:+31%2055%20533%2053%2055</string>
     <string name="call_failed_dialog_body">Could not initiate call. Please call manually. The number is:\n\n+31 55 533 53 55</string>
     <string name="close_button">Close</string>

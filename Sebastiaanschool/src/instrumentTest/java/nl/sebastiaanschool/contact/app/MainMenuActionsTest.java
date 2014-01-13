@@ -11,10 +11,8 @@ import android.test.suitebuilder.annotation.MediumTest;
 import static com.google.android.apps.common.testing.ui.espresso.Espresso.onView;
 import static com.google.android.apps.common.testing.ui.espresso.action.ViewActions.click;
 import static com.google.android.apps.common.testing.ui.espresso.assertion.ViewAssertions.matches;
-import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.isDisplayed;
 import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withContentDescription;
 import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withId;
-import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withText;
 
 @MediumTest
 public class MainMenuActionsTest extends ActivityInstrumentationTestCase2<MainActivity> {
@@ -57,9 +55,6 @@ public class MainMenuActionsTest extends ActivityInstrumentationTestCase2<MainAc
         onView(withId(R.id.navigate__agenda)).perform(click());
         waitForSlidingAnimationToComplete();
         assertEquals("Agenda", getActivity().getActionBar().getSubtitle());
-        onView(withText("Kerstvakantie 2013")).check(matches(isDisplayed()));
-        onView(withText("Voorjaarsvakantie 2014")).check(matches(isDisplayed()));
-        onView(withText("Goede Vrijdag 2014")).check(matches(isDisplayed()));
 
         onView(withId(android.R.id.home)).perform(click());
         waitForSlidingAnimationToComplete();
@@ -71,8 +66,6 @@ public class MainMenuActionsTest extends ActivityInstrumentationTestCase2<MainAc
         onView(withId(R.id.navigate__team)).perform(click());
         waitForSlidingAnimationToComplete();
         assertEquals("Team", getActivity().getActionBar().getSubtitle());
-        onView(withText("Jan Klaassen")).check(matches(isDisplayed()));
-        onView(withText("Katrijn Klaassen")).check(matches(isDisplayed()));
 
         onView(withId(android.R.id.home)).perform(click());
         waitForSlidingAnimationToComplete();
@@ -91,11 +84,6 @@ public class MainMenuActionsTest extends ActivityInstrumentationTestCase2<MainAc
         onView(withId(R.id.navigate__newsletter)).perform(click());
         waitForSlidingAnimationToComplete();
         assertEquals("Newsletter", getActivity().getActionBar().getSubtitle());
-        onView(withText("PDF URL (404)")).check(matches(isDisplayed()));
-        onView(withText("Non-PDF URL")).check(matches(isDisplayed()));
-        onView(withText("PDF URL (2.2MB)")).check(matches(isDisplayed()));
-        onView(withText("Invalid PDF URL")).check(matches(isDisplayed()));
-        onView(withText("Invalid Non-PDF URL")).check(matches(isDisplayed()));
 
         onView(withId(android.R.id.home)).perform(click());
         waitForSlidingAnimationToComplete();
@@ -107,8 +95,6 @@ public class MainMenuActionsTest extends ActivityInstrumentationTestCase2<MainAc
         onView(withId(R.id.navigate__bulletin)).perform(click());
         waitForSlidingAnimationToComplete();
         assertEquals("Bulletin", getActivity().getActionBar().getSubtitle());
-        onView(withText("Eerste bulletin")).check(matches(isDisplayed()));
-        onView(withText("Tweede bulletin")).check(matches(isDisplayed()));
 
         onView(withId(android.R.id.home)).perform(click());
         waitForSlidingAnimationToComplete();

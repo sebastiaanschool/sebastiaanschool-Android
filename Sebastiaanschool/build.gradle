@@ -33,22 +33,15 @@ android {
             proguardFile file('proguard-shrink-only.txt')
             project.ext.set('parseAppIdVar', 'DEV_PARSE_APPLICATION_ID')
             project.ext.set('parseClientKeyVar', 'DEV_PARSE_CLIENT_KEY')
-        }
-    }
-
-    productFlavors {
-        parse {
-            def (parseAppId, parseClientKey) = readParseCredentialsFromEnvironment()
-            buildConfigField "String", "APPLICATION_ID", "${parseAppId}"
-            buildConfigField "String", "CLIENT_KEY", "${parseClientKey}"
-        }
-        stubbed {
-            packageName "nl.sebastiaanschool.contact.app.stubbed"
+            packageNameSuffix ".dev"
         }
     }
 
     defaultConfig {
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
+        def (parseAppId, parseClientKey) = readParseCredentialsFromEnvironment()
+        buildConfigField "String", "APPLICATION_ID", "${parseAppId}"
+        buildConfigField "String", "CLIENT_KEY", "${parseClientKey}"
     }
 }
 
