@@ -79,17 +79,15 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
             // If we were launched with OPEN_PAGE, go to the requested page.
             // Use a delay before opening to make the sliding animation look better.
             final String channel = intent.getStringExtra("channel");
-            if (channel != null) {
-                intent.removeExtra("channel");
-                if ("bulletin".equals(channel)) {
-                    messageHandler.sendMessageDelayed(
-                            messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, PAGE_BULLETIN, 0),
-                            PAGE_OPEN_DELAY);
-                } else if ("newsletter".equals(channel)) {
-                    messageHandler.sendMessageDelayed(
-                            messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, PAGE_NEWSLETTER, 0),
-                            PAGE_OPEN_DELAY);
-                }
+            intent.removeExtra("channel");
+            if ("bulletin".equals(channel)) {
+                messageHandler.sendMessageDelayed(
+                        messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, PAGE_BULLETIN, 0),
+                        PAGE_OPEN_DELAY);
+            } else if ("newsletter".equals(channel)) {
+                messageHandler.sendMessageDelayed(
+                        messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, PAGE_NEWSLETTER, 0),
+                        PAGE_OPEN_DELAY);
             }
         }
     }
