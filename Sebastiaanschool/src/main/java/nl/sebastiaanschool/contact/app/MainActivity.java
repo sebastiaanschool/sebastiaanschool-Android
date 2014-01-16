@@ -16,6 +16,9 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.view.accessibility.AccessibilityEventCompat;
 import android.support.v4.view.accessibility.AccessibilityRecordCompat;
 import android.view.MenuItem;
@@ -25,9 +28,14 @@ import android.view.accessibility.AccessibilityManager;
 
 import java.util.List;
 
-public class MainActivity extends Activity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener, HorizontalSlidingFragment.Callback, DataLoadingCallback {
+public class MainActivity extends Activity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener, HorizontalSlidingFragment.Callback, DataLoadingCallback, Handler.Callback {
 
-    private String NAVIGATION_FRAGMENT_TAG = "navFrag";
+    private static final int PAGE_NEWSLETTER = 1;
+    private static final int PAGE_BULLETIN = 2;
+    private static final int MESSAGE_OPEN_PAGE = 1;
+    private static final String NAVIGATION_FRAGMENT_TAG = "navFrag";
+    private static final long PAGE_OPEN_DELAY = 250L;
+    private Handler messageHandler = new Handler(Looper.getMainLooper(), this);
     private AccessibilityManager accessibilityManager;
     private NavigationFragment navigationFragment;
     private boolean detailFragmentVisible;
@@ -52,6 +60,38 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         }
         accessibilityManager = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
         Analytics.trackAppOpened(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        autoNavigateToDetailPageIfNeeded(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        autoNavigateToDetailPageIfNeeded(getIntent());
+    }
+
+    private void autoNavigateToDetailPageIfNeeded(Intent intent) {
+        if ("nl.sebastiaanschool.contact.app.OPEN_PAGE".equals(intent.getAction())) {
+            // If we were launched with OPEN_PAGE, go to the requested page.
+            // Use a delay before opening to make the sliding animation look better.
+            final String channel = intent.getStringExtra("channel");
+            if (channel != null) {
+                intent.removeExtra("channel");
+                if ("bulletin".equals(channel)) {
+                    messageHandler.sendMessageDelayed(
+                            messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, PAGE_BULLETIN, 0),
+                            PAGE_OPEN_DELAY);
+                } else if ("newsletter".equals(channel)) {
+                    messageHandler.sendMessageDelayed(
+                            messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, PAGE_NEWSLETTER, 0),
+                            PAGE_OPEN_DELAY);
+                }
+            }
+        }
     }
 
     @Override
@@ -199,5 +239,23 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     public void onStopLoading(Exception e) {
         // TODO report exceptions to analytics
         this.setProgressBarIndeterminateVisibility(false);
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        if (msg.what == MESSAGE_OPEN_PAGE) {
+            if (detailFragmentVisible) {
+                popFragment();
+                messageHandler.sendMessageDelayed(messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, msg.arg1, 0), PAGE_OPEN_DELAY);
+            } else {
+                if (msg.arg1 == PAGE_BULLETIN) {
+                    pushFragment(new BulletinFragment());
+                } else {
+                    pushFragment(new NewsletterFragment());
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }

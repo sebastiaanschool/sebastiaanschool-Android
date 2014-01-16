@@ -13,6 +13,14 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="nl.sebastiaanschool.contact.app.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="nl.sebastiaanschool.contact.app.permission.C2D_MESSAGE" />
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -25,15 +33,33 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="nl.sebastiaanschool.contact.app.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:screenOrientation="sensorPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <!-- This action is fired when clicking on a notifications. The "channel" extra
+                     in the Intent determines which page is opened. -->
+                <action android:name="nl.sebastiaanschool.contact.app.OPEN_PAGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
+        <receiver
+            android:name="com.parse.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="nl.sebastiaanschool.contact.app" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
