@@ -8,9 +8,11 @@ package nl.sebastiaanschool.contact.app;
 import android.app.Application;
 
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.PushService;
+import com.parse.SaveCallback;
 
 /**
  * Created by barend on 3-11-13.
@@ -30,8 +32,15 @@ public class SebApp extends Application {
         // Android Studio unusable.
         Parse.initialize(this, BuildConfig.APPLICATION_ID.toString(), BuildConfig.CLIENT_KEY.toString());
         final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
-        currentInstallation.saveInBackground();
-        PushService.subscribe(getApplicationContext(), "bulletin", MainActivity.class);
-        PushService.subscribe(getApplicationContext(), "newsletter", MainActivity.class);
+        currentInstallation.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    PushService.setDefaultPushCallback(getApplicationContext(), MainActivity.class, R.drawable.ic_push_ntf);
+//                    PushService.subscribe(getApplicationContext(), "bulletin", MainActivity.class, R.drawable.ic_push_ntf);
+//                    PushService.subscribe(getApplicationContext(), "newsletter", MainActivity.class, R.drawable.ic_push_ntf);
+                }
+            }
+        });
     }
 }

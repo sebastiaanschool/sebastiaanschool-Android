@@ -44,9 +44,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <!-- This action is fired when clicking on a notifications. The "channel" extra
-                     in the Intent determines which page is opened. -->
-                <action android:name="nl.sebastiaanschool.contact.app.OPEN_PAGE" />
+                <action android:name="nl.sebastiaanschool.contact.app.OPEN_NEWSLETTER" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="nl.sebastiaanschool.contact.app.OPEN_BULLETIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

@@ -75,20 +75,16 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     }
 
     private void autoNavigateToDetailPageIfNeeded(Intent intent) {
-        if ("nl.sebastiaanschool.contact.app.OPEN_PAGE".equals(intent.getAction())) {
-            // If we were launched with OPEN_PAGE, go to the requested page.
-            // Use a delay before opening to make the sliding animation look better.
-            final String channel = intent.getStringExtra("channel");
-            intent.removeExtra("channel");
-            if ("bulletin".equals(channel)) {
-                messageHandler.sendMessageDelayed(
-                        messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, PAGE_BULLETIN, 0),
-                        PAGE_OPEN_DELAY);
-            } else if ("newsletter".equals(channel)) {
-                messageHandler.sendMessageDelayed(
-                        messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, PAGE_NEWSLETTER, 0),
-                        PAGE_OPEN_DELAY);
-            }
+        // If we were launched with OPEN_*, go to the requested page.
+        // Use a delay before opening to make the sliding animation look better.
+        if ("nl.sebastiaanschool.contact.app.OPEN_BULLETIN".equals(intent.getAction())) {
+            messageHandler.sendMessageDelayed(
+                    messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, PAGE_BULLETIN, 0),
+                    PAGE_OPEN_DELAY);
+        } else if ("nl.sebastiaanschool.contact.app.OPEN_NEWSLETTER".equals(intent.getAction())) {
+            messageHandler.sendMessageDelayed(
+                    messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, PAGE_NEWSLETTER, 0),
+                    PAGE_OPEN_DELAY);
         }
     }
 
