@@ -29,9 +29,9 @@ public class SebApp extends Application {
         // not set during build. This is the closest I could get to Fail Fast Behaviour without rendering
         // Android Studio unusable.
         Parse.initialize(this, BuildConfig.APPLICATION_ID.toString(), BuildConfig.CLIENT_KEY.toString());
-        PushService.subscribe(getApplicationContext(), "bulletin", MainActivity.class);
-        PushService.subscribe(getApplicationContext(), "newsletter", MainActivity.class);
         final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
         currentInstallation.saveInBackground();
+        PushService.subscribe(getApplicationContext(), "bulletin", MainActivity.class);
+        PushService.subscribe(getApplicationContext(), "newsletter", MainActivity.class);
     }
 }
