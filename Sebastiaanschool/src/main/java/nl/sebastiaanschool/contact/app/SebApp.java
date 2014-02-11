@@ -37,8 +37,8 @@ public class SebApp extends Application {
             public void done(ParseException e) {
                 if (e == null) {
                     PushService.setDefaultPushCallback(getApplicationContext(), MainActivity.class, R.drawable.ic_push_ntf);
-//                    PushService.subscribe(getApplicationContext(), "bulletin", MainActivity.class, R.drawable.ic_push_ntf);
-//                    PushService.subscribe(getApplicationContext(), "newsletter", MainActivity.class, R.drawable.ic_push_ntf);
+                    PushService.subscribe(getApplicationContext(), "bulletin-android", MainActivity.class, R.drawable.ic_push_ntf);
+                    PushService.subscribe(getApplicationContext(), "newsletter-android", MainActivity.class, R.drawable.ic_push_ntf);
                 }
             }
         });
