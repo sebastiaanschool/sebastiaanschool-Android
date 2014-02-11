@@ -43,16 +43,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="nl.sebastiaanschool.contact.app.OPEN_NEWSLETTER" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="nl.sebastiaanschool.contact.app.OPEN_BULLETIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
         <service android:name="com.parse.PushService" />
         <receiver
