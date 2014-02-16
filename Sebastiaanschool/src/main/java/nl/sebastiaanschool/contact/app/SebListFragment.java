@@ -1,7 +1,11 @@
-/**
- Copyright (c) 2013 Barend Garvelink
+/*
+ Copyright (c) 2014 Barend Garvelink
 
- This program code can be used subject to the MIT license. See the LICENSE file for details.
+ SebastiaanSchool is licensed under a
+ Creative Commons Attribution-NonCommercial 3.0 Unported License.
+
+ You should have received a copy of the license along with this
+ work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
  */
 package nl.sebastiaanschool.contact.app;
 
@@ -9,9 +13,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
