@@ -11,7 +11,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -22,8 +24,10 @@ import java.util.concurrent.TimeUnit;
  * Base class for fragments that slide into the screen from right to left.
  * Created by Barend on 2-11-13.
  */
-public abstract class HorizontalSlidingFragment extends Fragment implements Animator.AnimatorListener {
+public abstract class HorizontalSlidingFragment extends Fragment implements Animator.AnimatorListener, View.OnTouchListener, GestureDetector.OnGestureListener {
 
+    private static final int SWIPE_THRESHOLD = 100;
+    private static final int SWIPE_VELOCITY_THRESHOLD = 100;
     /**
      * If the animation lasted shorter than this, assume that animations have been disabled in the developer options.
      */
@@ -32,12 +36,15 @@ public abstract class HorizontalSlidingFragment extends Fragment implements Anim
     private HorizontalSlidingLayout slidingContainer;
     private long animStartNanos;
     private boolean animEntering;
+    private GestureDetector gestureDetector;
 
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        gestureDetector = new GestureDetector(inflater.getContext(), this);
         slidingContainer = new HorizontalSlidingLayout(inflater.getContext());
         View childView = onCreateView2(inflater, slidingContainer, savedInstanceState);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        childView.setOnTouchListener(this);
         slidingContainer.addView(childView, params);
         return slidingContainer;
     }
@@ -89,6 +96,7 @@ public abstract class HorizontalSlidingFragment extends Fragment implements Anim
         return animator;
     }
 
+    /** @category AnimatorListener */
     @Override
     public void onAnimationStart(Animator animator) {
         animStartNanos = System.nanoTime();
@@ -98,6 +106,7 @@ public abstract class HorizontalSlidingFragment extends Fragment implements Anim
         }
     }
 
+    /** @category AnimatorListener */
     @Override
     public void onAnimationEnd(Animator animator) {
         long elapsedNanos = System.nanoTime() - animStartNanos;
@@ -128,17 +137,78 @@ public abstract class HorizontalSlidingFragment extends Fragment implements Anim
         return R.string.accessibility__announce_open_page;
     }
 
+    /** @category AnimatorListener */
     @Override
     public void onAnimationCancel(Animator animator) {
         // Ignored
     }
 
+    /** @category AnimatorListener */
     @Override
     public void onAnimationRepeat(Animator animator) {
         // Ignored
     }
 
+    /** @category OnTouchListener */
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
+    }
+
+    /**
+     * Adapted from http://stackoverflow.com/a/12938787/49489.
+     * @category OnGestureListener
+     */
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        boolean result = false;
+        try {
+            float diffY = e2.getY() - e1.getY();
+            float diffX = e2.getX() - e1.getX();
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffX > 0) {
+                        this.callback.onSlidingFragmentBackGesture();
+                    }
+                }
+            }
+        } catch (Exception exception) {
+            // Ignored
+        }
+        return result;
+    }
+
+    /** @category OnGestureListener */
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return true;
+    }
+
+    /** @category OnGestureListener */
+    @Override
+    public void onShowPress(MotionEvent e) { }
+
+    /** @category OnGestureListener */
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    /** @category OnGestureListener */
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    /** @category OnGestureListener */
+    @Override
+    public void onLongPress(MotionEvent e) { }
+
+    /**
+     * Activities hosting this fragment must implement this interface.
+     */
     public interface Callback {
+        void onSlidingFragmentBackGesture();
         void onSlidingFragmentBeginAnimation(HorizontalSlidingFragment source, boolean willSlideIntoView);
         void onSlidingFragmentEndAnimation(HorizontalSlidingFragment source, boolean didSlideIntoView);
     }

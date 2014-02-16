@@ -174,6 +174,11 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     }
 
     @Override
+    public void onSlidingFragmentBackGesture() {
+        popFragment();
+    }
+
+    @Override
     public void onSlidingFragmentBeginAnimation(HorizontalSlidingFragment source, boolean willSlideIntoView) {
         ActionBar actionBar = getActionBar();
         actionBar.setHomeButtonEnabled(false);
