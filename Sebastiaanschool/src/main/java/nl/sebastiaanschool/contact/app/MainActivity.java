@@ -78,11 +78,11 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         // If we were launched with OPEN_*, go to the requested page.
         // Use a delay before opening to make the sliding animation look better.
         final String channel = intent.getStringExtra("com.parse.Channel");
-        if ("bulletin-android".equals(channel)) {
+        if (SebApp.PUSH_CHANNEL_BULLETIN.equals(channel)) {
             messageHandler.sendMessageDelayed(
                     messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, PAGE_BULLETIN, 0),
                     PAGE_OPEN_DELAY);
-        } else if ("newsletter-android".equals(channel)) {
+        } else if (SebApp.PUSH_CHANNEL_NEWSLETTER.equals(channel)) {
             messageHandler.sendMessageDelayed(
                     messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, PAGE_NEWSLETTER, 0),
                     PAGE_OPEN_DELAY);
