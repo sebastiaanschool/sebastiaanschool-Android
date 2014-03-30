@@ -86,5 +86,5 @@ def readParseCredentialsFromEnvironment() {
 dependencies {
     compile 'com.android.support:support-v4:+'
     compile files('libs/Parse-1.4.1.jar')
-    androidTestCompile files('libs/espresso-1.0-SNAPSHOT-bundled.jar')
+    androidTestCompile files('libs/espresso-1.1-bundled.jar')
 }
