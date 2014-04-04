@@ -54,7 +54,8 @@ public class NewsletterFragment extends SebListFragment<Newsletter> {
         }
         try {
             final Uri uri = Uri.parse(item.getUrl());
-            if (uri.getLastPathSegment().endsWith(".pdf")) {
+            final String segment = uri.getLastPathSegment();
+            if (segment != null && segment.endsWith(".pdf")) {
                 downloadWithDownloadManager(activity, uri);
             } else {
                 GrabBag.openUri(activity, uri);
