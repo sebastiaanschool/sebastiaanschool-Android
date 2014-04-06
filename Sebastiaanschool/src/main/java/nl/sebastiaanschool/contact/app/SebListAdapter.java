@@ -16,6 +16,4 @@ import android.widget.ListAdapter;
  */
 public interface SebListAdapter extends ListAdapter {
     void setDataLoadingCallback(DataLoadingCallback dlc);
-    void loadData();
-
 }

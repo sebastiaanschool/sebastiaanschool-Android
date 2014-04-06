@@ -67,9 +67,4 @@ public class TeamAdapter extends ParseQueryAdapter<TeamMember> implements SebLis
             dataLoadingCallback.onStopLoading(e);
         }
     }
-
-    @Override
-    public void loadData() {
-        this.loadObjects();
-    }
 }

@@ -68,9 +68,4 @@ public class AgendaAdapter extends ParseQueryAdapter<AgendaItem> implements SebL
             dataLoadingCallback.onStopLoading(e);
         }
     }
-
-    @Override
-    public void loadData() {
-        this.loadObjects();
-    }
 }

@@ -68,9 +68,4 @@ public class NewsletterAdapter extends ParseQueryAdapter<Newsletter> implements 
             dataLoadingCallback.onStopLoading(e);
         }
     }
-
-    @Override
-    public void loadData() {
-        this.loadObjects();
-    }
 }

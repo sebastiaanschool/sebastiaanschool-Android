@@ -15,7 +15,6 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
 
 /**
@@ -25,11 +24,6 @@ public class NewsletterFragment extends SebListFragment<Newsletter> {
 
     private static final String HTTP_REFERRER = "Referer";
     private String referrer;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     protected SebListAdapter createAdapter(Context context) {

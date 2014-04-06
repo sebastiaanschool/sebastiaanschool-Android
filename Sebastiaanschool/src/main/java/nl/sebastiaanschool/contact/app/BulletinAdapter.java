@@ -68,9 +68,4 @@ public class BulletinAdapter extends ParseQueryAdapter<Bulletin> implements SebL
             dataLoadingCallback.onStopLoading(e);
         }
     }
-
-    @Override
-    public void loadData() {
-        this.loadObjects();
-    }
 }
