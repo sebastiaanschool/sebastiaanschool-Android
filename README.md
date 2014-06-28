@@ -1,7 +1,17 @@
 sebastiaanschool
 ================
 
-Repository for a Primary school app
+This app is built for the Sebastiaanschool in Apeldoorn, Netherlands. It
+provides up to date information to the students' parents. If you're a parent of
+a Sebastiaanschool student, you can download the app from the Google Play
+Store:
+
+[![Android app on Google Play](http://developer.android.com/images/brand/en_app_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=nl.sebastiaanschool.contact.app)
+
+There's also [an iOS version](https://github.com/sebastiaanschool/sebastiaanschool-iOS).
+
+If you're interested in the source code, that's great, 'cause you're looking at
+it.
 
 ## Building the Android app
 
