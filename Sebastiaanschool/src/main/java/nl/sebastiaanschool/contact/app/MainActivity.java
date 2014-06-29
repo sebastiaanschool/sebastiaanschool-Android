@@ -50,7 +50,6 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        getActionBar().setIcon(R.drawable.ic_sebastiaan_48dp_white);
         if (Build.VERSION.SDK_INT >= 18) {
             getActionBar().setHomeActionContentDescription(R.string.navigation__home_as_up_desc);
         }
