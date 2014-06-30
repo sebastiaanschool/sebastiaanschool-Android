@@ -13,6 +13,8 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DownloadManager;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -25,6 +27,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v4.view.accessibility.AccessibilityEventCompat;
 import android.support.v4.view.accessibility.AccessibilityRecordCompat;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.accessibility.AccessibilityEvent;
@@ -42,7 +45,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     private Handler messageHandler = new Handler(Looper.getMainLooper(), this);
     private AccessibilityManager accessibilityManager;
     private NavigationFragment navigationFragment;
-    private boolean detailFragmentVisible;
+    private Fragment detailFragment;
 
     @Override
     @SuppressLint("NewApi")
@@ -147,14 +150,14 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     }
 
     private void pushFragment(HorizontalSlidingFragment fragment) {
-        if (detailFragmentVisible)
+        if (detailFragment != null)
             return;
-        detailFragmentVisible = true;
         String label = getString(fragment.getTitleResId());
         Analytics.trackEvent("Navigate to " + label);
         FragmentTransaction tx = getFragmentManager().beginTransaction();
         fragment.addWithAnimation(tx, R.id.main__content_container, label);
         tx.commit();
+        detailFragment = fragment;
     }
 
     private void popFragment() {
@@ -163,9 +166,25 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_activity, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean showDownloadIcon = detailFragment instanceof NewsletterFragment;
+        menu.findItem(R.id.menu_downloads_folder).setVisible(showDownloadIcon);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             popFragment();
+            return true;
+        } else if (item.getItemId() == R.id.menu_downloads_folder) {
+            startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -173,7 +192,9 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
 
     @Override
     public void onBackStackChanged() {
-        detailFragmentVisible = getFragmentManager().getBackStackEntryCount() > 0;
+        if (getFragmentManager().getBackStackEntryCount() == 0) {
+            detailFragment = null;
+        }
     }
 
     @Override
@@ -247,7 +268,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     @Override
     public boolean handleMessage(Message msg) {
         if (msg.what == MESSAGE_OPEN_PAGE) {
-            if (detailFragmentVisible) {
+            if (detailFragment != null) {
                 popFragment();
                 messageHandler.sendMessageDelayed(messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, msg.arg1, 0), PAGE_OPEN_DELAY);
             } else {

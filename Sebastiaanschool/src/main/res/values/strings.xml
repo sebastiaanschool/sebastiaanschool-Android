@@ -16,6 +16,7 @@
     <string name="home_url" translatable="false">http://www.sebastiaanschool.nl/</string>
     <string name="twitter_url" translatable="false">http://www.twitter.com/KBSebastiaan</string>
     <string name="yurls_url" translatable="false">http://sebastiaan.yurls.net/</string>
+    <string name="menu_downloads_folder">Open download folder</string>
     <string name="navigation__homepage">Homepage</string>
     <string name="navigation__twitter">\@KBSebastiaan</string>
     <string name="navigation__twitter_desc">Twitter, button</string>
