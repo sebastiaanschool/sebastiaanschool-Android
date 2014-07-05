@@ -12,6 +12,7 @@
     <string name="call_failed_dialog_body">Kon niet automatisch bellen. Belt u a.u.b. zelf. Het nummer is:\n\n+31 55 533 53 55</string>
     <string name="close_button">Sluiten</string>
     <string name="menu_downloads_folder">Downloadmap openen</string>
+    <string name="download_started">Download gestart</string>
     <string name="navigation__homepage">Homepage</string>
     <string name="navigation__twitter">\@KBSebastiaan</string>
     <string name="navigation__twitter_desc">Knop Twitter</string>
@@ -30,7 +31,7 @@
     <string name="team_email_body">Beste %1$s,</string>
     <string name="download_newsletter_description">Sebastiaanschool Nieuwsbrief</string>
     <string name="download_failed">Download niet gelukt</string>
-    <string name="open_uri_failed">Openen niet gelukt</string>
+    <string name="open_uri_failed">Bestand openen niet gelukt</string>
     <string name="navigation__home_as_up_desc">dubbel-tikken om naar het hoofdmenu terug te keren</string>
     <string name="accessibility__announce_return_home">Het hoofdmenu wordt getoond</string>
     <string name="accessibility__announce_open_page">De %1$s pagina wordt getoond</string>

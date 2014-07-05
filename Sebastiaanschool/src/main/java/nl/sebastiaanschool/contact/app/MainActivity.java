@@ -17,7 +17,10 @@ import android.app.DownloadManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
@@ -27,15 +30,19 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v4.view.accessibility.AccessibilityEventCompat;
 import android.support.v4.view.accessibility.AccessibilityRecordCompat;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
+import android.widget.Toast;
 
+import java.io.File;
 import java.util.List;
 
-public class MainActivity extends Activity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener, HorizontalSlidingFragment.Callback, DataLoadingCallback, Handler.Callback {
+public class MainActivity extends Activity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener, HorizontalSlidingFragment.Callback, DataLoadingCallback, Handler.Callback, DownloadManagerAsyncTask.Callback, NewsletterFragment.Callback {
+    private static final IntentFilter DOWNLOAD_COMPLETED_BROADCASTS = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
 
     private static final int PAGE_NEWSLETTER = 1;
     private static final int PAGE_BULLETIN = 2;
@@ -66,6 +73,13 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         }
         accessibilityManager = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
         Analytics.trackAppOpened(getIntent());
+        getApplicationContext().registerReceiver(downloadCompletionReceiver, DOWNLOAD_COMPLETED_BROADCASTS);
+    }
+
+    @Override
+    protected void onDestroy() {
+        getApplicationContext().unregisterReceiver(downloadCompletionReceiver);
+        super.onDestroy();
     }
 
     @Override
@@ -282,4 +296,43 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         }
         return false;
     }
+
+    @Override
+    public void downloadNewsletterFromUri(Uri uri) {
+        final String segment = uri.getLastPathSegment();
+        if (segment != null && segment.endsWith(".pdf")) {
+            DownloadManagerAsyncTask newsletterDownloadAsyncTask = new DownloadManagerAsyncTask(this, this);
+            newsletterDownloadAsyncTask.execute(new DownloadManagerAsyncTask.Param(uri));
+        } else {
+            GrabBag.openUri(this, uri);
+        }
+    }
+
+    @Override
+    public void launchDownloadedFile(File file, String mimeType) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setDataAndType(Uri.fromFile(file), mimeType);
+            this.startActivity(intent);
+        } catch (Exception e) {
+            Toast toast = Toast.makeText(this, R.string.open_uri_failed, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        }
+    }
+
+    /**
+     * Listens for the Download service to tell us one of our downloads finished, then launches the file.
+     */
+    private final BroadcastReceiver downloadCompletionReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(intent.getAction())) {
+                final long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1L);
+                DownloadManagerAsyncTask newsletterDownloadAsyncTask = new DownloadManagerAsyncTask(MainActivity.this, MainActivity.this);
+                newsletterDownloadAsyncTask.execute(new DownloadManagerAsyncTask.Param(downloadId));
+            }
+        }
+    };
 }
