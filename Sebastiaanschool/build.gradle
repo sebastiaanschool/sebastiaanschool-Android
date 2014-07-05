@@ -48,6 +48,10 @@ android {
     }
 
     defaultConfig {
+        versionCode 3
+        versionName "1.2.0"
+        minSdkVersion 14
+        targetSdkVersion 20
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
         def (parseAppId, parseClientKey) = readParseCredentialsFromEnvironment()
         buildConfigField "String", "APPLICATION_ID", "${parseAppId}"
