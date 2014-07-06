@@ -15,6 +15,8 @@
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@null</item>
         <item name="android:actionBarStyle">@style/AppActionBar</item>
+        <item name="android:popupMenuStyle">@style/AppPopupMenu</item>
+        <item name="android:actionBarWidgetTheme">@style/Theme.Example.Widget</item>
     </style>
 
     <style name="AppActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
@@ -29,6 +31,14 @@
 
     <style name="AppActionBarSubtitleText" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle">
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="AppPopupMenu" parent="@android:style/Widget.Holo.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/actionbar_dropdown_panel</item>
+    </style>
+
+    <style name="Theme.Example.Widget" parent="@android:style/Theme.Holo">
+        <item name="android:popupMenuStyle">@style/AppPopupMenu</item>
     </style>
 
     <style name="SlidingFragment">
