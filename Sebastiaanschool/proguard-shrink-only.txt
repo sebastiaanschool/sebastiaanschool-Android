@@ -3,8 +3,8 @@
 -dontoptimize
 
 -dontwarn com.parse.ParseFacebookUtils
--dontwarn com.parse.auth.FacebookAuthenticationProvider
--dontwarn com.parse.auth.FacebookAuthenticationProvider*
+-dontwarn com.parse.FacebookAuthenticationProvider
+-dontwarn com.parse.FacebookAuthenticationProvider*
 -dontnote libcore.icu.ICU
 
 # The remainder of this file has been copied from the Android SDK directory and trimmed.
