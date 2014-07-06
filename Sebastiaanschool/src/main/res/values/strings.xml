@@ -37,7 +37,6 @@
     <string name="team_email_body">Dear %1$s,</string>
     <string name="download_newsletter_description">Sebastiaanschool Newsletter</string>
     <string name="download_newsletter_referer" translatable="false">Sebastiaan Android v%d</string>
-    <string name="download_failed">Download failed</string>
     <string name="open_uri_failed">Could not open file</string>
     <string name="navigation__home_as_up_desc">double-tap to return to main menu.</string>
     <string name="accessibility__announce_return_home">Now showing the main menu.</string>
