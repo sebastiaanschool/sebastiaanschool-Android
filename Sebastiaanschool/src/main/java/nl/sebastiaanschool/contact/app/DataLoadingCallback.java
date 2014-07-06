@@ -10,8 +10,7 @@
 package nl.sebastiaanschool.contact.app;
 
 /**
- * Used by the Parse backend, ignored by the stub backend.
- * Created by barend on 3-11-13.
+ * Listener interface to signal start/stop of network data loading.
  */
 public interface DataLoadingCallback {
     /**

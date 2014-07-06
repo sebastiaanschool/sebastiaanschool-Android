@@ -43,6 +43,13 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.List;
 
+/**
+ * Main entry point of our app.
+ *
+ * <p>The launch intent is checked for a String extra named {@code com.parse.Channel}. If this is
+ * extra is found to contain either of the {@code PushPreferencesUpdater.PUSH_CHANNEL_} constants'
+ * values, then the activity automatically navigates to the corresponding screen.</p>
+ */
 public class MainActivity extends Activity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener, HorizontalSlidingFragment.Callback, DataLoadingCallback, Handler.Callback, DownloadManagerAsyncTask.Callback, NewsletterFragment.Callback {
     private static final IntentFilter DOWNLOAD_COMPLETED_BROADCASTS = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
 
@@ -101,11 +108,11 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         // If we were launched with OPEN_*, go to the requested page.
         // Use a delay before opening to make the sliding animation look better.
         final String channel = intent.getStringExtra("com.parse.Channel");
-        if (SebApp.PUSH_CHANNEL_BULLETIN.equals(channel)) {
+        if (PushPreferencesUpdater.CHANNEL_BULLETIN.equals(channel)) {
             messageHandler.sendMessageDelayed(
                     messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, PAGE_BULLETIN, 0),
                     PAGE_OPEN_DELAY);
-        } else if (SebApp.PUSH_CHANNEL_NEWSLETTER.equals(channel)) {
+        } else if (PushPreferencesUpdater.CHANNEL_NEWSLETTER.equals(channel)) {
             messageHandler.sendMessageDelayed(
                     messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, PAGE_NEWSLETTER, 0),
                     PAGE_OPEN_DELAY);
@@ -205,8 +212,8 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
             startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
             return true;
         } else if (item.getItemId() == R.id.menu_preferences) {
-            SettingsFragment sf = new SettingsFragment();
-            pushFragment(sf);
+            pushFragment(new SettingsFragment());
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

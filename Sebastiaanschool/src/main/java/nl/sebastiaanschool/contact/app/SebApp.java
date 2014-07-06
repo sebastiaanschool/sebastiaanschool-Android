@@ -19,12 +19,9 @@ import com.parse.PushService;
 import com.parse.SaveCallback;
 
 /**
- * Created by barend on 3-11-13.
+ * Initializes the Parse SDK client.
  */
 public class SebApp extends Application {
-
-    public static final String PUSH_CHANNEL_BULLETIN = "bulletin-android";
-    public static final String PUSH_CHANNEL_NEWSLETTER = "newsletter-android";
 
     @Override
     public void onCreate() {

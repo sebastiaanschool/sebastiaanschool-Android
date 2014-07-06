@@ -15,10 +15,10 @@ public class PushPreferencesUpdater {
 
     public static final String CHANNEL_BULLETIN = "bulletin-android";
     public static final String CHANNEL_NEWSLETTER = "newsletter-android";
-    public static final String PREF_NEWSLETTERS = "pref_push_newsletters";
-    public static final String PREF_BULLETINS = "pref_push_bulletins";
+    private static final String PREF_NEWSLETTERS = "pref_push_newsletters";
+    private static final String PREF_BULLETINS = "pref_push_bulletins";
 
-    private Context context;
+    private final Context context;
 
     public PushPreferencesUpdater(Context context) {
         this.context = context.getApplicationContext();
