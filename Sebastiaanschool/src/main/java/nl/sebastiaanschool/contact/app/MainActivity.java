@@ -189,6 +189,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     public boolean onPrepareOptionsMenu(Menu menu) {
         boolean showDownloadIcon = detailFragment instanceof NewsletterFragment;
         menu.findItem(R.id.menu_downloads_folder).setVisible(showDownloadIcon);
+        menu.findItem(R.id.menu_preferences).setVisible(detailFragment == null);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -200,6 +201,9 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         } else if (item.getItemId() == R.id.menu_downloads_folder) {
             startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
             return true;
+        } else if (item.getItemId() == R.id.menu_preferences) {
+            AppSettingsFragment foo = new AppSettingsFragment();
+            getFragmentManager().beginTransaction().add(android.R.id.content, foo, "Settings").addToBackStack("Settings").commit();
         }
         return super.onOptionsItemSelected(item);
     }

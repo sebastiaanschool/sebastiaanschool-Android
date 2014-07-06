@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Over deze app">
+        <Preference
+            android:key="pref_version"
+            android:persistent="false"
+            android:selectable="false"
+            android:title="Versie-informatie"
+            />
+        <Preference
+            android:persistent="false"
+            android:selectable="false"
+            android:title="Auteurs"
+            android:summary="Deze app is gemaakt door Barend Garvelink en Jeroen Leenarts."
+             />
+        <Preference
+            android:key="pref_github"
+            android:persistent="false"
+            android:title="Broncode"
+            android:summary="https://github.com/sebastiaanschool"
+             />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_push_settings"
+        android:title="Push-berichten">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_push_newsletters"
+            android:icon="@drawable/ic_newsletter_blue"
+            android:summary="Ontvang een bericht wanneer er een nieuwsbrief wordt geplaatst."
+            android:title="Nieuwsbrief" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_push_bulletins"
+            android:icon="@drawable/ic_bulletin_blue"
+            android:summary="Ontvang een bericht wanneer er een bulletin wordt geplaatst."
+            android:title="Bulletin" />
+    </PreferenceCategory>
+</PreferenceScreen>
