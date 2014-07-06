@@ -9,12 +9,13 @@ import android.view.View;
 /**
  * Created by barend on 6-7-14.
  */
-public class AppSettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
+public class SettingsFragmentContent extends PreferenceFragment implements Preference.OnPreferenceClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-        getPreferenceManager().findPreference("pref_version").setSummary("Versie " + BuildConfig.VERSION_NAME);
+        String versionSummary = getString(R.string.settings__version_summary, BuildConfig.VERSION_NAME);
+        getPreferenceManager().findPreference("pref_version").setSummary(versionSummary);
         getPreferenceManager().findPreference("pref_github").setOnPreferenceClickListener(this);
     }
 

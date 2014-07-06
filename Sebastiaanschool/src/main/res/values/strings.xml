@@ -33,6 +33,7 @@
     <string name="navigation__newsletter_desc">Newsletter, button</string>
     <string name="navigation__bulletin">Bulletin</string>
     <string name="navigation__bulletin_desc">Bulletin, button</string>
+    <string name="navigation__settings">Settings</string>
     <string name="team_email_body">Dear %1$s,</string>
     <string name="download_newsletter_description">Sebastiaanschool Newsletter</string>
     <string name="download_newsletter_referer" translatable="false">Sebastiaan Android v%d</string>
@@ -44,4 +45,16 @@
     <string name="accessibility__announce_open_agenda">Now showing the %1$s page. Double-tap an item to add it to your device calendar.</string>
     <string name="accessibility__announce_open_newsletter">Now showing the %1$s page. Double-tap an item to download it.</string>
     <string name="accessibility__announce_open_team">Now showing the %1$s page. Double-tap a team member to send them an email.</string>
+    <string name="settings__about">About this App</string>
+    <string name="settings__version_title">Version information</string>
+    <string name="settings__version_summary">Version %s.</string>
+    <string name="settings__author_title">Authors</string>
+    <string name="settings__author_summary">This app has been built by Barend Garvelink and Jeroen Leenarts.</string>
+    <string name="settings__github_title">Source Code</string>
+    <string name="settings__github_summary">https://github.com/sebastiaanschool</string>
+    <string name="settings__push">Push Notifications</string>
+    <string name="settings__push_newsletter_title">Newsletter</string>
+    <string name="settings__push_newsletter_summary">Notify when a newsletter is made available.</string>
+    <string name="settings__push_bulletin_title">Bulletin</string>
+    <string name="settings__push_bulletin_summary">Notify when a bulletin is made available.</string>
 </resources>

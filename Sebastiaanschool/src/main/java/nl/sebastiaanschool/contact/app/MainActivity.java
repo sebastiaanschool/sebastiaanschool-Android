@@ -202,8 +202,8 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
             startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
             return true;
         } else if (item.getItemId() == R.id.menu_preferences) {
-            AppSettingsFragment foo = new AppSettingsFragment();
-            getFragmentManager().beginTransaction().add(android.R.id.content, foo, "Settings").addToBackStack("Settings").commit();
+            SettingsFragment sf = new SettingsFragment();
+            pushFragment(sf);
         }
         return super.onOptionsItemSelected(item);
     }

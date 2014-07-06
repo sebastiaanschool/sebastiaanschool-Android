@@ -6,11 +6,10 @@
         android:id="@+id/menu_downloads_folder"
         android:title="@string/menu_downloads_folder"
         android:icon="@drawable/ic_download_folder"
-        android:showAsAction="ifRoom"
-        android:visible="false"/>
+        android:showAsAction="ifRoom"/>
     <item
         android:id="@+id/menu_preferences"
-        android:title="Instellingen"
+        android:title="@string/navigation__settings"
         android:icon="@drawable/ic_settings"
-        android:showAsAction="ifRoom"/>
+        android:showAsAction="never"/>
 </menu>

@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Over deze app">
+    <PreferenceCategory android:title="@string/settings__about">
         <Preference
             android:key="pref_version"
             android:persistent="false"
             android:selectable="false"
-            android:title="Versie-informatie"
+            android:title="@string/settings__version_title"
             />
         <Preference
             android:persistent="false"
             android:selectable="false"
-            android:title="Auteurs"
-            android:summary="Deze app is gemaakt door Barend Garvelink en Jeroen Leenarts."
+            android:title="@string/settings__author_title"
+            android:summary="@string/settings__author_summary"
              />
         <Preference
             android:key="pref_github"
             android:persistent="false"
-            android:title="Broncode"
-            android:summary="https://github.com/sebastiaanschool"
+            android:title="@string/settings__github_title"
+            android:summary="@string/settings__github_summary"
              />
     </PreferenceCategory>
 
     <PreferenceCategory
         android:key="pref_push_settings"
-        android:title="Push-berichten">
+        android:title="@string/settings__push">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_push_newsletters"
             android:icon="@drawable/ic_newsletter_blue"
-            android:summary="Ontvang een bericht wanneer er een nieuwsbrief wordt geplaatst."
-            android:title="Nieuwsbrief" />
+            android:summary="@string/settings__push_newsletter_summary"
+            android:title="@string/settings__push_newsletter_title" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_push_bulletins"
             android:icon="@drawable/ic_bulletin_blue"
-            android:summary="Ontvang een bericht wanneer er een bulletin wordt geplaatst."
-            android:title="Bulletin" />
+            android:summary="@string/settings__push_bulletin_summary"
+            android:title="@string/settings__push_bulletin_title" />
     </PreferenceCategory>
 </PreferenceScreen>
