@@ -13,7 +13,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@null</item>
+        <item name="android:windowBackground">@android:color/white</item>
         <item name="android:actionBarStyle">@style/AppActionBar</item>
         <item name="android:popupMenuStyle">@style/AppPopupMenu</item>
         <item name="android:actionBarWidgetTheme">@style/Theme.Example.Widget</item>
