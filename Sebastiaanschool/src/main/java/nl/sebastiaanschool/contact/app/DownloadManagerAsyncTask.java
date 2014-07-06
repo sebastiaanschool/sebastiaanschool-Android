@@ -10,6 +10,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import com.parse.ParseAnalytics;
+
 import java.io.File;
 
 /**
@@ -41,7 +43,7 @@ public class DownloadManagerAsyncTask extends AsyncTask<DownloadManagerAsyncTask
         Result result = checkForExistingFile(params[0]);
         if (result == null) {
             Uri uri = params[0].uri;
-            Analytics.trackEvent("Download " + uri);
+            ParseAnalytics.trackEvent("Download " + uri);
             DownloadManager.Request request = new DownloadManager.Request(uri);
             request.addRequestHeader(HTTP_REFERRER, referrer);
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
