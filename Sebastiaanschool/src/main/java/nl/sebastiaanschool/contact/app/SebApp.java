@@ -18,8 +18,6 @@ import com.parse.ParseObject;
 import com.parse.PushService;
 import com.parse.SaveCallback;
 
-import java.util.Set;
-
 /**
  * Created by barend on 3-11-13.
  */
@@ -46,13 +44,7 @@ public class SebApp extends Application {
             public void done(ParseException e) {
                 if (e == null) {
                     PushService.setDefaultPushCallback(getApplicationContext(), MainActivity.class, R.drawable.ic_push_ntf);
-                    final Set<String> subscriptions = PushService.getSubscriptions(SebApp.this);
-                    if (!subscriptions.contains(PUSH_CHANNEL_BULLETIN)) {
-                        PushService.subscribe(getApplicationContext(), PUSH_CHANNEL_BULLETIN, MainActivity.class, R.drawable.ic_push_ntf);
-                    }
-                    if (!subscriptions.contains(PUSH_CHANNEL_NEWSLETTER)) {
-                        PushService.subscribe(getApplicationContext(), PUSH_CHANNEL_NEWSLETTER, MainActivity.class, R.drawable.ic_push_ntf);
-                    }
+                    new PushPreferencesUpdater(SebApp.this).updatePushPreferences();
                 }
             }
         });

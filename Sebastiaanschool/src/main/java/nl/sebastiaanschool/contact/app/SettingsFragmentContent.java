@@ -26,6 +26,12 @@ public class SettingsFragmentContent extends PreferenceFragment implements Prefe
     }
 
     @Override
+    public void onStop() {
+        new PushPreferencesUpdater(getActivity()).updatePushPreferences();
+        super.onStop();
+    }
+
+    @Override
     public boolean onPreferenceClick(Preference preference) {
         if ("pref_github".equals(preference.getKey())) {
             Uri uri = Uri.parse("https://github.com/sebastiaanschool/sebastiaanschool-android");
