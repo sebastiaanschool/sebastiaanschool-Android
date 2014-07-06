@@ -5,20 +5,21 @@
             android:key="pref_version"
             android:persistent="false"
             android:selectable="false"
-            android:title="@string/settings__version_title"
-            />
+            android:title="@string/settings__version_title" />
         <Preference
             android:persistent="false"
             android:selectable="false"
-            android:title="@string/settings__author_title"
             android:summary="@string/settings__author_summary"
-             />
+            android:title="@string/settings__author_title" />
         <Preference
             android:key="pref_github"
             android:persistent="false"
-            android:title="@string/settings__github_title"
             android:summary="@string/settings__github_summary"
-             />
+            android:title="@string/settings__github_title">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/sebastiaanschool/sebastiaanschool-Android/" />
+        </Preference>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -26,14 +27,14 @@
         android:title="@string/settings__push">
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="pref_push_newsletters"
             android:icon="@drawable/ic_newsletter_blue"
+            android:key="pref_push_newsletters"
             android:summary="@string/settings__push_newsletter_summary"
             android:title="@string/settings__push_newsletter_title" />
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="pref_push_bulletins"
             android:icon="@drawable/ic_bulletin_blue"
+            android:key="pref_push_bulletins"
             android:summary="@string/settings__push_bulletin_summary"
             android:title="@string/settings__push_bulletin_title" />
     </PreferenceCategory>
