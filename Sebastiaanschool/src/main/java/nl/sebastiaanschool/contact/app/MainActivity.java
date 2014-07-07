@@ -225,6 +225,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     public void onBackStackChanged() {
         if (getFragmentManager().getBackStackEntryCount() == 0) {
             detailFragment = null;
+            invalidateOptionsMenu();
         }
     }
 
