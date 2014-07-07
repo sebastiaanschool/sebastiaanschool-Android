@@ -76,6 +76,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
             getActionBar().setHomeActionContentDescription(R.string.navigation__home_as_up_desc);
         }
         setContentView(R.layout.activity_main);
+        setProgressBarIndeterminateVisibility(false);
         getFragmentManager().addOnBackStackChangedListener(this);
         if (savedInstanceState == null) {
             navigationFragment = new NavigationFragment();
