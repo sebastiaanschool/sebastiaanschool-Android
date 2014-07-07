@@ -35,6 +35,7 @@ import android.support.v4.view.accessibility.AccessibilityRecordCompat;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
@@ -202,7 +203,14 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     public boolean onPrepareOptionsMenu(Menu menu) {
         boolean showDownloadIcon = detailFragment instanceof NewsletterFragment;
         menu.findItem(R.id.menu_downloads_folder).setVisible(showDownloadIcon);
-        menu.findItem(R.id.menu_preferences).setVisible(detailFragment == null);
+        MenuItem preferences = menu.findItem(R.id.menu_preferences);
+        preferences.setVisible(detailFragment == null);
+        if (ViewConfiguration.get(this).hasPermanentMenuKey()) {
+            // Devices with a hardware menu key don't get an overflow button in the action bar for
+            // menu items with showAsAction="never". The settings screen becomes very non-obvious.
+            // Force the menu item to show as an action on these devices.
+            preferences.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        }
         return super.onPrepareOptionsMenu(menu);
     }
 
