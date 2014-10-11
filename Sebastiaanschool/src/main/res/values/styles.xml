@@ -75,6 +75,8 @@
         <item name="android:clickable">true</item>
         <item name="android:divider">#FFC8C8C8</item>
         <item name="android:dividerHeight">1px</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:scrollbarStyle">outsideOverlay</item>
     </style>
 
     <style name="ListItem">
