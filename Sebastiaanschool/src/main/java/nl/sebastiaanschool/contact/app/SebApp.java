@@ -10,6 +10,8 @@
 package nl.sebastiaanschool.contact.app;
 
 import android.app.Application;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -30,18 +32,23 @@ public class SebApp extends Application {
         ParseObject.registerSubclass(Newsletter.class);
         ParseObject.registerSubclass(TeamMember.class);
         Parse.setLogLevel(BuildConfig.DEBUG ? Parse.LOG_LEVEL_DEBUG : Parse.LOG_LEVEL_NONE);
-        // The .toString() calls force an app crash at startup if the required environment variables were
-        // not set during build. This is the closest I could get to Fail Fast Behaviour without rendering
-        // Android Studio unusable.
-        Parse.initialize(this, BuildConfig.PARSE_APPLICATION_ID.toString(), BuildConfig.PARSE_CLIENT_KEY.toString());
-        final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
-        currentInstallation.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    new PushPreferencesUpdater(SebApp.this).updatePushPreferences();
+        final String applicationId = BuildConfig.PARSE_APPLICATION_ID;
+        final String clientKey = BuildConfig.PARSE_CLIENT_KEY;
+        Parse.initialize(this, applicationId, clientKey);
+        if (applicationId == null || clientKey == null) {
+            final Toast toast = Toast.makeText(this, "NO PARSE API KEY DEFINED!", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        } else {
+            final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
+            currentInstallation.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        new PushPreferencesUpdater(SebApp.this).updatePushPreferences();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 }
