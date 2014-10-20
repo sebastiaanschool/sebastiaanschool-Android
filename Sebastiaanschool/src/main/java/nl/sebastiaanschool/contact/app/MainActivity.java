@@ -86,7 +86,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
             navigationFragment = (NavigationFragment) getFragmentManager().findFragmentByTag(NAVIGATION_FRAGMENT_TAG);
         }
         accessibilityManager = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
-        ParseAnalytics.trackAppOpened(getIntent());
+        ParseAnalytics.trackAppOpenedInBackground(getIntent());
         getApplicationContext().registerReceiver(downloadCompletionReceiver, DOWNLOAD_COMPLETED_BROADCASTS);
     }
 
@@ -154,7 +154,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     }
 
     private void callSebastiaan() {
-        ParseAnalytics.trackEvent("Navigate to dialer");
+        ParseAnalytics.trackEventInBackground("Navigate to dialer");
         final String number = getResources().getString(R.string.call_url);
         final Intent dial = new Intent(Intent.ACTION_DIAL, Uri.parse(number));
         dial.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -181,7 +181,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
         if (detailFragment != null)
             return;
         String label = getString(fragment.getTitleResId());
-        ParseAnalytics.trackEvent("Navigate to " + label);
+        ParseAnalytics.trackEventInBackground("Navigate to " + label);
         FragmentTransaction tx = getFragmentManager().beginTransaction();
         fragment.addWithAnimation(tx, R.id.main__content_container, label);
         tx.commit();
@@ -189,7 +189,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     }
 
     private void popFragment() {
-        ParseAnalytics.trackEvent("Navigate to home");
+        ParseAnalytics.trackEventInBackground("Navigate to home");
         getFragmentManager().popBackStack();
     }
 

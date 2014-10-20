@@ -39,7 +39,7 @@ public final class GrabBag {
     }
 
     public static void openUri(Context context, Uri uri) {
-        ParseAnalytics.trackEvent("Navigate to " + uri);
+        ParseAnalytics.trackEventInBackground("Navigate to " + uri);
         Intent browse = new Intent(Intent.ACTION_VIEW, uri);
         browse.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         // Need to check if a browser is present, as it can be disabled entirely using child safety features on a tablet.

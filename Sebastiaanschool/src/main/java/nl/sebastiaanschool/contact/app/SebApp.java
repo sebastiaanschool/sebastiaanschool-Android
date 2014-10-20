@@ -15,7 +15,6 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
-import com.parse.PushService;
 import com.parse.SaveCallback;
 
 /**
@@ -40,7 +39,6 @@ public class SebApp extends Application {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    PushService.setDefaultPushCallback(getApplicationContext(), MainActivity.class, R.drawable.ic_push_ntf);
                     new PushPreferencesUpdater(SebApp.this).updatePushPreferences();
                 }
             }

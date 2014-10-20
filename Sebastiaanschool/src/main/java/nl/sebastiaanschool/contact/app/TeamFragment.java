@@ -41,7 +41,7 @@ public class TeamFragment extends SebListFragment<TeamMember> {
     }
 
     private void composeEmail(TeamMember item) {
-        ParseAnalytics.trackEvent("Navigate to email client");
+        ParseAnalytics.trackEventInBackground("Navigate to email client");
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", item.getEmail(), null));
         intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.team_email_body, item.getDisplayName()));
         try {

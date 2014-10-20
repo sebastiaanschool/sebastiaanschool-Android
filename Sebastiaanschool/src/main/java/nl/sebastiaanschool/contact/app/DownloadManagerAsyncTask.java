@@ -43,7 +43,7 @@ public class DownloadManagerAsyncTask extends AsyncTask<DownloadManagerAsyncTask
         Result result = checkForExistingFile(params[0]);
         if (result == null) {
             Uri uri = params[0].uri;
-            ParseAnalytics.trackEvent("Download " + uri);
+            ParseAnalytics.trackEventInBackground("Download " + uri);
             DownloadManager.Request request = new DownloadManager.Request(uri);
             request.addRequestHeader(HTTP_REFERRER, referrer);
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
