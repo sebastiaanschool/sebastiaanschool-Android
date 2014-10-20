@@ -15,6 +15,8 @@ public class PushMessageReceiver extends ParsePushBroadcastReceiver {
     protected Notification getNotification(Context context, Intent intent) {
         final Notification notification = super.getNotification(context, intent);
         if (Build.VERSION.SDK_INT >= 21) {
+            notification.category = Notification.CATEGORY_EMAIL;
+            notification.color = context.getResources().getColor(R.color.sebastiaan_blue);
             notification.visibility = Notification.VISIBILITY_PUBLIC;
         }
         return notification;
