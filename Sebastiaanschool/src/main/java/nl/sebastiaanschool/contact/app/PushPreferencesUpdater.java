@@ -38,7 +38,7 @@ public class PushPreferencesUpdater {
     }
 
     private void updatePushes(Collection<String> subscriptions, String channel, boolean shouldBeSubscribed) {
-        final boolean isSubscribed = subscriptions.contains(channel);
+        final boolean isSubscribed = subscriptions != null && subscriptions.contains(channel);
         if (BuildConfig.DEBUG) {
             android.util.Log.d("PushPrefUpdater", String.format("Channel=%s, isSubscribed=%s, shouldSubscribe=%s", channel, isSubscribed, shouldBeSubscribed));
         }
