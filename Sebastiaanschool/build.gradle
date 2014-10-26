@@ -36,14 +36,14 @@ android {
         release {
             runProguard true
             proguardFile file('proguard-shrink-only.txt')
-            project.ext.set('parseAppIdVar', 'PARSE_APPLICATION_ID')
-            project.ext.set('parseClientKeyVar', 'PARSE_CLIENT_KEY')
+            buildConfigField "String", "PARSE_APPLICATION_ID", getEnv('PARSE_APPLICATION_ID')
+            buildConfigField "String", "PARSE_CLIENT_KEY", getEnv('PARSE_CLIENT_KEY')
         }
         debug {
             runProguard false
             proguardFile file('proguard-shrink-only.txt')
-            project.ext.set('parseAppIdVar', 'DEV_PARSE_APPLICATION_ID')
-            project.ext.set('parseClientKeyVar', 'DEV_PARSE_CLIENT_KEY')
+            buildConfigField "String", "PARSE_APPLICATION_ID", getEnv('DEV_PARSE_APPLICATION_ID')
+            buildConfigField "String", "PARSE_CLIENT_KEY", getEnv('DEV_PARSE_CLIENT_KEY')
         }
     }
 
@@ -53,40 +53,17 @@ android {
         minSdkVersion 14
         targetSdkVersion 21
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
-        def (parseAppId, parseClientKey) = readParseCredentialsFromEnvironment()
-        buildConfigField "String", "PARSE_APPLICATION_ID", "${parseAppId}"
-        buildConfigField "String", "PARSE_CLIENT_KEY", "${parseClientKey}"
     }
+}
+
+def getEnv(key, defVal = '') {
+    "\"${System.env.containsKey(key) ? System.env.get(key) : defVal}\""
 }
 
 // Import code signing configuration from a separate file, outside version control.
 def extraConf = file('signing-config.gradle');
 if (extraConf.exists()) {
     apply from: 'signing-config.gradle'
-}
-
-/**
- * Reads the Parse.com credentials from the environment.
- *
- * For the DEBUG build type, reads DEV_PARSE_APPLICATION_ID and DEV_PARSE_CLIENT_KEY.
- * For the RELEASE build type, reads PARSE_APPLICATION_ID and PARSE_CLIENT_KEY.
- *
- * Note that you need to build from the command line to get working credentials into the app, I know
- * of no way to define environment variables when building from Android Studio. This is awkward from
- * an Android perspective, but it means all three of { Server, Android, iOS } use the same mechanism
- * of setting the Parse.com credentials. See also: setEnv-example.sh.
- *
- * @return [parseAppId, parseClientKey]
- */
-def readParseCredentialsFromEnvironment() {
-    def parseAppId = System.env.get(project.ext.parseAppIdVar)
-    def parseClientKey = System.env.get(project.ext.parseClientKeyVar)
-    parseAppId = parseAppId == null ? "null" : "\"${parseAppId}\""
-    parseClientKey = parseClientKey == null ? "null" : "\"${parseClientKey}\""
-    if (parseAppId == "null" || parseClientKey == "null") {
-        project.logger.warn("*****\n\nMissing Parse.com API credentials. The generated app will be non-functional.\n\nTo resolve this, please define the environment variables ${project.ext.parseAppIdVar} and ${project.ext.parseClientKeyVar}.\n\n*****")
-    }
-    return [parseAppId, parseClientKey]
 }
 
 dependencies {
