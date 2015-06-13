@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.accessibility.AccessibilityEventCompat;
 import android.support.v4.view.accessibility.AccessibilityRecordCompat;
 import android.support.v7.app.ActionBar;
@@ -66,15 +67,17 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     private NavigationFragment navigationFragment;
     private Fragment detailFragment;
     private ProgressBar progressBar;
+    private CollapsingToolbarLayout toolbarLayout;
 
     @Override
     @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
+        toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main__toolbar_container);
+        toolbarLayout.setTitle(getTitle());
         setSupportActionBar((Toolbar) findViewById(R.id.action_bar));
         getSupportActionBar().setHomeActionContentDescription(R.string.navigation__home_as_up_desc);
         getFragmentManager().addOnBackStackChangedListener(this);

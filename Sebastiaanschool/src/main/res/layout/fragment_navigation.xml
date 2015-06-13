@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright (c) 2014 Barend Garvelink
 
     SebastiaanSchool is licensed under a
@@ -8,107 +7,111 @@
     You should have received a copy of the license along with this
     work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
 -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/NavigationFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".NavigationFragment">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:showDividers="middle">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/navigate__home"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_gravity="center_horizontal"
-            android:clickable="true"
-            android:contentDescription="@string/navigation__homepage"
-            android:focusable="true"
-            android:gravity="center"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_sebastiaan_96dp_blue" />
-
-        <TextView
-            android:id="@+id/navigate__twitter"
-            style="@style/NavigationItem"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="fill_horizontal"
-            android:clickable="true"
-            android:contentDescription="@string/navigation__twitter_desc"
-            android:drawableLeft="@drawable/ic_twitter"
-            android:text="@string/navigation__twitter" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/navigate__yurl"
-            style="@style/NavigationItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill_horizontal"
-            android:clickable="true"
-            android:contentDescription="@string/navigation__yurl_desc"
-            android:drawableLeft="@drawable/ic_yurls"
-            android:text="@string/navigation__yurl" />
+            <TextView
+                android:id="@+id/navigate__home"
+                style="@style/NavigationItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_horizontal"
+                android:clickable="true"
+                android:contentDescription="@string/navigation__homepage_desc"
+                android:drawableLeft="@drawable/ic_home"
+                android:text="@string/navigation__homepage" />
 
-        <TextView
-            android:id="@+id/navigate__agenda"
-            style="@style/NavigationItem"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_gravity="fill_horizontal"
-            android:clickable="true"
-            android:contentDescription="@string/navigation__agenda_desc"
-            android:drawableLeft="@drawable/ic_agenda"
-            android:text="@string/navigation__agenda" />
+            <TextView
+                android:id="@+id/navigate__twitter"
+                style="@style/NavigationItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_horizontal"
+                android:clickable="true"
+                android:contentDescription="@string/navigation__twitter_desc"
+                android:drawableLeft="@drawable/ic_twitter"
+                android:text="@string/navigation__twitter" />
 
-        <TextView
-            android:id="@+id/navigate__team"
-            style="@style/NavigationItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill_horizontal"
-            android:clickable="true"
-            android:contentDescription="@string/navigation__team_desc"
-            android:drawableLeft="@drawable/ic_team"
-            android:text="@string/navigation__team" />
+            <TextView
+                android:id="@+id/navigate__yurl"
+                style="@style/NavigationItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_horizontal"
+                android:clickable="true"
+                android:contentDescription="@string/navigation__yurl_desc"
+                android:drawableLeft="@drawable/ic_yurls"
+                android:text="@string/navigation__yurl" />
 
-        <TextView
-            android:id="@+id/navigate__call"
-            style="@style/NavigationItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill_horizontal"
-            android:clickable="true"
-            android:contentDescription="@string/navigation__call_desc"
-            android:drawableLeft="@drawable/ic_call"
-            android:text="@string/navigation__call" />
+            <TextView
+                android:id="@+id/navigate__agenda"
+                style="@style/NavigationItem"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="fill_horizontal"
+                android:clickable="true"
+                android:contentDescription="@string/navigation__agenda_desc"
+                android:drawableLeft="@drawable/ic_agenda"
+                android:text="@string/navigation__agenda" />
 
-        <TextView
-            android:id="@+id/navigate__newsletter"
-            style="@style/NavigationItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill_horizontal"
-            android:clickable="true"
-            android:contentDescription="@string/navigation__newsletter_desc"
-            android:drawableLeft="@drawable/ic_newsletter"
-            android:text="@string/navigation__newsletter" />
+            <TextView
+                android:id="@+id/navigate__team"
+                style="@style/NavigationItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_horizontal"
+                android:clickable="true"
+                android:contentDescription="@string/navigation__team_desc"
+                android:drawableLeft="@drawable/ic_team"
+                android:text="@string/navigation__team" />
 
-        <TextView
-            android:id="@+id/navigate__bulletin"
-            style="@style/NavigationItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill_horizontal"
-            android:clickable="true"
-            android:contentDescription="@string/navigation__bulletin_desc"
-            android:drawableLeft="@drawable/ic_bulletin"
-            android:text="@string/navigation__bulletin" />
+            <TextView
+                android:id="@+id/navigate__call"
+                style="@style/NavigationItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_horizontal"
+                android:clickable="true"
+                android:contentDescription="@string/navigation__call_desc"
+                android:drawableLeft="@drawable/ic_call"
+                android:text="@string/navigation__call" />
 
-    </LinearLayout>
-</ScrollView>
+            <TextView
+                android:id="@+id/navigate__newsletter"
+                style="@style/NavigationItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_horizontal"
+                android:clickable="true"
+                android:contentDescription="@string/navigation__newsletter_desc"
+                android:drawableLeft="@drawable/ic_newsletter"
+                android:text="@string/navigation__newsletter" />
+
+            <TextView
+                android:id="@+id/navigate__bulletin"
+                style="@style/NavigationItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_horizontal"
+                android:clickable="true"
+                android:contentDescription="@string/navigation__bulletin_desc"
+                android:drawableLeft="@drawable/ic_bulletin"
+                android:text="@string/navigation__bulletin" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</FrameLayout>

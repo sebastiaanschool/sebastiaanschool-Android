@@ -13,7 +13,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:windowTranslucentStatus">true</item>
         <item name="colorPrimary">@color/sebastiaan_blue</item>
         <item name="colorPrimaryDark">@color/sebastiaan_blue</item>
         <item name="colorAccent">@android:color/white</item>
@@ -23,10 +24,18 @@
 
     <style name="AppActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:background">@color/sebastiaan_blue</item>
         <item name="selectableItemBackground">?android:selectableItemBackground</item>
         <item name="selectableItemBackgroundBorderless">?android:selectableItemBackground</item>
         <item name="colorControlHighlight">@android:color/white</item>
+    </style>
+
+    <style name="AppCollapsedTitleTextAppearance" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="AppExpandedTitleTextAppearance" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">32sp</item>
     </style>
 
     <style name="SlidingFragment">
@@ -40,7 +49,11 @@
         <item name="android:paddingTop">@dimen/activity_vertical_margin</item>
     </style>
 
-    <style name="NavigationFragment" parent="SlidingFragment.WithMargins">
+    <style name="NavigationFragment">
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:paddingTop">4dp</item>
         <item name="android:filterTouchesWhenObscured">true</item>
     </style>
 
@@ -108,6 +121,8 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
+    <!-- same as @android/background_material_light on SDK21+ -->
+    <color name="windowBackground">#ffeeeeee</color>
     <color name="sebastiaan_blue">#31b5e7</color>
     <color name="hsl_shadow_color">#11526b</color>
     <integer name="hsl_animation_duration">300</integer>

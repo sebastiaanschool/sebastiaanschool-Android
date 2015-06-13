@@ -19,6 +19,7 @@
     <string name="menu_downloads_folder">Open download folder</string>
     <string name="download_started">Download Started</string>
     <string name="navigation__homepage">Homepage</string>
+    <string name="navigation__homepage_desc">Homepage, button</string>
     <string name="navigation__twitter">\@KBSebastiaan</string>
     <string name="navigation__twitter_desc">Twitter, button</string>
     <string name="navigation__yurl">Yurls site</string>
