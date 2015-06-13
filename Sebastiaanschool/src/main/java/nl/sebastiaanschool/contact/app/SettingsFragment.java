@@ -13,7 +13,7 @@ import android.view.ViewGroup;
  * refactor HorizontalSlidingFragment into a ViewGroup. I missed it.
  * </p>
  */
-public class SettingsFragment extends HorizontalSlidingFragment {
+public class SettingsFragment extends SebFragment {
 
     private SettingsFragmentContent contents;
 
@@ -24,7 +24,7 @@ public class SettingsFragment extends HorizontalSlidingFragment {
     }
 
     @Override
-    protected View onCreateView2(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         contents = new SettingsFragmentContent();
         getFragmentManager().beginTransaction().add(R.id.settings__content, contents).commit();

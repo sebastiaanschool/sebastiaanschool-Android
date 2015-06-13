@@ -53,7 +53,7 @@ import java.util.List;
  * extra is found to contain either of the {@code PushPreferencesUpdater.PUSH_CHANNEL_} constants'
  * values, then the activity automatically navigates to the corresponding screen.</p>
  */
-public class MainActivity extends AppCompatActivity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener, HorizontalSlidingFragment.Callback, DataLoadingCallback, Handler.Callback, DownloadManagerAsyncTask.Callback, NewsletterFragment.Callback {
+public class MainActivity extends AppCompatActivity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener, DataLoadingCallback, Handler.Callback, DownloadManagerAsyncTask.Callback, NewsletterFragment.Callback {
     private static final IntentFilter DOWNLOAD_COMPLETED_BROADCASTS = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
 
     private static final int PAGE_NEWSLETTER = 1;
@@ -174,13 +174,24 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         }
     }
 
-    private void pushFragment(HorizontalSlidingFragment fragment) {
+    private void pushFragment(SebFragment fragment) {
         if (detailFragment != null)
             return;
         String label = getString(fragment.getTitleResId());
         FragmentTransaction tx = getFragmentManager().beginTransaction();
-        fragment.addWithAnimation(tx, R.id.main__content_container, label);
+        fragment.add(tx, R.id.main__content_container, label);
         tx.commit();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        // After the detail fragment has appeared on top of the navigation fragment, hide the latter to reduce GPU overdraw.
+        navigationFragment.setVisible(false);
+        final int titleResId = fragment.getTitleResId();
+        if (titleResId != 0) {
+            final String title = getString(titleResId);
+            actionBar.setSubtitle(title);
+            announce(getString(fragment.getAnnouncementResId(), title));
+        }
         detailFragment = fragment;
     }
 
@@ -228,43 +239,11 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     public void onBackStackChanged() {
         if (getFragmentManager().getBackStackEntryCount() == 0) {
             detailFragment = null;
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setHomeButtonEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            actionBar.setSubtitle(null);
             invalidateOptionsMenu();
-        }
-    }
-
-    @Override
-    public void onSlidingFragmentBackGesture() {
-        popFragment();
-    }
-
-    @Override
-    public void onSlidingFragmentBeginAnimation(HorizontalSlidingFragment source, boolean willSlideIntoView) {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(false);
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setSubtitle(null);
-        if (!willSlideIntoView) {
-            // Before the detail fragment begins moving out of screen, make the underlying navigation fragment visible.
-            navigationFragment.setVisible(true);
-        }
-    }
-
-    @Override
-    public void onSlidingFragmentEndAnimation(HorizontalSlidingFragment source, boolean didSlideIntoView) {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(didSlideIntoView);
-        actionBar.setDisplayHomeAsUpEnabled(didSlideIntoView);
-        if (didSlideIntoView) {
-            // After the detail fragment has appeared on top of the navigation fragment, hide the latter to reduce GPU overdraw.
-            navigationFragment.setVisible(false);
-            final int titleResId = source.getTitleResId();
-            if (titleResId != 0) {
-                final String title = getString(titleResId);
-                actionBar.setSubtitle(title);
-                announce(getString(source.getAnnouncementResId(), title));
-            }
-        } else {
-            announce(getString(R.string.accessibility__announce_return_home));
         }
     }
 

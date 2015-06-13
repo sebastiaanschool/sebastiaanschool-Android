@@ -21,7 +21,7 @@ import android.widget.ListView;
 /**
  * Created by barend on 6-11-13.
  */
-public abstract class SebListFragment<T> extends HorizontalSlidingFragment implements AdapterView.OnItemClickListener {
+public abstract class SebListFragment<T> extends SebFragment implements AdapterView.OnItemClickListener {
 
     private SebListAdapter adapter;
     private DataLoadingCallback dataLoadingCallback;
@@ -51,7 +51,7 @@ public abstract class SebListFragment<T> extends HorizontalSlidingFragment imple
     }
 
     @Override
-    public View onCreateView2(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_list, container, false);
     }
 
