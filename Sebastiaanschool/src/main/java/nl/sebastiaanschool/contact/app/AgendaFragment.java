@@ -12,8 +12,6 @@ package nl.sebastiaanschool.contact.app;
 import android.content.Context;
 import android.content.Intent;
 
-import com.parse.ParseAnalytics;
-
 /**
  * Created by Barend on 1-11-13.
  */
@@ -40,7 +38,6 @@ public class AgendaFragment extends SebListFragment<AgendaItem> {
     }
 
     private void publishCalendarEvent(AgendaItem item) {
-        ParseAnalytics.trackEventInBackground("Navigate to device calendar");
         Intent intent = new Intent(Intent.ACTION_EDIT);
         intent.setType("vnd.android.cursor.item/event");
         intent.putExtra("title", item.getTitle());

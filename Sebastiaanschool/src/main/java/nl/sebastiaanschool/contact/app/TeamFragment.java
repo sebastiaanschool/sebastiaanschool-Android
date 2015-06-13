@@ -13,8 +13,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.parse.ParseAnalytics;
-
 /**
  * Created by Barend on 1-11-13.
  */
@@ -41,7 +39,6 @@ public class TeamFragment extends SebListFragment<TeamMember> {
     }
 
     private void composeEmail(TeamMember item) {
-        ParseAnalytics.trackEventInBackground("Navigate to email client");
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", item.getEmail(), null));
         intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.team_email_body, item.getDisplayName()));
         try {

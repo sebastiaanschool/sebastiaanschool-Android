@@ -18,8 +18,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.format.DateFormat;
 
-import com.parse.ParseAnalytics;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -39,7 +37,6 @@ public final class GrabBag {
     }
 
     public static void openUri(Context context, Uri uri) {
-        ParseAnalytics.trackEventInBackground("Navigate to " + uri);
         Intent browse = new Intent(Intent.ACTION_VIEW, uri);
         browse.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         // Need to check if a browser is present, as it can be disabled entirely using child safety features on a tablet.

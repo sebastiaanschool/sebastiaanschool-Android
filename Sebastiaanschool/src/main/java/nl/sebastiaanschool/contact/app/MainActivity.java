@@ -43,8 +43,6 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.parse.ParseAnalytics;
-
 import java.io.File;
 import java.util.List;
 
@@ -87,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
             navigationFragment = (NavigationFragment) getFragmentManager().findFragmentByTag(NAVIGATION_FRAGMENT_TAG);
         }
         accessibilityManager = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
-        ParseAnalytics.trackAppOpenedInBackground(getIntent());
         getApplicationContext().registerReceiver(downloadCompletionReceiver, DOWNLOAD_COMPLETED_BROADCASTS);
     }
 
@@ -155,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     }
 
     private void callSebastiaan() {
-        ParseAnalytics.trackEventInBackground("Navigate to dialer");
         final String number = getResources().getString(R.string.call_url);
         final Intent dial = new Intent(Intent.ACTION_DIAL, Uri.parse(number));
         dial.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -182,7 +178,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         if (detailFragment != null)
             return;
         String label = getString(fragment.getTitleResId());
-        ParseAnalytics.trackEventInBackground("Navigate to " + label);
         FragmentTransaction tx = getFragmentManager().beginTransaction();
         fragment.addWithAnimation(tx, R.id.main__content_container, label);
         tx.commit();
@@ -190,7 +185,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     }
 
     private void popFragment() {
-        ParseAnalytics.trackEventInBackground("Navigate to home");
         getFragmentManager().popBackStack();
     }
 
@@ -302,7 +296,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
 
     @Override
     public void onStopLoading(Exception e) {
-        // TODO report exceptions to analytics
         progressBar.setVisibility(View.INVISIBLE);
     }
 
