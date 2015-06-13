@@ -10,8 +10,6 @@
 package nl.sebastiaanschool.contact.app;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.app.Fragment;
@@ -32,13 +30,17 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v4.view.accessibility.AccessibilityEventCompat;
 import android.support.v4.view.accessibility.AccessibilityRecordCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.Window;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.parse.ParseAnalytics;
@@ -53,7 +55,7 @@ import java.util.List;
  * extra is found to contain either of the {@code PushPreferencesUpdater.PUSH_CHANNEL_} constants'
  * values, then the activity automatically navigates to the corresponding screen.</p>
  */
-public class MainActivity extends Activity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener, HorizontalSlidingFragment.Callback, DataLoadingCallback, Handler.Callback, DownloadManagerAsyncTask.Callback, NewsletterFragment.Callback {
+public class MainActivity extends AppCompatActivity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener, HorizontalSlidingFragment.Callback, DataLoadingCallback, Handler.Callback, DownloadManagerAsyncTask.Callback, NewsletterFragment.Callback {
     private static final IntentFilter DOWNLOAD_COMPLETED_BROADCASTS = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
 
     private static final int PAGE_NEWSLETTER = 1;
@@ -65,19 +67,18 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
     private AccessibilityManager accessibilityManager;
     private NavigationFragment navigationFragment;
     private Fragment detailFragment;
+    private ProgressBar progressBar;
 
     @Override
     @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        if (Build.VERSION.SDK_INT >= 18) {
-            getActionBar().setHomeActionContentDescription(R.string.navigation__home_as_up_desc);
-        }
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setProgressBarIndeterminateVisibility(false);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
+        setSupportActionBar((Toolbar) findViewById(R.id.action_bar));
+        getSupportActionBar().setHomeActionContentDescription(R.string.navigation__home_as_up_desc);
         getFragmentManager().addOnBackStackChangedListener(this);
         if (savedInstanceState == null) {
             navigationFragment = new NavigationFragment();
@@ -244,7 +245,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
 
     @Override
     public void onSlidingFragmentBeginAnimation(HorizontalSlidingFragment source, boolean willSlideIntoView) {
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setSubtitle(null);
@@ -256,7 +257,7 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
 
     @Override
     public void onSlidingFragmentEndAnimation(HorizontalSlidingFragment source, boolean didSlideIntoView) {
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(didSlideIntoView);
         actionBar.setDisplayHomeAsUpEnabled(didSlideIntoView);
         if (didSlideIntoView) {
@@ -296,13 +297,13 @@ public class MainActivity extends Activity implements NavigationFragment.Callbac
 
     @Override
     public void onStartLoading() {
-        this.setProgressBarIndeterminateVisibility(true);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onStopLoading(Exception e) {
         // TODO report exceptions to analytics
-        this.setProgressBarIndeterminateVisibility(false);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override
