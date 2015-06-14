@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.support.v4.app.TaskStackBuilder;
 
 import com.parse.ParsePushBroadcastReceiver;
 
@@ -25,10 +26,28 @@ public class PushMessageReceiver extends ParsePushBroadcastReceiver {
     @Override
     protected void onPushOpen(Context context, Intent intent) {
         try {
-            Intent blah = new Intent(context, MainActivity.class);
-            blah.putExtras(intent);
-            blah.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            context.startActivity(blah);
+            int mode = -1;
+            final String channel = intent.getStringExtra("com.parse.Channel");
+            if (PushPreferencesUpdater.CHANNEL_BULLETIN.equals(channel)) {
+                mode = DetailActivity.MODE_BULLETIN;
+            } else if (PushPreferencesUpdater.CHANNEL_NEWSLETTER.equals(channel)) {
+                mode = DetailActivity.MODE_NEWSLETTER;
+            }
+
+            if (mode == -1) {
+                Intent blah = new Intent(context, MainActivity.class);
+                blah.putExtras(intent);
+                blah.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(blah);
+            } else {
+                Intent nextIntent = DetailActivity.createIntent(context, mode);
+                nextIntent.putExtras(intent);
+                nextIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                TaskStackBuilder tsb = TaskStackBuilder.create(context);
+                tsb.addParentStack(DetailActivity.class);
+                tsb.addNextIntent(nextIntent);
+                tsb.startActivities();
+            }
         } catch (Exception e) {
             android.util.Log.w("PushMessageReceiver", "Failed to open activity.", e);
         }

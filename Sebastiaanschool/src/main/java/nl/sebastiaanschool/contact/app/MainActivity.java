@@ -19,9 +19,6 @@ import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -40,15 +37,9 @@ import java.util.List;
  * extra is found to contain either of the {@code PushPreferencesUpdater.PUSH_CHANNEL_} constants'
  * values, then the activity automatically navigates to the corresponding screen.</p>
  */
-public class MainActivity extends AppCompatActivity implements NavigationFragment.Callback, DataLoadingCallback, Handler.Callback, NewsletterFragment.Callback {
+public class MainActivity extends AppCompatActivity implements NavigationFragment.Callback, DataLoadingCallback, NewsletterFragment.Callback {
     private static final IntentFilter DOWNLOAD_COMPLETED_BROADCASTS = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
 
-    private static final int PAGE_NEWSLETTER = 1;
-    private static final int PAGE_BULLETIN = 2;
-    private static final int MESSAGE_OPEN_PAGE = 1;
-    private static final String NAVIGATION_FRAGMENT_TAG = "navFrag";
-    private static final long PAGE_OPEN_DELAY = 250L;
-    private Handler messageHandler = new Handler(Looper.getMainLooper(), this);
     private NavigationFragment navigationFragment;
     private ProgressBar progressBar;
     private CollapsingToolbarLayout toolbarLayout;
@@ -66,9 +57,9 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         setSupportActionBar((Toolbar) findViewById(R.id.action_bar));
         if (savedInstanceState == null) {
             navigationFragment = new NavigationFragment();
-            getFragmentManager().beginTransaction().add(R.id.main__content_container, navigationFragment, NAVIGATION_FRAGMENT_TAG).commit();
+            getFragmentManager().beginTransaction().add(R.id.main__content_container, navigationFragment).commit();
         } else {
-            navigationFragment = (NavigationFragment) getFragmentManager().findFragmentByTag(NAVIGATION_FRAGMENT_TAG);
+            navigationFragment = (NavigationFragment) getFragmentManager().findFragmentById(R.id.main__content_container);
         }
         getApplicationContext().registerReceiver(downloadCompletionReceiver, DOWNLOAD_COMPLETED_BROADCASTS);
     }
@@ -77,34 +68,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     protected void onDestroy() {
         getApplicationContext().unregisterReceiver(downloadCompletionReceiver);
         super.onDestroy();
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        autoNavigateToDetailPageIfNeeded(intent);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        autoNavigateToDetailPageIfNeeded(getIntent());
-    }
-
-    private void autoNavigateToDetailPageIfNeeded(Intent intent) {
-        // TODO replace this stuff by a Intent + BackstackBuilder code when creating the notification.
-        // If we were launched with OPEN_*, go to the requested page.
-        // Use a delay before opening to make the sliding animation look better.
-        final String channel = intent.getStringExtra("com.parse.Channel");
-        if (PushPreferencesUpdater.CHANNEL_BULLETIN.equals(channel)) {
-            messageHandler.sendMessageDelayed(
-                    messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, PAGE_BULLETIN, 0),
-                    PAGE_OPEN_DELAY);
-        } else if (PushPreferencesUpdater.CHANNEL_NEWSLETTER.equals(channel)) {
-            messageHandler.sendMessageDelayed(
-                    messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, PAGE_NEWSLETTER, 0),
-                    PAGE_OPEN_DELAY);
-        }
     }
 
     @Override
@@ -195,19 +158,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     @Override
     public void onStopLoading(Exception e) {
         progressBar.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public boolean handleMessage(Message msg) {
-        if (msg.what == MESSAGE_OPEN_PAGE) {
-            if (msg.arg1 == PAGE_BULLETIN) {
-                DetailActivity.start(this, DetailActivity.MODE_BULLETIN);
-            } else {
-                DetailActivity.start(this, DetailActivity.MODE_NEWSLETTER);
-            }
-            return true;
-        }
-        return false;
     }
 
     @Override

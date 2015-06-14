@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -29,9 +30,15 @@ public class DetailActivity extends AppCompatActivity implements DataLoadingCall
     private ProgressBar progressBar;
 
     public static void start(Context context, @Mode int mode) {
+        Intent starter = createIntent(context, mode);
+        context.startActivity(starter);
+    }
+
+    @NonNull
+    static Intent createIntent(Context context, @Mode int mode) {
         Intent starter = new Intent(context, DetailActivity.class);
         starter.putExtra(ARG_MODE, mode);
-        context.startActivity(starter);
+        return starter;
     }
 
     @Override
