@@ -28,31 +28,46 @@
     <permission
         android:name="nl.sebastiaanschool.contact.app.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="nl.sebastiaanschool.contact.app.permission.C2D_MESSAGE" />
 
     <application
         android:name=".SebApp"
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
-        android:logo="@drawable/ic_sebastiaan_48dp_white"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
-        <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/ic_push_ntf"/>
+        android:logo="@drawable/ic_sebastiaan_48dp_white"
+        android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.parse.push.notification_icon"
+            android:resource="@drawable/ic_push_ntf" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:screenOrientation="sensor">
+            android:screenOrientation="sensor"
+            android:theme="@style/AppTheme.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DetailActivity"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nl.sebastiaanschool.contact.app.MainActivity" />
+        </activity>
+
         <service android:name="com.parse.PushService" />
+
         <receiver
             android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />

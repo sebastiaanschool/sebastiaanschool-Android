@@ -3,10 +3,13 @@ package nl.sebastiaanschool.contact.app;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.StringDef;
 
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Collection;
 
 /**
@@ -37,7 +40,7 @@ public class PushPreferencesUpdater {
         updatePushes(subscriptions, CHANNEL_NEWSLETTER, subscribeNewsletter);
     }
 
-    private void updatePushes(Collection<String> subscriptions, String channel, boolean shouldBeSubscribed) {
+    private void updatePushes(Collection<String> subscriptions, @PushChannel String channel, boolean shouldBeSubscribed) {
         final boolean isSubscribed = subscriptions != null && subscriptions.contains(channel);
         if (BuildConfig.DEBUG) {
             android.util.Log.d("PushPrefUpdater", String.format("Channel=%s, isSubscribed=%s, shouldSubscribe=%s", channel, isSubscribed, shouldBeSubscribed));
@@ -48,4 +51,8 @@ public class PushPreferencesUpdater {
             ParsePush.subscribeInBackground(channel);
         }
     }
+
+    @StringDef({ CHANNEL_BULLETIN, CHANNEL_NEWSLETTER })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface PushChannel {}
 }

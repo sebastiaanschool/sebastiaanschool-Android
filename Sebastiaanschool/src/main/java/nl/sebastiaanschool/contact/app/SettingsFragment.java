@@ -1,43 +1,30 @@
 package nl.sebastiaanschool.contact.app;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.preference.PreferenceFragment;
 
 /**
- * HorizontalSlidingFragment wrapper for {@link nl.sebastiaanschool.contact.app.SettingsFragmentContent}.
- * <p>
- * The wrapping is a work-around for the problem of having two base classes for the settings screen:
- * {@code HorizontalSlidingFragment} and {@code PreferenceFragment}. This was probably the cue to
- * refactor HorizontalSlidingFragment into a ViewGroup. I missed it.
- * </p>
+ * Application attribution and settings.
  */
-public class SettingsFragment extends SebFragment {
+public class SettingsFragment extends PreferenceFragment implements SebFragment {
 
-    private SettingsFragmentContent contents;
+
+    public static SettingsFragment newInstance() {
+        return new SettingsFragment();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        addPreferencesFromResource(R.xml.preferences);
+        String versionSummary = getString(R.string.settings__version_summary, BuildConfig.VERSION_NAME);
+        getPreferenceManager().findPreference("pref_version").setSummary(versionSummary);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        contents = new SettingsFragmentContent();
-        getFragmentManager().beginTransaction().add(R.id.settings__content, contents).commit();
-        return view;
-    }
-
-    @Override
-    public void onDestroy() {
-        if (contents != null) {
-            getFragmentManager().beginTransaction().remove(contents).commit();
-            contents = null;
-        }
-        super.onDestroy();
+    public void onStop() {
+        new PushPreferencesUpdater(getActivity()).updatePushPreferences();
+        super.onStop();
     }
 
     @Override

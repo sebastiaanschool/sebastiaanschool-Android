@@ -39,12 +39,6 @@
     <string name="download_newsletter_description">Sebastiaanschool Newsletter</string>
     <string name="download_newsletter_referer" translatable="false">Sebastiaan Android v%d</string>
     <string name="open_uri_failed">Could not open file</string>
-    <string name="navigation__home_as_up_desc">double-tap to return to main menu.</string>
-    <string name="accessibility__announce_return_home">Now showing the main menu.</string>
-    <string name="accessibility__announce_open_page">Now showing the %1$s page.</string>
-    <string name="accessibility__announce_open_agenda">Now showing the %1$s page. Double-tap an item to add it to your device calendar.</string>
-    <string name="accessibility__announce_open_newsletter">Now showing the %1$s page. Double-tap an item to download it.</string>
-    <string name="accessibility__announce_open_team">Now showing the %1$s page. Double-tap a team member to send them an email.</string>
     <string name="settings__about">About this App</string>
     <string name="settings__version_title">Version information</string>
     <string name="settings__version_summary">Version %s.</string>
@@ -57,4 +51,5 @@
     <string name="settings__push_newsletter_summary">Notify when a newsletter is made available.</string>
     <string name="settings__push_bulletin_title">Bulletin</string>
     <string name="settings__push_bulletin_summary">Notify when a bulletin is made available.</string>
+    <string name="title_activity_detail">DetailActivity</string>
 </resources>

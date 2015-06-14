@@ -16,6 +16,10 @@ import android.content.Context;
  */
 public class BulletinFragment extends SebListFragment<Bulletin> {
 
+    public static BulletinFragment newInstance() {
+        return new BulletinFragment();
+    }
+
     @Override
     protected SebListAdapter createAdapter(Context context) {
         return new BulletinAdapter(context);

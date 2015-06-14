@@ -17,6 +17,10 @@ import android.content.Intent;
  */
 public class AgendaFragment extends SebListFragment<AgendaItem> {
 
+    public static AgendaFragment newInstance() {
+        return new AgendaFragment();
+    }
+
     @Override
     protected SebListAdapter createAdapter(Context context) {
         return new AgendaAdapter(context);
@@ -30,11 +34,6 @@ public class AgendaFragment extends SebListFragment<AgendaItem> {
     @Override
     public int getTitleResId() {
         return R.string.navigation__agenda;
-    }
-
-    @Override
-    public int getAnnouncementResId() {
-        return R.string.accessibility__announce_open_agenda;
     }
 
     private void publishCalendarEvent(AgendaItem item) {

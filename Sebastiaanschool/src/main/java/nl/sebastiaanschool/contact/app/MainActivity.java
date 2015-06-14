@@ -12,49 +12,35 @@ package nl.sebastiaanschool.contact.app;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.view.accessibility.AccessibilityEventCompat;
-import android.support.v4.view.accessibility.AccessibilityRecordCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.accessibility.AccessibilityEvent;
-import android.view.accessibility.AccessibilityManager;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import java.io.File;
 import java.util.List;
 
 /**
  * Main entry point of our app.
- *
+ * <p/>
  * <p>The launch intent is checked for a String extra named {@code com.parse.Channel}. If this is
  * extra is found to contain either of the {@code PushPreferencesUpdater.PUSH_CHANNEL_} constants'
  * values, then the activity automatically navigates to the corresponding screen.</p>
  */
-public class MainActivity extends AppCompatActivity implements NavigationFragment.Callback, FragmentManager.OnBackStackChangedListener, DataLoadingCallback, Handler.Callback, DownloadManagerAsyncTask.Callback, NewsletterFragment.Callback {
+public class MainActivity extends AppCompatActivity implements NavigationFragment.Callback, DataLoadingCallback, Handler.Callback, NewsletterFragment.Callback {
     private static final IntentFilter DOWNLOAD_COMPLETED_BROADCASTS = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
 
     private static final int PAGE_NEWSLETTER = 1;
@@ -63,11 +49,10 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     private static final String NAVIGATION_FRAGMENT_TAG = "navFrag";
     private static final long PAGE_OPEN_DELAY = 250L;
     private Handler messageHandler = new Handler(Looper.getMainLooper(), this);
-    private AccessibilityManager accessibilityManager;
     private NavigationFragment navigationFragment;
-    private Fragment detailFragment;
     private ProgressBar progressBar;
     private CollapsingToolbarLayout toolbarLayout;
+    private NewsletterDownloadHelper newsletterDownloadHelper;
 
     @Override
     @SuppressLint("NewApi")
@@ -79,15 +64,12 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main__toolbar_container);
         toolbarLayout.setTitle(getTitle());
         setSupportActionBar((Toolbar) findViewById(R.id.action_bar));
-        getSupportActionBar().setHomeActionContentDescription(R.string.navigation__home_as_up_desc);
-        getFragmentManager().addOnBackStackChangedListener(this);
         if (savedInstanceState == null) {
             navigationFragment = new NavigationFragment();
             getFragmentManager().beginTransaction().add(R.id.main__content_container, navigationFragment, NAVIGATION_FRAGMENT_TAG).commit();
         } else {
             navigationFragment = (NavigationFragment) getFragmentManager().findFragmentByTag(NAVIGATION_FRAGMENT_TAG);
         }
-        accessibilityManager = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
         getApplicationContext().registerReceiver(downloadCompletionReceiver, DOWNLOAD_COMPLETED_BROADCASTS);
     }
 
@@ -110,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     }
 
     private void autoNavigateToDetailPageIfNeeded(Intent intent) {
+        // TODO replace this stuff by a Intent + BackstackBuilder code when creating the notification.
         // If we were launched with OPEN_*, go to the requested page.
         // Use a delay before opening to make the sliding animation look better.
         final String channel = intent.getStringExtra("com.parse.Channel");
@@ -128,10 +111,10 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     public void onItemSelected(int item) {
         switch (item) {
             case ITEM_AGENDA:
-                pushFragment(new AgendaFragment());
+                DetailActivity.start(this, DetailActivity.MODE_AGENDA);
                 break;
             case ITEM_BULLETIN:
-                pushFragment(new BulletinFragment());
+                DetailActivity.start(this, DetailActivity.MODE_BULLETIN);
                 break;
             case ITEM_CALL:
                 callSebastiaan();
@@ -140,10 +123,10 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 GrabBag.openUri(this, getString(R.string.home_url));
                 break;
             case ITEM_NEWSLETTER:
-                pushFragment(new NewsletterFragment());
+                DetailActivity.start(this, DetailActivity.MODE_NEWSLETTER);
                 break;
             case ITEM_TEAM:
-                pushFragment(new TeamFragment());
+                DetailActivity.start(this, DetailActivity.MODE_TEAM);
                 break;
             case ITEM_TWITTER:
                 GrabBag.openUri(this, getString(R.string.twitter_url));
@@ -177,31 +160,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         }
     }
 
-    private void pushFragment(SebFragment fragment) {
-        if (detailFragment != null)
-            return;
-        String label = getString(fragment.getTitleResId());
-        FragmentTransaction tx = getFragmentManager().beginTransaction();
-        fragment.add(tx, R.id.main__content_container, label);
-        tx.commit();
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        // After the detail fragment has appeared on top of the navigation fragment, hide the latter to reduce GPU overdraw.
-        navigationFragment.setVisible(false);
-        final int titleResId = fragment.getTitleResId();
-        if (titleResId != 0) {
-            final String title = getString(titleResId);
-            actionBar.setSubtitle(title);
-            announce(getString(fragment.getAnnouncementResId(), title));
-        }
-        detailFragment = fragment;
-    }
-
-    private void popFragment() {
-        getFragmentManager().popBackStack();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_activity, menu);
@@ -210,10 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean showDownloadIcon = detailFragment instanceof NewsletterFragment;
-        menu.findItem(R.id.menu_downloads_folder).setVisible(showDownloadIcon);
         MenuItem preferences = menu.findItem(R.id.menu_preferences);
-        preferences.setVisible(detailFragment == null);
         if (ViewConfiguration.get(this).hasPermanentMenuKey()) {
             // Devices with a hardware menu key don't get an overflow button in the action bar for
             // menu items with showAsAction="never". The settings screen becomes very non-obvious.
@@ -225,50 +180,11 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            popFragment();
-            return true;
-        } else if (item.getItemId() == R.id.menu_downloads_folder) {
-            startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
-            return true;
-        } else if (item.getItemId() == R.id.menu_preferences) {
-            pushFragment(new SettingsFragment());
+        if (item.getItemId() == R.id.menu_preferences) {
+            DetailActivity.start(this, DetailActivity.MODE_SETTINGS);
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackStackChanged() {
-        if (getFragmentManager().getBackStackEntryCount() == 0) {
-            detailFragment = null;
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setHomeButtonEnabled(false);
-            actionBar.setDisplayHomeAsUpEnabled(false);
-            actionBar.setSubtitle(null);
-            invalidateOptionsMenu();
-        }
-    }
-
-    /**
-     * AccessibilityService voodoo lifted from http://stackoverflow.com/a/18502185/49489.
-     */
-    private void announce(final CharSequence announcement) {
-        if (!accessibilityManager.isEnabled()) {
-            return;
-        }
-        final int eventType = Build.VERSION.SDK_INT < 16
-                ? AccessibilityEvent.TYPE_VIEW_FOCUSED
-                : AccessibilityEventCompat.TYPE_ANNOUNCEMENT;
-        AccessibilityEvent event = AccessibilityEvent.obtain(eventType);
-        event.setEventTime(System.currentTimeMillis());
-        event.setEnabled(true);
-        event.setClassName(MainActivity.class.getName());
-        event.setPackageName(getPackageName());
-        event.getText().add(announcement);
-        final AccessibilityRecordCompat record = AccessibilityEventCompat.asRecord(event);
-        record.setSource(this.findViewById(android.R.id.content));
-        accessibilityManager.sendAccessibilityEvent(event);
     }
 
     @Override
@@ -284,15 +200,10 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     @Override
     public boolean handleMessage(Message msg) {
         if (msg.what == MESSAGE_OPEN_PAGE) {
-            if (detailFragment != null) {
-                popFragment();
-                messageHandler.sendMessageDelayed(messageHandler.obtainMessage(MESSAGE_OPEN_PAGE, msg.arg1, 0), PAGE_OPEN_DELAY);
+            if (msg.arg1 == PAGE_BULLETIN) {
+                DetailActivity.start(this, DetailActivity.MODE_BULLETIN);
             } else {
-                if (msg.arg1 == PAGE_BULLETIN) {
-                    pushFragment(new BulletinFragment());
-                } else {
-                    pushFragment(new NewsletterFragment());
-                }
+                DetailActivity.start(this, DetailActivity.MODE_NEWSLETTER);
             }
             return true;
         }
@@ -301,27 +212,10 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
 
     @Override
     public void downloadNewsletterFromUri(Uri uri) {
-        final String segment = uri.getLastPathSegment();
-        if (segment != null && segment.endsWith(".pdf")) {
-            DownloadManagerAsyncTask newsletterDownloadAsyncTask = new DownloadManagerAsyncTask(this, this);
-            newsletterDownloadAsyncTask.execute(new DownloadManagerAsyncTask.Param(uri));
-        } else {
-            GrabBag.openUri(this, uri);
+        if (newsletterDownloadHelper == null) {
+            newsletterDownloadHelper = new NewsletterDownloadHelper(this);
         }
-    }
-
-    @Override
-    public void launchDownloadedFile(File file, String mimeType) {
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setDataAndType(Uri.fromFile(file), mimeType);
-            this.startActivity(intent);
-        } catch (Exception e) {
-            Toast toast = Toast.makeText(this, R.string.open_uri_failed, Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-        }
+        newsletterDownloadHelper.downloadNewsletterFromUri(uri);
     }
 
     /**
@@ -330,9 +224,12 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     private final BroadcastReceiver downloadCompletionReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (newsletterDownloadHelper == null) {
+                newsletterDownloadHelper = new NewsletterDownloadHelper(MainActivity.this);
+            }
             if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(intent.getAction())) {
                 final long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1L);
-                DownloadManagerAsyncTask newsletterDownloadAsyncTask = new DownloadManagerAsyncTask(MainActivity.this, MainActivity.this);
+                DownloadManagerAsyncTask newsletterDownloadAsyncTask = new DownloadManagerAsyncTask(MainActivity.this, MainActivity.this.newsletterDownloadHelper);
                 newsletterDownloadAsyncTask.execute(new DownloadManagerAsyncTask.Param(downloadId));
             }
         }

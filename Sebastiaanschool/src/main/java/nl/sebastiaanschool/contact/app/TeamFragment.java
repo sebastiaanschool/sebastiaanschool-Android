@@ -18,6 +18,10 @@ import android.net.Uri;
  */
 public class TeamFragment extends SebListFragment<TeamMember> {
 
+    public static TeamFragment newInstance() {
+        return new TeamFragment();
+    }
+
     @Override
     protected SebListAdapter createAdapter(Context context) {
         return new TeamAdapter(context);
@@ -31,11 +35,6 @@ public class TeamFragment extends SebListFragment<TeamMember> {
     @Override
     public int getTitleResId() {
         return R.string.navigation__team;
-    }
-
-    @Override
-    public int getAnnouncementResId() {
-        return R.string.accessibility__announce_open_team;
     }
 
     private void composeEmail(TeamMember item) {

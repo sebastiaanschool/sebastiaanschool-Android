@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+    Copyright (c) 2015 Barend Garvelink
+
+    SebastiaanSchool is licensed under a
+    Creative Commons Attribution-NonCommercial 3.0 Unported License.
+
+    You should have received a copy of the license along with this
+    work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DetailActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@id/action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:theme="@style/AppToolbar"
+        app:popupTheme="@style/AppToolbarPopup">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleSmallInverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:indeterminate="true" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/detail__content_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

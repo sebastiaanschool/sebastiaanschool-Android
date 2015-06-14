@@ -33,12 +33,6 @@
     <string name="team_email_body">Beste %1$s,</string>
     <string name="download_newsletter_description">Sebastiaanschool Nieuwsbrief</string>
     <string name="open_uri_failed">Bestand openen niet gelukt</string>
-    <string name="navigation__home_as_up_desc">dubbel-tikken om naar het hoofdmenu terug te keren</string>
-    <string name="accessibility__announce_return_home">Het hoofdmenu wordt getoond</string>
-    <string name="accessibility__announce_open_page">De %1$s pagina wordt getoond</string>
-    <string name="accessibility__announce_open_agenda">De %1$s pagina wordt getoond. Dubbeltik op een item om het toe te voegen aan de agenda van je device.</string>
-    <string name="accessibility__announce_open_newsletter">De %1$s pagina wordt getoond. Dubbeltik op een nieuwsbrief om hem te downloaden.</string>
-    <string name="accessibility__announce_open_team">De %1$s pagina wordt getoond. Dubbeltik op een teamlid om hem of haar een email te sturen.</string>
     <string name="settings__about">Over deze app</string>
     <string name="settings__version_title">Versie-informatie</string>
     <string name="settings__version_summary">Versie %s.</string>

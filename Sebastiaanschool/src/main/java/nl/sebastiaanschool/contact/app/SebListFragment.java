@@ -10,6 +10,7 @@
 package nl.sebastiaanschool.contact.app;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,7 +22,7 @@ import android.widget.ListView;
 /**
  * Created by barend on 6-11-13.
  */
-public abstract class SebListFragment<T> extends SebFragment implements AdapterView.OnItemClickListener {
+public abstract class SebListFragment<T> extends Fragment implements SebFragment, AdapterView.OnItemClickListener {
 
     private SebListAdapter adapter;
     private DataLoadingCallback dataLoadingCallback;
