@@ -13,7 +13,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.android.tools.build:gradle:1.5.0'
     }
 }
 apply plugin: 'com.android.application'
@@ -23,8 +23,8 @@ repositories {
 }
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -50,8 +50,8 @@ android {
         versionCode 5
         versionName "1.3.0"
         minSdkVersion 14
-        targetSdkVersion 22
-        testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
+        targetSdkVersion 23
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 }
 
@@ -65,15 +65,23 @@ if (extraConf.exists()) {
     apply from: 'signing-config.gradle'
 }
 
-project.ext.supportLibVersion = "22.2.0"
+project.ext.supportLibVersion = "23.2.1"
 
 dependencies {
     compile "com.android.support:support-v4:${project.ext.supportLibVersion}"
     compile "com.android.support:appcompat-v7:${project.ext.supportLibVersion}"
     compile "com.android.support:cardview-v7:${project.ext.supportLibVersion}"
+    compile "com.android.support:gridlayout-v7:${project.ext.supportLibVersion}"
     compile "com.android.support:design:${project.ext.supportLibVersion}"
     compile "com.android.support:support-annotations:${project.ext.supportLibVersion}"
-    compile files('libs/Parse-1.9.2.jar')
+    compile files('libs/Parse-1.9.3.jar')
+    androidTestCompile "com.android.support.test.espresso:espresso-core:2.2.2"
+    androidTestCompile "com.android.support.test.espresso:espresso-contrib:2.2.2"
+    androidTestCompile "com.android.support.test.espresso:espresso-idling-resource:2.2.2"
+    androidTestCompile "com.android.support.test.espresso:espresso-intents:2.2.2"
+    androidTestCompile "com.android.support.test:runner:0.5"
+    androidTestCompile "com.android.support:support-annotations:${project.ext.supportLibVersion}"
     compile 'com.parse.bolts:bolts-android:1.2.0'
-    androidTestCompile files('libs/espresso-1.1-bundled.jar')
+    compile 'com.squareup.okhttp:okhttp:2.7.5'
+    compile 'com.google.android.gms:play-services-gcm:8.4.0'
 }
