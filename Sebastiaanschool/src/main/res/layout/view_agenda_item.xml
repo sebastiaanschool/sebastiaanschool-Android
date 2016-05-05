@@ -8,7 +8,7 @@
     You should have received a copy of the license along with this
     work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
 -->
-<nl.sebastiaanschool.contact.app.AgendaItemView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -25,4 +25,4 @@
         style="@style/ListItemDate"
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
-</nl.sebastiaanschool.contact.app.AgendaItemView>
+</LinearLayout>

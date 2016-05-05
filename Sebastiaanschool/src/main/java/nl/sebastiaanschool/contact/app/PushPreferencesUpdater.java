@@ -5,12 +5,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.StringDef;
 
-import com.parse.ParseInstallation;
-import com.parse.ParsePush;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Reads the user's push preferences from SharedPrefs and updates the Parse subscriptions to match.
@@ -32,7 +30,7 @@ public class PushPreferencesUpdater {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         final boolean subscribeNewsletter = prefs.getBoolean(PREF_NEWSLETTERS, true);
         final boolean subscribeBulletin = prefs.getBoolean(PREF_BULLETINS, true);
-        final Collection<String> subscriptions = ParseInstallation.getCurrentInstallation().getList("channels");
+        final Collection<String> subscriptions = Collections.emptyList(); //ParseInstallation.getCurrentInstallation().getList("channels");
         if (BuildConfig.DEBUG) {
             android.util.Log.d("PushPrefUpdater", "Current subscriptions: " + subscriptions);
         }
@@ -46,9 +44,9 @@ public class PushPreferencesUpdater {
             android.util.Log.d("PushPrefUpdater", String.format("Channel=%s, isSubscribed=%s, shouldSubscribe=%s", channel, isSubscribed, shouldBeSubscribed));
         }
         if (isSubscribed && !shouldBeSubscribed) {
-            ParsePush.unsubscribeInBackground(channel);
+//            ParsePush.unsubscribeInBackground(channel);
         } else if (shouldBeSubscribed && !isSubscribed) {
-            ParsePush.subscribeInBackground(channel);
+//            ParsePush.subscribeInBackground(channel);
         }
     }
 

@@ -30,6 +30,8 @@ import android.widget.ProgressBar;
 
 import java.util.List;
 
+import nl.sebastiaanschool.contact.app.gui.TimelineFragment;
+
 /**
  * Main entry point of our app.
  * <p/>
@@ -37,10 +39,9 @@ import java.util.List;
  * extra is found to contain either of the {@code PushPreferencesUpdater.PUSH_CHANNEL_} constants'
  * values, then the activity automatically navigates to the corresponding screen.</p>
  */
-public class MainActivity extends AppCompatActivity implements NavigationFragment.Callback, DataLoadingCallback, NewsletterFragment.Callback {
+public class MainActivity extends AppCompatActivity implements DataLoadingCallback {
     private static final IntentFilter DOWNLOAD_COMPLETED_BROADCASTS = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
 
-    private NavigationFragment navigationFragment;
     private ProgressBar progressBar;
     private CollapsingToolbarLayout toolbarLayout;
     private NewsletterDownloadHelper newsletterDownloadHelper;
@@ -55,11 +56,12 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main__toolbar_container);
         toolbarLayout.setTitle(getTitle());
         setSupportActionBar((Toolbar) findViewById(R.id.action_bar));
+        TimelineFragment timelineFragment;
         if (savedInstanceState == null) {
-            navigationFragment = new NavigationFragment();
-            getFragmentManager().beginTransaction().add(R.id.main__content_container, navigationFragment).commit();
+            timelineFragment = new TimelineFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.main__content_container, timelineFragment).commit();
         } else {
-            navigationFragment = (NavigationFragment) getFragmentManager().findFragmentById(R.id.main__content_container);
+            timelineFragment = (TimelineFragment) getSupportFragmentManager().findFragmentById(R.id.main__content_container);
         }
         getApplicationContext().registerReceiver(downloadCompletionReceiver, DOWNLOAD_COMPLETED_BROADCASTS);
     }
@@ -70,35 +72,23 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         super.onDestroy();
     }
 
-    @Override
-    public void onItemSelected(int item) {
-        switch (item) {
-            case ITEM_AGENDA:
-                DetailActivity.start(this, DetailActivity.MODE_AGENDA);
-                break;
-            case ITEM_BULLETIN:
-                DetailActivity.start(this, DetailActivity.MODE_BULLETIN);
-                break;
-            case ITEM_CALL:
-                callSebastiaan();
-                break;
-            case ITEM_HOME:
-                GrabBag.openUri(this, getString(R.string.home_url));
-                break;
-            case ITEM_NEWSLETTER:
-                DetailActivity.start(this, DetailActivity.MODE_NEWSLETTER);
-                break;
-            case ITEM_TEAM:
-                DetailActivity.start(this, DetailActivity.MODE_TEAM);
-                break;
-            case ITEM_TWITTER:
-                GrabBag.openUri(this, getString(R.string.twitter_url));
-                break;
-            case ITEM_YURLS:
-                GrabBag.openUri(this, getString(R.string.yurls_url));
-                break;
-        }
-    }
+//    @Override
+//    public void onItemSelected(int item) {
+//        switch (item) {
+//            case ITEM_CALL:
+//                callSebastiaan();
+//                break;
+//            case ITEM_HOME:
+//                GrabBag.openUri(this, getString(R.string.home_url));
+//                break;
+//            case ITEM_TWITTER:
+//                GrabBag.openUri(this, getString(R.string.twitter_url));
+//                break;
+//            case ITEM_YURLS:
+//                GrabBag.openUri(this, getString(R.string.yurls_url));
+//                break;
+//        }
+//    }
 
     private void callSebastiaan() {
         final String number = getResources().getString(R.string.call_url);
@@ -142,15 +132,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_preferences) {
-            DetailActivity.start(this, DetailActivity.MODE_SETTINGS);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onStartLoading() {
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -158,14 +139,6 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
     @Override
     public void onStopLoading(Exception e) {
         progressBar.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void downloadNewsletterFromUri(Uri uri) {
-        if (newsletterDownloadHelper == null) {
-            newsletterDownloadHelper = new NewsletterDownloadHelper(this);
-        }
-        newsletterDownloadHelper.downloadNewsletterFromUri(uri);
     }
 
     /**

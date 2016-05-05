@@ -8,21 +8,28 @@
     You should have received a copy of the license along with this
     work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
 -->
-<nl.sebastiaanschool.contact.app.NewsletterView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/ListItem"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/newsletter__item_name"
-        style="@style/ListItemTitle"
+        android:id="@+id/item__title"
+        style="@style/TextAppearance.AppCompat.Title"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
+        android:layout_width="match_parent"
+        tools:text="Vandaag, 16 oktober: Open Podium" />
 
     <TextView
-        android:id="@+id/newsletter__item_date"
-        style="@style/ListItemDate"
+        android:id="@+id/item__published_at"
+        style="@style/TextAppearance.AppCompat.Caption"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
-</nl.sebastiaanschool.contact.app.NewsletterView>
+        android:layout_width="match_parent"
+        android:drawableLeft="@drawable/ic_newsletter_blue"
+        android:drawableStart="@drawable/ic_newsletter_blue"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        tools:text="16 oktober 2015, 16:00" />
+</LinearLayout>

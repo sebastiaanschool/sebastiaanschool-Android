@@ -11,14 +11,13 @@ import java.io.File;
 /**
  * Implements the callback interfaces required for newsletter downloaderation.
  */
-public class NewsletterDownloadHelper implements NewsletterFragment.Callback, DownloadManagerAsyncTask.Callback {
+public class NewsletterDownloadHelper implements DownloadManagerAsyncTask.Callback {
     private final Context context;
 
     public NewsletterDownloadHelper(Context context) {
         this.context = context;
     }
 
-    @Override
     public void downloadNewsletterFromUri(Uri uri) {
         final String segment = uri.getLastPathSegment();
         if (segment != null && segment.endsWith(".pdf")) {

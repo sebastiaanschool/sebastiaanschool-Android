@@ -13,7 +13,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.android.tools.build:gradle:2.1.0'
     }
 }
 apply plugin: 'com.android.application'
@@ -35,14 +35,12 @@ android {
         release {
             minifyEnabled true
             proguardFile file('proguard-shrink-only.txt')
-            buildConfigField "String", "PARSE_APPLICATION_ID", getEnv('PARSE_APPLICATION_ID')
-            buildConfigField "String", "PARSE_CLIENT_KEY", getEnv('PARSE_CLIENT_KEY')
+            buildConfigField "String", "ENDPOINT_URL", "\"https://sebastiaan-appforce1.rhcloud.com/\""
         }
         debug {
             minifyEnabled false
             proguardFile file('proguard-shrink-only.txt')
-            buildConfigField "String", "PARSE_APPLICATION_ID", getEnv('DEV_PARSE_APPLICATION_ID')
-            buildConfigField "String", "PARSE_CLIENT_KEY", getEnv('DEV_PARSE_CLIENT_KEY')
+            buildConfigField "String", "ENDPOINT_URL", "\"http://${getEnv('SEBASTIAAN_HOST', '10.0.2.2')}:8000/\""
         }
     }
 
@@ -52,11 +50,12 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resConfigs "en", "nl"
     }
 }
 
 def getEnv(key, defVal = '') {
-    "\"${System.env.containsKey(key) ? System.env.get(key) : defVal}\""
+    System.env.containsKey(key) ? System.env.get(key) : defVal
 }
 
 // Import code signing configuration from a separate file, outside version control.
@@ -65,7 +64,11 @@ if (extraConf.exists()) {
     apply from: 'signing-config.gradle'
 }
 
-project.ext.supportLibVersion = "23.2.1"
+project.ext {
+    retrofitVersion = '2.0.2'
+    supportLibVersion = '23.3.0'
+    testSupportVersion = '2.2.2'
+}
 
 dependencies {
     compile "com.android.support:support-v4:${project.ext.supportLibVersion}"
@@ -74,14 +77,25 @@ dependencies {
     compile "com.android.support:gridlayout-v7:${project.ext.supportLibVersion}"
     compile "com.android.support:design:${project.ext.supportLibVersion}"
     compile "com.android.support:support-annotations:${project.ext.supportLibVersion}"
-    compile files('libs/Parse-1.9.3.jar')
-    androidTestCompile "com.android.support.test.espresso:espresso-core:2.2.2"
-    androidTestCompile "com.android.support.test.espresso:espresso-contrib:2.2.2"
-    androidTestCompile "com.android.support.test.espresso:espresso-idling-resource:2.2.2"
-    androidTestCompile "com.android.support.test.espresso:espresso-intents:2.2.2"
+    compile "com.android.support:recyclerview-v7:${project.ext.supportLibVersion}"
+    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'io.reactivex:rxjava:1.1.4'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile "com.squareup.retrofit2:retrofit:${project.ext.retrofitVersion}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${project.ext.retrofitVersion}"
+    compile "com.squareup.retrofit2:converter-moshi:${project.ext.retrofitVersion}"
+    compile 'com.squareup.moshi:moshi:1.1.0'
+    compile 'com.google.android.gms:play-services-gcm:8.4.0'
+    compile 'net.danlew:android.joda:2.9.3'
+    testCompile 'junit:junit:4.12'
+    androidTestCompile "com.android.support.test.espresso:espresso-core:${project.ext.testSupportVersion}"
+    androidTestCompile "com.android.support.test.espresso:espresso-contrib:${project.ext.testSupportVersion}"
+    androidTestCompile "com.android.support.test.espresso:espresso-idling-resource:${project.ext.testSupportVersion}"
+    androidTestCompile "com.android.support.test.espresso:espresso-intents:${project.ext.testSupportVersion}"
     androidTestCompile "com.android.support.test:runner:0.5"
     androidTestCompile "com.android.support:support-annotations:${project.ext.supportLibVersion}"
-    compile 'com.parse.bolts:bolts-android:1.2.0'
-    compile 'com.squareup.okhttp:okhttp:2.7.5'
-    compile 'com.google.android.gms:play-services-gcm:8.4.0'
+    androidTestCompile "com.android.support:support-v4:${project.ext.supportLibVersion}"
+    androidTestCompile "com.android.support:appcompat-v7:${project.ext.supportLibVersion}"
+    androidTestCompile "com.android.support:design:${project.ext.supportLibVersion}"
+    androidTestCompile "com.android.support:recyclerview-v7:${project.ext.supportLibVersion}"
 }

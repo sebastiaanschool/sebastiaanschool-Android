@@ -2,10 +2,14 @@
 -dontobfuscate
 -dontoptimize
 
--dontwarn com.parse.ParseFacebookUtils
--dontwarn com.parse.FacebookAuthenticationProvider
--dontwarn com.parse.FacebookAuthenticationProvider*
--dontnote libcore.icu.ICU
+# Suppress some nonessential stuff to make Gradle finish
+-dontwarn okio.**
+-dontwarn rx.**
+-dontnote com.squareup.**
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
 
 # The remainder of this file has been copied from the Android SDK directory and trimmed.
 -dontskipnonpubliclibraryclasses

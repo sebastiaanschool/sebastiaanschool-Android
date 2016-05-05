@@ -9,9 +9,6 @@
  */
 package nl.sebastiaanschool.contact.app;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-
 /**
  * Base class for fragments in this app.
  * Created by Barend on 2-11-13.

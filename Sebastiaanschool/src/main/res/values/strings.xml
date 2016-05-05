@@ -8,7 +8,7 @@
     You should have received a copy of the license along with this
     work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:lang="en_US">
     <string name="app_name" translatable="false">Seb@stiaan</string>
     <string name="call_url" translatable="false">tel:+31%2055%20533%2053%2055</string>
     <string name="call_failed_dialog_body">Could not initiate call. Please call manually. The number is:\n\n+31 55 533 53 55</string>
@@ -51,5 +51,4 @@
     <string name="settings__push_newsletter_summary">Notify when a newsletter is made available.</string>
     <string name="settings__push_bulletin_title">Bulletin</string>
     <string name="settings__push_bulletin_summary">Notify when a bulletin is made available.</string>
-    <string name="title_activity_detail">DetailActivity</string>
 </resources>
