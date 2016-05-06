@@ -19,18 +19,17 @@ import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewConfiguration;
-import android.widget.ProgressBar;
 
 import java.util.List;
 
+import nl.sebastiaanschool.contact.app.gui.NavigationPagerAdapter;
 import nl.sebastiaanschool.contact.app.gui.TimelineFragment;
 
 /**
@@ -51,12 +50,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.action_bar));
+
+        ViewPager vp = (ViewPager) findViewById(R.id.main__content_container);
+        vp.setAdapter(new NavigationPagerAdapter(this, getSupportFragmentManager()));
+
         TabLayout tl = (TabLayout) findViewById(R.id.detail_tabs);
-        tl.addTab(tl.newTab().setText("Nieuws"));
-        tl.addTab(tl.newTab().setText("Agenda"));
-        tl.addTab(tl.newTab().setText("Team"));
-        tl.addTab(tl.newTab().setText("Contact"));
-        tl.addTab(tl.newTab().setText("Instellingen"));
+        tl.setupWithViewPager(vp);
+
         TimelineFragment timelineFragment;
         if (savedInstanceState == null) {
             timelineFragment = new TimelineFragment();

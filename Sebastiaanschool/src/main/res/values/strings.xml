@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright (c) 2014 Barend Garvelink
 
     SebastiaanSchool is licensed under a
@@ -51,4 +50,11 @@
     <string name="settings__push_newsletter_summary">Notify when a newsletter is made available.</string>
     <string name="settings__push_bulletin_title">Bulletin</string>
     <string name="settings__push_bulletin_summary">Notify when a bulletin is made available.</string>
+    <string-array name="main__page_titles">
+        <item>News</item>
+        <item>Agenda</item>
+        <item>Contact</item>
+        <item>Team</item>
+        <item>Settings</item>
+    </string-array>
 </resources>

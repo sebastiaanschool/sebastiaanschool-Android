@@ -27,7 +27,7 @@ public class TimelineFragment extends Fragment {
     }
 
     @SuppressWarnings("unused")
-    public static TimelineFragment newInstance(int columnCount) {
+    public static TimelineFragment newInstance() {
         TimelineFragment fragment = new TimelineFragment();
         return fragment;
     }

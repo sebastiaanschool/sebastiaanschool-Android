@@ -45,4 +45,11 @@
     <string name="settings__push_newsletter_summary">Ontvang een bericht wanneer er een nieuwsbrief wordt geplaatst.</string>
     <string name="settings__push_bulletin_title">Bulletin</string>
     <string name="settings__push_bulletin_summary">Ontvang een bericht wanneer er een bulletin wordt geplaatst.</string>
+    <string-array name="main__page_titles">
+        <item>Nieuws</item>
+        <item>Agenda</item>
+        <item>Contact</item>
+        <item>Team</item>
+        <item>Instellingen</item>
+    </string-array>
 </resources>
