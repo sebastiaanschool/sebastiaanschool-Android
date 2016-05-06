@@ -55,8 +55,8 @@
                 android:id="@id/action_bar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:theme="@style/AppToolbar"
                 app:layout_collapseMode="pin"
-                app:theme="@style/AppToolbar"
                 app:popupTheme="@style/AppToolbarPopup">
 
                 <ProgressBar
