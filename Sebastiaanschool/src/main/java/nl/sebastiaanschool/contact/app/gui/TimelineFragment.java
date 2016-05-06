@@ -35,7 +35,7 @@ public class TimelineFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        timelineAdapter = new TimelineRecyclerViewAdapter(TimelineDataSource.getInstance(getContext()));
+        timelineAdapter = new TimelineRecyclerViewAdapter(TimelineDataSource.getInstance());
     }
 
     @Override

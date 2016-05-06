@@ -17,15 +17,15 @@ class TimelineDataSource {
 
     private static TimelineDataSource instance;
 
-    public static TimelineDataSource getInstance(Context context) {
+    public static TimelineDataSource getInstance() {
         if (instance == null) {
-            instance = new TimelineDataSource(context);
+            instance = new TimelineDataSource();
         }
         return instance;
     }
 
-    private TimelineDataSource(Context context) {
-        this.backend = BackendInterface.getInstance(context).connector;
+    private TimelineDataSource() {
+        this.backend = BackendInterface.getInstance().connector;
     }
 
     private BackendApi backend;

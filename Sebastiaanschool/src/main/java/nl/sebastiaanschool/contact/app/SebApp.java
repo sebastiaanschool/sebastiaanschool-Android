@@ -13,10 +13,13 @@ import android.app.Application;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
+import nl.sebastiaanschool.contact.app.data.BackendInterface;
+
 public class SebApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
         JodaTimeAndroid.init(this);
+        BackendInterface.init(this);
     }
 }
