@@ -39,11 +39,9 @@ import nl.sebastiaanschool.contact.app.gui.TimelineFragment;
  * extra is found to contain either of the {@code PushPreferencesUpdater.PUSH_CHANNEL_} constants'
  * values, then the activity automatically navigates to the corresponding screen.</p>
  */
-public class MainActivity extends AppCompatActivity implements DataLoadingCallback {
+public class MainActivity extends AppCompatActivity {
     private static final IntentFilter DOWNLOAD_COMPLETED_BROADCASTS = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
 
-    private ProgressBar progressBar;
-    private CollapsingToolbarLayout toolbarLayout;
     private NewsletterDownloadHelper newsletterDownloadHelper;
 
     @Override
@@ -51,10 +49,6 @@ public class MainActivity extends AppCompatActivity implements DataLoadingCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
-        toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main__toolbar_container);
-        toolbarLayout.setTitle(getTitle());
         setSupportActionBar((Toolbar) findViewById(R.id.action_bar));
         TimelineFragment timelineFragment;
         if (savedInstanceState == null) {
@@ -129,16 +123,6 @@ public class MainActivity extends AppCompatActivity implements DataLoadingCallba
             preferences.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
         return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public void onStartLoading() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onStopLoading(Exception e) {
-        progressBar.setVisibility(View.INVISIBLE);
     }
 
     /**

@@ -6,7 +6,7 @@ import android.preference.PreferenceFragment;
 /**
  * Application attribution and settings.
  */
-public class SettingsFragment extends PreferenceFragment implements SebFragment {
+public class SettingsFragment extends PreferenceFragment {
 
 
     public static SettingsFragment newInstance() {
@@ -25,10 +25,5 @@ public class SettingsFragment extends PreferenceFragment implements SebFragment 
     public void onStop() {
         new PushPreferencesUpdater(getActivity()).updatePushPreferences();
         super.onStop();
-    }
-
-    @Override
-    public int getTitleResId() {
-        return R.string.navigation__settings;
     }
 }
