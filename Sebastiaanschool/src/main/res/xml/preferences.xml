@@ -27,13 +27,13 @@
         android:title="@string/settings__push">
         <SwitchPreferenceCompat
             android:defaultValue="true"
-            android:icon="@drawable/ic_newsletter_blue"
+            android:icon="@drawable/ic_newsletter_black_24dp"
             android:key="pref_push_newsletters"
             android:summary="@string/settings__push_newsletter_summary"
             android:title="@string/settings__push_newsletter_title" />
         <SwitchPreferenceCompat
             android:defaultValue="true"
-            android:icon="@drawable/ic_bulletin_blue"
+            android:icon="@drawable/ic_bulletin_black_24dp"
             android:key="pref_push_bulletins"
             android:summary="@string/settings__push_bulletin_summary"
             android:title="@string/settings__push_bulletin_title" />

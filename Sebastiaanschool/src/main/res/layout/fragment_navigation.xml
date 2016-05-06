@@ -98,7 +98,6 @@
                 android:layout_gravity="fill_horizontal"
                 android:clickable="true"
                 android:contentDescription="@string/navigation__newsletter_desc"
-                android:drawableLeft="@drawable/ic_newsletter"
                 android:text="@string/navigation__newsletter" />
 
             <TextView
@@ -109,7 +108,6 @@
                 android:layout_gravity="fill_horizontal"
                 android:clickable="true"
                 android:contentDescription="@string/navigation__bulletin_desc"
-                android:drawableLeft="@drawable/ic_bulletin"
                 android:text="@string/navigation__bulletin" />
 
         </LinearLayout>

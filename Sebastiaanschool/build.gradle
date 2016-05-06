@@ -51,6 +51,7 @@ android {
         targetSdkVersion 23
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resConfigs "en", "nl"
+        vectorDrawables.useSupportLibrary = true
     }
 }
 
