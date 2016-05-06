@@ -11,6 +11,12 @@ package nl.sebastiaanschool.contact.app;
 
 import android.app.Application;
 
-public class SebApp extends Application {
+import net.danlew.android.joda.JodaTimeAndroid;
 
+public class SebApp extends Application {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        JodaTimeAndroid.init(this);
+    }
 }
