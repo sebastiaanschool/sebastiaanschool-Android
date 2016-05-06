@@ -45,6 +45,7 @@ public class TimelineFragment extends Fragment {
         final RecyclerView recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(timelineAdapter);
+        recyclerView.addItemDecoration(new CardMarginsDecorator(context));
         return view;
     }
 

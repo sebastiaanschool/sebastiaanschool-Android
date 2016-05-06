@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright (c) 2014 Barend Garvelink
 
     SebastiaanSchool is licensed under a
@@ -8,37 +7,48 @@
     You should have received a copy of the license along with this
     work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ListItem.Bulletin"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/cardview_light_background"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="1dp"
+    app:contentPadding="4dp">
 
-    <TextView
-        android:id="@+id/item__title"
-        style="@style/TextAppearance.AppCompat.Title"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        style="@style/ListItem.Bulletin"
         android:layout_width="match_parent"
-        tools:text="Vandaag, 16 oktober: Open Podium" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/item__body"
-        style="@style/TextAppearance.AppCompat.Medium"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:paddingTop="8dp"
-        android:autoLink="email|web"
-        tools:text="U bent van harte welkom vanaf 11.00 uur! Als het goed zijn de verhalen minder langdradig dan hetgeen ik hier intyp om een paar regels tekstomloop te bewerkstelligen. Android heeft trouwens geen hyphenation, dus woorden als &quot;bewerkstelligen&quot; doen het in deze context leuk." />
+        <TextView
+            android:id="@+id/item__title"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Vandaag, 16 oktober: Open Podium" />
 
-    <TextView
-        android:id="@+id/item__published_at"
-        style="@style/TextAppearance.AppCompat.Caption"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:drawableLeft="@drawable/ic_bulletin_blue"
-        android:drawableStart="@drawable/ic_bulletin_blue"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        tools:text="16 oktober 2015, 16:00" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/item__body"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="email|web"
+            android:paddingTop="8dp"
+            tools:text="U bent van harte welkom vanaf 11.00 uur! Als het goed zijn de verhalen minder langdradig dan hetgeen ik hier intyp om een paar regels tekstomloop te bewerkstelligen. Android heeft trouwens geen hyphenation, dus woorden als &quot;bewerkstelligen&quot; doen het in deze context leuk." />
+
+        <TextView
+            android:id="@+id/item__published_at"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_bulletin_blue"
+            android:drawablePadding="8dp"
+            android:drawableStart="@drawable/ic_bulletin_blue"
+            android:gravity="center_vertical"
+            tools:text="16 oktober 2015, 16:00" />
+    </LinearLayout>
+</android.support.v7.widget.CardView>
+

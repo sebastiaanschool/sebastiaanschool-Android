@@ -14,4 +14,9 @@
     <dimen name="navigation_item_vertical_margin">0dp</dimen>
     <dimen name="navigation_item_vertical_padding">8dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="card_margin_top_first">16dp</dimen>
+    <dimen name="card_margin_top_next">2dp</dimen>
+    <dimen name="card_margin_bottom_last">16dp</dimen>
+    <dimen name="card_margin_horizontal">8dp</dimen>
 </resources>
