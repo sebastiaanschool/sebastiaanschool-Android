@@ -20,6 +20,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -50,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.action_bar));
+        TabLayout tl = (TabLayout) findViewById(R.id.detail_tabs);
+        tl.addTab(tl.newTab().setText("Nieuws"));
+        tl.addTab(tl.newTab().setText("Agenda"));
+        tl.addTab(tl.newTab().setText("Team"));
+        tl.addTab(tl.newTab().setText("Contact"));
+        tl.addTab(tl.newTab().setText("Instellingen"));
         TimelineFragment timelineFragment;
         if (savedInstanceState == null) {
             timelineFragment = new TimelineFragment();
