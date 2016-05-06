@@ -35,7 +35,7 @@ android {
         release {
             minifyEnabled true
             proguardFile file('proguard-shrink-only.txt')
-            buildConfigField "String", "ENDPOINT_URL", "\"https://sebastiaan-appforce1.rhcloud.com/\""
+            buildConfigField "String", "ENDPOINT_URL", "\"https://backend-sebastiaanschool.rhcloud.com/\""
         }
         debug {
             minifyEnabled false
