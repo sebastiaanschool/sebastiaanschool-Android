@@ -25,17 +25,54 @@
     <PreferenceCategory
         android:key="pref_push_settings"
         android:title="@string/settings__push">
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:defaultValue="true"
             android:icon="@drawable/ic_newsletter_blue"
             android:key="pref_push_newsletters"
             android:summary="@string/settings__push_newsletter_summary"
             android:title="@string/settings__push_newsletter_title" />
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:defaultValue="true"
             android:icon="@drawable/ic_bulletin_blue"
             android:key="pref_push_bulletins"
             android:summary="@string/settings__push_bulletin_summary"
             android:title="@string/settings__push_bulletin_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_attribution"
+        android:title="@string/settings__attribution">
+        <Preference
+            android:persistent="false"
+            android:summary="@string/settings__square_summary"
+            android:title="@string/settings__square_title">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://square.github.io/" />
+        </Preference>
+        <Preference
+            android:persistent="false"
+            android:summary="@string/settings__rx_summary"
+            android:title="@string/settings__rx_title">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://reactivex.io/" />
+        </Preference>
+        <Preference
+            android:persistent="false"
+            android:summary="@string/settings__joda_summary"
+            android:title="@string/settings__joda_title">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/dlew/joda-time-android" />
+        </Preference>
+        <Preference
+            android:persistent="false"
+            android:summary="@string/settings__icons_summary"
+            android:title="@string/settings__icons_title">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://developer.android.com/tools/studio/index.html" />
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

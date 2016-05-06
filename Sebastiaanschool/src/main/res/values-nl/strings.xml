@@ -45,6 +45,15 @@
     <string name="settings__push_newsletter_summary">Ontvang een bericht wanneer er een nieuwsbrief wordt geplaatst.</string>
     <string name="settings__push_bulletin_title">Bulletin</string>
     <string name="settings__push_bulletin_summary">Ontvang een bericht wanneer er een bulletin wordt geplaatst.</string>
+    <string name="settings__attribution">Erkenningen</string>
+    <string name="settings__square_title">OkHttp, Okio, Retrofit, Moshi</string>
+    <string name="settings__square_summary">Deze app gebruikt OkHttp, Okio, Retrofit en Moshi, welke zijn gepubliceerd door Square Inc. met de Apache 2.0 Licentie. Tik voor meer informatie.</string>
+    <string name="settings__rx_title">RxJava, RxAndroid</string>
+    <string name="settings__rx_summary">Deze app gebruik RxJava door Netflix Inc. en RxAndroid door The RxAndroid Developers, onder de Apache 2.0 Licentie. Tik voor meer informatie.</string>
+    <string name="settings__joda_title">Joda-Time Android</string>
+    <string name="settings__joda_summary">Deze app gebruikt Joda-Time Android door Stephen Colebourne en Daniel Lew. Apache 2.0 Licentie. Tik voor meer informatie.</string>
+    <string name="settings__icons_title">Android Studio Assets</string>
+    <string name="settings__icons_summary">Deze app gebruikt vector plaatjes uit Android Studio, beschikbaar onder de CC BY 4.0 licentie. Tik voor meer informatie.</string>
     <string-array name="main__page_titles">
         <item>Nieuws</item>
         <item>Agenda</item>
