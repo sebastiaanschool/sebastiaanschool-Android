@@ -10,16 +10,36 @@
 package nl.sebastiaanschool.contact.app;
 
 import android.app.Application;
+import android.os.Build;
+import android.os.StrictMode;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import nl.sebastiaanschool.contact.app.data.BackendInterface;
 
 public class SebApp extends Application {
+
+    // TODO add LeakCanary
+
     @Override
     public void onCreate() {
         super.onCreate();
         JodaTimeAndroid.init(this);
         BackendInterface.init(this);
+
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .penaltyFlashScreen()
+                    .penaltyDeathOnNetwork()
+                    .build());
+
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .setClassInstanceLimit(BackendInterface.class, 1)
+                    .build());
+        }
     }
 }
