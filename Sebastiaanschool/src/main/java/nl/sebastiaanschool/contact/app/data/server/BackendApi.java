@@ -10,6 +10,6 @@ import rx.Observable;
  */
 public interface BackendApi {
 
-    @GET("/api/timeline")
+    @GET("/api/timeline/")
     Observable<List<TimelineItem>> getTimeline();
 }
