@@ -85,7 +85,8 @@ class TimelineRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecycler
                 view = inflater.inflate(R.layout.view_newsletter_item, parent, false);
                 break;
             default:
-                throw new IllegalArgumentException();
+                view = inflater.inflate(R.layout.view_unknown_item, parent, false);
+                break;
         }
         return new ViewHolder(view);
     }
@@ -93,11 +94,7 @@ class TimelineRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecycler
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final TimelineItem item = mValues.get(position);
-        if (item instanceof TimelineItem.Bulletin) {
-            holder.setItem((TimelineItem.Bulletin) item);
-        } else if (item instanceof TimelineItem.Newsletter) {
-            holder.setItem((TimelineItem.Newsletter) item);
-        }
+        holder.setItem(item);
     }
 
     @Override
@@ -124,19 +121,14 @@ class TimelineRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecycler
             mPublishedAt = (TextView) view.findViewById(R.id.item__published_at);
         }
 
-        private void setItemBasics(TimelineItem item) {
+        public void setItem(TimelineItem item) {
             this.mItem = item;
             this.mTitle.setText(item.title);
             this.mPublishedAt.setText(DateUtils.getRelativeDateTimeString(mView.getContext(), item.publishedAt, Period.weeks(1), 0));
-        }
-
-        public void setItem(TimelineItem.Bulletin bulletin) {
-            setItemBasics(bulletin);
-            this.mBody.setText(bulletin.body);
-        }
-
-        public void setItem(TimelineItem.Newsletter newsletter) {
-            setItemBasics(newsletter);
+            if (item instanceof TimelineItem.Bulletin) {
+                TimelineItem.Bulletin bulletin = (TimelineItem.Bulletin) item;
+                this.mBody.setText(bulletin.body);
+            }
         }
 
         @Override

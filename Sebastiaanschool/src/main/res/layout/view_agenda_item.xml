@@ -36,9 +36,9 @@
             style="@style/TextAppearance.AppCompat.Caption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_event_black_24dp"
+            android:drawableLeft="@drawable/ic_agenda_event_24dp"
             android:drawablePadding="8dp"
-            android:drawableStart="@drawable/ic_event_black_24dp"
+            android:drawableStart="@drawable/ic_agenda_event_24dp"
             android:drawableTint="@color/sebastiaan_blue"
             android:gravity="center_vertical"
             tools:text="4 maart 2016 t/m 11 maart 2016" />
