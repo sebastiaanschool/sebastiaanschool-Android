@@ -13,9 +13,11 @@ import java.util.List;
 
 import nl.sebastiaanschool.contact.app.R;
 import nl.sebastiaanschool.contact.app.data.server.TeamItem;
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subjects.PublishSubject;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -24,6 +26,7 @@ import rx.subscriptions.CompositeSubscription;
 class TeamRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecyclerViewAdapter<TeamRecyclerViewAdapter.ViewHolder> {
 
     private final List<TeamItem> mValues;
+    private final PublishSubject<TeamItem> itemsClicked = PublishSubject.create();
     private CompositeSubscription subscriptions = new CompositeSubscription();
 
 
@@ -54,6 +57,14 @@ class TeamRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecyclerView
                 }));
     }
 
+    /**
+     * A hot observable that emits items that have been tapped/clicked by the operator.
+     * @return an observable.
+     */
+    public Observable<TeamItem> itemsClicked() {
+        return itemsClicked;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -76,7 +87,7 @@ class TeamRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecyclerView
         subscriptions.unsubscribe();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
         public final ImageView mPicture;
         public final TextView mName;
@@ -87,6 +98,7 @@ class TeamRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecyclerView
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            mView.setOnClickListener(this);
             mPicture = (ImageView) view.findViewById(R.id.item__picture);
             mPicture.setImageDrawable(GrabBag.loadVectorDrawable(mPicture.getContext(), R.drawable.ic_team_person_24dp));
             mName = (TextView) view.findViewById(R.id.item__name);
@@ -99,6 +111,11 @@ class TeamRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecyclerView
             this.mName.setText(item.displayName);
             this.mDescription.setText(item.detailText);
             this.mEmail.setText(item.email);
+        }
+
+        @Override
+        public void onClick(View v) {
+            itemsClicked.onNext(mItem);
         }
 
         @Override
