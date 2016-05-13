@@ -44,10 +44,7 @@
             style="@style/TextAppearance.AppCompat.Caption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_timeline_bulletin_24dp"
             android:drawablePadding="8dp"
-            android:drawableStart="@drawable/ic_timeline_bulletin_24dp"
-            android:drawableTint="@color/sebastiaan_blue"
             android:gravity="center_vertical"
             tools:text="16 oktober 2015, 16:00" />
     </LinearLayout>

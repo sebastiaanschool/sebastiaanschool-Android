@@ -29,9 +29,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:contentDescription="@string/team__picture_cdesc"
-            android:src="@drawable/ic_team_person_24dp"
-            android:tint="@color/sebastiaan_blue"/>
+            android:contentDescription="@string/team__picture_cdesc"/>
 
         <LinearLayout
             style="@style/ListItem.Bulletin"

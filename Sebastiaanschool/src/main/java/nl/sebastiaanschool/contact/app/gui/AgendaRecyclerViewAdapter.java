@@ -1,7 +1,6 @@
 package nl.sebastiaanschool.contact.app.gui;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -96,6 +95,7 @@ class AgendaRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecyclerVi
             mView = view;
             mTitle = (TextView) view.findViewById(R.id.item__title);
             mDateRange = (TextView) view.findViewById(R.id.item__date_range);
+            GrabBag.applyVectorDrawableLeft(mDateRange, R.drawable.ic_agenda_event_24dp);
         }
 
         public void setItem(AgendaItem item) {

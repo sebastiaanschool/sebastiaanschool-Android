@@ -1,5 +1,6 @@
 package nl.sebastiaanschool.contact.app.gui;
 
+import android.support.annotation.DrawableRes;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -75,20 +76,18 @@ class TimelineRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecycler
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view;
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
             case TYPE_BULLETIN:
-                view = inflater.inflate(R.layout.view_bulletin_item, parent, false);
-                break;
+                return new ViewHolder(inflater.inflate(R.layout.view_bulletin_item, parent, false),
+                        R.drawable.ic_timeline_bulletin_24dp);
             case TYPE_NEWSLETTER:
-                view = inflater.inflate(R.layout.view_newsletter_item, parent, false);
-                break;
+                return new ViewHolder(inflater.inflate(R.layout.view_newsletter_item, parent, false),
+                        R.drawable.ic_timeline_newsletter_24dp);
             default:
-                view = inflater.inflate(R.layout.view_unknown_item, parent, false);
-                break;
+                return new ViewHolder(inflater.inflate(R.layout.view_unknown_item, parent, false),
+                        R.drawable.ic_timeline_unknown_24dp);
         }
-        return new ViewHolder(view);
     }
 
     @Override
@@ -113,12 +112,13 @@ class TimelineRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecycler
         public final TextView mPublishedAt;
         public TimelineItem mItem;
 
-        public ViewHolder(View view) {
+        public ViewHolder(View view, @DrawableRes int iconRes) {
             super(view);
             mView = view;
             mTitle = (TextView) view.findViewById(R.id.item__title);
             mBody = (TextView) view.findViewById(R.id.item__body);
             mPublishedAt = (TextView) view.findViewById(R.id.item__published_at);
+            GrabBag.applyVectorDrawableLeft(mPublishedAt, iconRes);
         }
 
         public void setItem(TimelineItem item) {

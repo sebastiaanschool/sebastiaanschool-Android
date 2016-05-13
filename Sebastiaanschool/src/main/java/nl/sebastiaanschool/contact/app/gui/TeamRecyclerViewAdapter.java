@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -77,6 +78,7 @@ class TeamRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecyclerView
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
+        public final ImageView mPicture;
         public final TextView mName;
         public final TextView mDescription;
         public final TextView mEmail;
@@ -85,6 +87,8 @@ class TeamRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecyclerView
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            mPicture = (ImageView) view.findViewById(R.id.item__picture);
+            mPicture.setImageDrawable(GrabBag.loadVectorDrawable(mPicture.getContext(), R.drawable.ic_team_person_24dp));
             mName = (TextView) view.findViewById(R.id.item__name);
             mDescription = (TextView) view.findViewById(R.id.item__detail_text);
             mEmail = (TextView) view.findViewById(R.id.item__email);

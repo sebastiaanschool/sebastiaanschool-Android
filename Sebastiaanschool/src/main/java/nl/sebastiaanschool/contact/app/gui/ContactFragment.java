@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import nl.sebastiaanschool.contact.app.R;
 
@@ -19,23 +20,27 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         return new ContactFragment();
     }
 
-    private View callButton;
-    private View twitterButton;
-    private View yurlsButton;
-    private View homepageButton;
+    private TextView callButton;
+    private TextView twitterButton;
+    private TextView yurlsButton;
+    private TextView homepageButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_contact, container, false);
-        callButton = view.findViewById(R.id.contact_phone);
+        callButton = (TextView) view.findViewById(R.id.contact_phone);
         callButton.setOnClickListener(this);
-        twitterButton = view.findViewById(R.id.contact_twitter);
+        GrabBag.applyVectorDrawableLeft(callButton, R.drawable.ic_contact_phone_32dp);
+        twitterButton = (TextView) view.findViewById(R.id.contact_twitter);
         twitterButton.setOnClickListener(this);
-        yurlsButton = view.findViewById(R.id.contact_yurls);
+        GrabBag.applyBitmapDrawableLeft(twitterButton, R.drawable.ic_twitter_blue);
+        yurlsButton = (TextView) view.findViewById(R.id.contact_yurls);
         yurlsButton.setOnClickListener(this);
-        homepageButton = view.findViewById(R.id.contact_homepage);
+        GrabBag.applyBitmapDrawableLeft(yurlsButton, R.drawable.ic_yurls_blue);
+        homepageButton = (TextView) view.findViewById(R.id.contact_homepage);
         homepageButton.setOnClickListener(this);
+        GrabBag.applyVectorDrawableLeft(homepageButton, R.drawable.ic_contact_homepage_32dp);
         return view;
     }
 

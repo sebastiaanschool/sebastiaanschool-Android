@@ -13,7 +13,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
 import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.DrawableRes;
+import android.support.graphics.drawable.VectorDrawableCompat;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -44,6 +50,35 @@ public final class GrabBag {
                     .setNegativeButton(R.string.close_button, null)
                     .show();
         }
+    }
+
+    public static void applyBitmapDrawableLeft(TextView view, @DrawableRes int resId) {
+        // This could be defined in XML just as easily, but it's here for symmetry at the call site.
+        view.setCompoundDrawablesWithIntrinsicBounds(resId, 0, 0, 0);
+    }
+
+    /**
+     * Apply a vector drawable, using backwards compatibility as needed. This throws an exception
+     * if your {@code resId} is actually a bitmap drawable.
+     */
+    public static void applyVectorDrawableLeft(TextView view, @DrawableRes int resId) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            view.setCompoundDrawablesRelativeWithIntrinsicBounds(resId, 0, 0, 0);
+            view.getCompoundDrawablesRelative()[0].setTint(view.getResources()
+                    .getColor(R.color.sebastiaan_blue));
+        } else {
+            final Context context = view.getContext();
+            final Drawable drawable = loadVectorDrawable(context, resId);
+            if (Build.VERSION.SDK_INT >= 17) {
+                view.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable, null, null, null);
+            } else {
+                view.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
+            }
+        }
+    }
+
+    public static Drawable loadVectorDrawable(Context context, @DrawableRes int resId) {
+        return VectorDrawableCompat.create(context.getResources(), resId, context.getTheme());
     }
 
     private GrabBag() {}
