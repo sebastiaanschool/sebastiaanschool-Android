@@ -49,10 +49,7 @@
     <string name="settings__github_title">Source Code</string>
     <string name="settings__github_summary">https://github.com/sebastiaanschool</string>
     <string name="settings__push">Push Notifications</string>
-    <string name="settings__push_newsletter_title">Newsletter</string>
-    <string name="settings__push_newsletter_summary">Notify when a newsletter is made available.</string>
-    <string name="settings__push_bulletin_title">Bulletin</string>
-    <string name="settings__push_bulletin_summary">Notify when a bulletin is made available.</string>
+    <string name="settings__push_news">Notify me of News Items</string>
     <string name="settings__attribution">Attribution</string>
     <string name="settings__square_title">OkHttp, Okio, Retrofit, Moshi</string>
     <string name="settings__square_summary">This app uses OkHttp, Okio, Retrofit and Moshi, all published by Square Inc. under the Apache 2.0 License. Tap for more information.</string>

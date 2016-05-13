@@ -25,18 +25,14 @@
     <PreferenceCategory
         android:key="pref_push_settings"
         android:title="@string/settings__push">
+        <!-- Push notifications are disabled for now, we don't have support on the new platform yet. -->
+        <!--suppress AndroidElementNotAllowed -->
         <SwitchPreferenceCompat
             android:defaultValue="true"
-            android:icon="@drawable/ic_timeline_newsletter_24dp"
-            android:key="pref_push_newsletters"
-            android:summary="@string/settings__push_newsletter_summary"
-            android:title="@string/settings__push_newsletter_title" />
-        <SwitchPreferenceCompat
-            android:defaultValue="true"
-            android:icon="@drawable/ic_timeline_bulletin_24dp"
-            android:key="pref_push_bulletins"
-            android:summary="@string/settings__push_bulletin_summary"
-            android:title="@string/settings__push_bulletin_title" />
+            android:key="pref_push_news"
+            android:checked="false"
+            android:enabled="false"
+            android:title="@string/settings__push_news" />
     </PreferenceCategory>
 
     <PreferenceCategory

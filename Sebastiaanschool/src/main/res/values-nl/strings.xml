@@ -42,10 +42,7 @@
     <string name="settings__github_title">Broncode</string>
     <string name="settings__github_summary">https://github.com/sebastiaanschool</string>
     <string name="settings__push">Push-berichten</string>
-    <string name="settings__push_newsletter_title">Nieuwsbrief</string>
-    <string name="settings__push_newsletter_summary">Ontvang een bericht wanneer er een nieuwsbrief wordt geplaatst.</string>
-    <string name="settings__push_bulletin_title">Bulletin</string>
-    <string name="settings__push_bulletin_summary">Ontvang een bericht wanneer er een bulletin wordt geplaatst.</string>
+    <string name="settings__push_news">Pushbericht bij Nieuws</string>
     <string name="settings__attribution">Erkenningen</string>
     <string name="settings__square_title">OkHttp, Okio, Retrofit, Moshi</string>
     <string name="settings__square_summary">Deze app gebruikt OkHttp, Okio, Retrofit en Moshi, welke zijn gepubliceerd door Square Inc. met de Apache 2.0 Licentie. Tik voor meer informatie.</string>
