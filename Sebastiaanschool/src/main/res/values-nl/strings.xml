@@ -54,6 +54,7 @@
     <string name="settings__joda_summary">Deze app gebruikt Joda-Time Android door Stephen Colebourne en Daniel Lew. Apache 2.0 Licentie. Tik voor meer informatie.</string>
     <string name="settings__icons_title">Android Studio Assets</string>
     <string name="settings__icons_summary">Deze app gebruikt vector plaatjes uit Android Studio, beschikbaar onder de CC BY 4.0 licentie. Tik voor meer informatie.</string>
+    <string name="team__picture_cdesc">Foto</string>
     <string-array name="main__page_titles">
         <item>Nieuws</item>
         <item>Agenda</item>

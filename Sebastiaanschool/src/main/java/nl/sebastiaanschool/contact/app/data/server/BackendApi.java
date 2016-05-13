@@ -15,4 +15,12 @@ public interface BackendApi {
 
     @GET("/api/agendaItems/")
     Observable<List<AgendaItem>> getAgenda();
+
+    /**
+     * Here's a mismatch between the API URL and the Java class names. This is unfortunate, but I
+     * don't know what else to call the contact tab, therefore the tab showing this stuff will be
+     * "team".
+     */
+    @GET("/api/contactItems/")
+    Observable<List<TeamItem>> getTeam();
 }
