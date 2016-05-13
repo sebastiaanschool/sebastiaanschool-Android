@@ -84,28 +84,6 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //    }
 
-    private void callSebastiaan() {
-        final String number = getResources().getString(R.string.contact__call_url);
-        final Intent dial = new Intent(Intent.ACTION_DIAL, Uri.parse(number));
-        dial.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        List<ResolveInfo> handlers = getPackageManager().queryIntentActivities(dial, 0);
-        boolean fail = handlers.isEmpty();
-        if (!fail) {
-            try {
-                startActivity(dial);
-            } catch (Exception e) {
-                fail = true;
-            }
-        }
-        if (fail) {
-            // Unlikely to occur. Tablets generally register their contacts app to handle tel: URI's.
-            new AlertDialog.Builder(this)
-                    .setCancelable(true)
-                    .setMessage(R.string.call_failed_dialog_body)
-                    .setNegativeButton(R.string.close_button, null)
-                    .show();
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

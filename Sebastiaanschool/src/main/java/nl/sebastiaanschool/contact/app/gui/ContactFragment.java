@@ -1,12 +1,18 @@
 package nl.sebastiaanschool.contact.app.gui;
 
 
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.List;
 
 import nl.sebastiaanschool.contact.app.R;
 
@@ -47,8 +53,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v == callButton) {
-            String phoneUrl = getString(R.string.contact__call_url);
-            GrabBag.openUri(getContext(), phoneUrl);
+            callSebastiaan();
         } else if (v == twitterButton) {
             String twitterUrl = getString(R.string.contact__twitter_url);
             GrabBag.openUri(getContext(), twitterUrl);
@@ -58,6 +63,29 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         } else if (v == homepageButton) {
             String homepageUrl = getString(R.string.contact__homepage_url);
             GrabBag.openUri(getContext(), homepageUrl);
+        }
+    }
+
+    private void callSebastiaan() {
+        final String number = getResources().getString(R.string.contact__call_url);
+        final Intent dial = new Intent(Intent.ACTION_DIAL, Uri.parse(number));
+        dial.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        List<ResolveInfo> handlers = getContext().getPackageManager().queryIntentActivities(dial, 0);
+        boolean fail = handlers.isEmpty();
+        if (!fail) {
+            try {
+                startActivity(dial);
+            } catch (Exception e) {
+                fail = true;
+            }
+        }
+        if (fail) {
+            // Unlikely to occur. Tablets generally register their contacts app to handle tel: URI's.
+            new AlertDialog.Builder(getActivity())
+                    .setCancelable(true)
+                    .setMessage(R.string.call_failed_dialog_body)
+                    .setNegativeButton(R.string.close_button, null)
+                    .show();
         }
     }
 }
