@@ -13,6 +13,7 @@
     <string name="close_button">Sluiten</string>
     <string name="menu_downloads_folder">Downloadmap openen</string>
     <string name="download_started">Download gestart</string>
+    <string name="contact__call">Bellen: 055 533 53 55</string>
     <string name="navigation__homepage">Homepage</string>
     <string name="navigation__homepage_desc">Knop Homepage</string>
     <string name="navigation__twitter">Twitter</string>

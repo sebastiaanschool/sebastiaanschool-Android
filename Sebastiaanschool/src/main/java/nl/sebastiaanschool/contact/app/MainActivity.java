@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
     private void callSebastiaan() {
-        final String number = getResources().getString(R.string.call_url);
+        final String number = getResources().getString(R.string.contact__call_url);
         final Intent dial = new Intent(Intent.ACTION_DIAL, Uri.parse(number));
         dial.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         List<ResolveInfo> handlers = getPackageManager().queryIntentActivities(dial, 0);
