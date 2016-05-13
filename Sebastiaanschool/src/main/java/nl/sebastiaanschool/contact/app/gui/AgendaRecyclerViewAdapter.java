@@ -17,9 +17,11 @@ import java.util.List;
 
 import nl.sebastiaanschool.contact.app.R;
 import nl.sebastiaanschool.contact.app.data.server.AgendaItem;
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subjects.PublishSubject;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -28,8 +30,8 @@ import rx.subscriptions.CompositeSubscription;
 class AgendaRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecyclerViewAdapter<AgendaRecyclerViewAdapter.ViewHolder> {
 
     private final List<AgendaItem> mValues;
+    private final PublishSubject<AgendaItem> itemsClicked = PublishSubject.create();
     private CompositeSubscription subscriptions = new CompositeSubscription();
-
 
     public AgendaRecyclerViewAdapter(AgendaDataSource agendaDataSource) {
         mValues = new ArrayList<>();
@@ -58,6 +60,14 @@ class AgendaRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecyclerVi
                 }));
     }
 
+    /**
+     * A hot observable that emits items that have been tapped/clicked by the operator.
+     * @return an observable.
+     */
+    public Observable<AgendaItem> itemsClicked() {
+        return itemsClicked;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -80,7 +90,7 @@ class AgendaRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecyclerVi
         subscriptions.unsubscribe();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public static final int DATE_FLAGS = DateUtils.FORMAT_SHOW_DATE
                                            | DateUtils.FORMAT_SHOW_TIME
                                            | DateUtils.FORMAT_SHOW_WEEKDAY
@@ -93,6 +103,7 @@ class AgendaRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecyclerVi
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            mView.setOnClickListener(this);
             mTitle = (TextView) view.findViewById(R.id.item__title);
             mDateRange = (TextView) view.findViewById(R.id.item__date_range);
             GrabBag.applyVectorDrawableLeft(mDateRange, R.drawable.ic_agenda_event_24dp);
@@ -106,6 +117,11 @@ class AgendaRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecyclerVi
             this.mDateRange.setText(item.end == null
                     ? DateUtils.getRelativeDateTimeString(ctx, item.start, Period.weeks(1), DATE_FLAGS)
                     : DateUtils.formatDateRange(ctx, item.start, item.end, DATE_FLAGS));
+        }
+
+        @Override
+        public void onClick(View v) {
+            itemsClicked.onNext(mItem);
         }
 
         @Override
