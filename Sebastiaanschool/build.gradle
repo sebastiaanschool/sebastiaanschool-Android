@@ -53,6 +53,13 @@ android {
         resConfigs "en", "nl"
         vectorDrawables.useSupportLibrary = true
     }
+
+    android {
+        lintOptions {
+            disable 'InvalidPackage',          // This triggers on some files in Retrofit and Okio
+                    'GoogleAppIndexingWarning' // We're not interested in App Indexing
+        }
+    }
 }
 
 def getEnv(key, defVal = '') {

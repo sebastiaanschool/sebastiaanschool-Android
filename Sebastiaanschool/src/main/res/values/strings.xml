@@ -11,7 +11,6 @@
     <string name="app_name" translatable="false">Seb@stiaan</string>
     <string name="call_failed_dialog_body">Could not initiate call. Please call manually. The number is:\n\n+31 55 533 53 55</string>
     <string name="close_button">Close</string>
-    <string name="home_url" translatable="false">http://www.sebastiaanschool.nl/</string>
     <string name="contact__call">Call: +31 55 533 53 55</string>
     <string name="contact__call_url" translatable="false">tel:+31%2055%20533%2053%2055</string>
     <string name="contact__twitter" translatable="false">Twitter: @KBSebastiaan</string>
@@ -19,23 +18,8 @@
     <string name="contact__yurls" translatable="false">Yurls site</string>
     <string name="contact__yurls_url" translatable="false">http://sebastiaan.yurls.net/</string>
     <string name="contact__homepage" translatable="false">Website</string>
-    <string name="contact__homepage_url" translatable="false">http://sebastiaanschool.nl/</string>
-    <string name="menu_downloads_folder">Open download folder</string>
+    <string name="contact__homepage_url" translatable="false">http://www.sebastiaanschool.nl/</string>
     <string name="download_started">Download Started</string>
-    <string name="navigation__homepage">Homepage</string>
-    <string name="navigation__homepage_desc">Homepage, button</string>
-    <string name="navigation__twitter_desc">Twitter, button</string>
-    <string name="navigation__yurl_desc">Yurls site, button</string>
-    <string name="navigation__agenda">Agenda</string>
-    <string name="navigation__agenda_desc">Agenda, button</string>
-    <string name="navigation__team">Team</string>
-    <string name="navigation__team_desc">Team, button</string>
-    <string name="navigation__call">Call</string>
-    <string name="navigation__call_desc">Call, button</string>
-    <string name="navigation__newsletter">Newsletter</string>
-    <string name="navigation__newsletter_desc">Newsletter, button</string>
-    <string name="navigation__bulletin">Bulletin</string>
-    <string name="navigation__bulletin_desc">Bulletin, button</string>
     <string name="navigation__settings">Settings</string>
     <string name="team_email_body">Dear %1$s,</string>
     <string name="download_newsletter_description">Sebastiaanschool Newsletter</string>

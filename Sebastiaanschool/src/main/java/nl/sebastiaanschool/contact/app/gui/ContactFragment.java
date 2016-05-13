@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import nl.sebastiaanschool.contact.app.GrabBag;
 import nl.sebastiaanschool.contact.app.R;
 
 public class ContactFragment extends Fragment implements View.OnClickListener {

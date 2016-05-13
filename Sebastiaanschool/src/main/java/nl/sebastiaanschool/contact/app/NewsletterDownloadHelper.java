@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import java.io.File;
 
+import nl.sebastiaanschool.contact.app.gui.GrabBag;
+
 /**
  * Implements the callback interfaces required for newsletter downloaderation.
  */

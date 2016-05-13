@@ -49,25 +49,6 @@
         <item name="android:textSize">32sp</item>
     </style>
 
-    <style name="SlidingFragment">
-        <item name="android:background">@android:color/white</item>
-    </style>
-
-    <style name="SlidingFragment.WithMargins">
-        <item name="android:paddingBottom">@dimen/activity_vertical_margin</item>
-        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
-        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
-        <item name="android:paddingTop">@dimen/activity_vertical_margin</item>
-    </style>
-
-    <style name="NavigationFragment">
-        <item name="android:paddingBottom">4dp</item>
-        <item name="android:paddingLeft">4dp</item>
-        <item name="android:paddingRight">4dp</item>
-        <item name="android:paddingTop">4dp</item>
-        <item name="android:filterTouchesWhenObscured">true</item>
-    </style>
-
     <style name="NavigationItem" parent="android:TextAppearance.Holo.Large">
         <item name="android:paddingTop">@dimen/navigation_item_vertical_padding</item>
         <item name="android:paddingBottom">@dimen/navigation_item_vertical_padding</item>
@@ -80,15 +61,6 @@
         <item name="android:textIsSelectable">false</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
-    </style>
-
-    <style name="ListFragment" parent="SlidingFragment.WithMargins">
-        <item name="android:focusable">true</item>
-        <item name="android:clickable">true</item>
-        <item name="android:divider">#FFC8C8C8</item>
-        <item name="android:dividerHeight">1px</item>
-        <item name="android:clipToPadding">false</item>
-        <item name="android:scrollbarStyle">outsideOverlay</item>
     </style>
 
     <style name="ListItem">
@@ -141,5 +113,4 @@
     <!-- same as @android/background_material_light on SDK21+ -->
     <color name="windowBackground">#ffeeeeee</color>
     <color name="sebastiaan_blue">#31b5e7</color>
-    <integer name="hsl_animation_duration">300</integer>
 </resources>

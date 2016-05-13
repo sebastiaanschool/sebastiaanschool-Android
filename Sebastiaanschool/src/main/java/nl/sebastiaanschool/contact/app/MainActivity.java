@@ -115,13 +115,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem preferences = menu.findItem(R.id.menu_preferences);
-        if (ViewConfiguration.get(this).hasPermanentMenuKey()) {
-            // Devices with a hardware menu key don't get an overflow button in the action bar for
-            // menu items with showAsAction="never". The settings screen becomes very non-obvious.
-            // Force the menu item to show as an action on these devices.
-            preferences.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-        }
         return super.onPrepareOptionsMenu(menu);
     }
 
