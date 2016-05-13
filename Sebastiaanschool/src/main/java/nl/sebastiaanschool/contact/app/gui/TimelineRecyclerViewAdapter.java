@@ -24,7 +24,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  *
  */
-class TimelineRecyclerViewAdapter extends RecyclerView.Adapter<TimelineRecyclerViewAdapter.ViewHolder> {
+class TimelineRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecyclerViewAdapter<TimelineRecyclerViewAdapter.ViewHolder> {
 
     private static final int TYPE_UNKNOWN = 0;
     private static final int TYPE_BULLETIN = 1;

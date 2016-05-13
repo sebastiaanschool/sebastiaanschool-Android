@@ -12,4 +12,7 @@ public interface BackendApi {
 
     @GET("/api/timeline/")
     Observable<List<TimelineItem>> getTimeline();
+
+    @GET("/api/agendaItems/")
+    Observable<List<AgendaItem>> getAgenda();
 }

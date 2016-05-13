@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 import nl.sebastiaanschool.contact.app.BuildConfig;
+import nl.sebastiaanschool.contact.app.data.server.AgendaJsonConverter;
 import nl.sebastiaanschool.contact.app.data.server.BackendApi;
 import nl.sebastiaanschool.contact.app.data.server.TimelineJsonConverter;
 import okhttp3.Cache;
@@ -56,6 +57,7 @@ public class BackendInterface {
                 .build();
         final Moshi moshi = new Moshi.Builder()
                 .add(new TimelineJsonConverter())
+                .add(new AgendaJsonConverter())
                 .build();
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BuildConfig.ENDPOINT_URL)

@@ -57,13 +57,6 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tl = (TabLayout) findViewById(R.id.detail_tabs);
         tl.setupWithViewPager(vp);
 
-        TimelineFragment timelineFragment;
-        if (savedInstanceState == null) {
-            timelineFragment = new TimelineFragment();
-            getSupportFragmentManager().beginTransaction().add(R.id.main__content_container, timelineFragment).commit();
-        } else {
-            timelineFragment = (TimelineFragment) getSupportFragmentManager().findFragmentById(R.id.main__content_container);
-        }
         getApplicationContext().registerReceiver(downloadCompletionReceiver, DOWNLOAD_COMPLETED_BROADCASTS);
     }
 
