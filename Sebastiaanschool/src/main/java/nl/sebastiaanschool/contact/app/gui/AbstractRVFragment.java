@@ -2,6 +2,7 @@ package nl.sebastiaanschool.contact.app.gui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -72,6 +73,26 @@ abstract class AbstractRVFragment<A extends AbstractRVAdapter> extends Fragment
     @Override
     public void finishedLoadingData(boolean successfully) {
         swipeRefreshLayout.setRefreshing(false);
+        if (!successfully) {
+            // TODO Fix Bug: snackbar is glitchy if server is down.
+            // The snackbar attaches to the CoordinatorLayout, of which one is shared for all tabs. This means that if the
+            // app has no access to the server, multiple snackbars fall push eachother out of the way and they also on top
+            // fragments that have no network function.
+            final boolean empty = adapter.getItemCount() == 0;
+            final int messageRes = empty ? R.string.data_loading_failed : R.string.data_refreshing_failed;
+            final int duration   = empty ? Snackbar.LENGTH_INDEFINITE   : Snackbar.LENGTH_SHORT;
+
+            final Snackbar snackbar = Snackbar.make(swipeRefreshLayout, messageRes, duration);
+            if (empty) {
+                snackbar.setAction(R.string.data_loading_retry, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        adapter.refresh();
+                    }
+                });
+            }
+            snackbar.show();
+        }
     }
 
     protected A getAdapter() {
