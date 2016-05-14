@@ -13,7 +13,6 @@
     <string name="close_button">Sluiten</string>
     <string name="download_started">Download gestart</string>
     <string name="contact__call">Bellen: 055 533 53 55</string>
-    <string name="navigation__settings">Instellingen</string>
     <string name="team_email_body">Beste %1$s,</string>
     <string name="download_newsletter_description">Sebastiaanschool Nieuwsbrief</string>
     <string name="open_uri_failed">Bestand openen niet gelukt</string>

@@ -2,11 +2,7 @@ package nl.sebastiaanschool.contact.app.gui;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.preference.PreferenceFragmentCompat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import nl.sebastiaanschool.contact.app.BuildConfig;
 import nl.sebastiaanschool.contact.app.R;

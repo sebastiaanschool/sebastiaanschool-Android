@@ -10,7 +10,6 @@
 package nl.sebastiaanschool.contact.app;
 
 import android.app.Application;
-import android.os.Build;
 import android.os.StrictMode;
 
 import net.danlew.android.joda.JodaTimeAndroid;

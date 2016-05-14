@@ -92,6 +92,8 @@ public class BackendInterface {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
+                        // We're not interested in the response body, there shouldn't even be any.
+                        response.body().close();
                         final String contentLength = response.header("Content-Length", "-1");
                         long result;
                         try {

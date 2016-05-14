@@ -32,7 +32,6 @@
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 android:drawablePadding="16dp"
-                android:drawableTint="@color/sebastiaan_blue"
                 android:text="@string/contact__call" />
 
 
@@ -70,7 +69,6 @@
                 android:paddingRight="12dp"
                 android:layout_marginTop="@dimen/card_margin_top_next"
                 android:drawablePadding="16dp"
-                android:drawableTint="@color/sebastiaan_blue"
                 android:text="@string/contact__homepage" />
 
 

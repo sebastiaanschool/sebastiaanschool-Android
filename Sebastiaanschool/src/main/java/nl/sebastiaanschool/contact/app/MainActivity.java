@@ -20,7 +20,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 
 import nl.sebastiaanschool.contact.app.gui.NavigationPagerAdapter;
 
@@ -56,36 +55,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         getApplicationContext().unregisterReceiver(downloadCompletionReceiver);
         super.onDestroy();
-    }
-
-//    @Override
-//    public void onItemSelected(int item) {
-//        switch (item) {
-//            case ITEM_CALL:
-//                callSebastiaan();
-//                break;
-//            case ITEM_HOME:
-//                GrabBag.openUri(this, getString(R.string.home_url));
-//                break;
-//            case ITEM_TWITTER:
-//                GrabBag.openUri(this, getString(R.string.twitter_url));
-//                break;
-//            case ITEM_YURLS:
-//                GrabBag.openUri(this, getString(R.string.yurls_url));
-//                break;
-//        }
-//    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_activity, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
     }
 
     /**
