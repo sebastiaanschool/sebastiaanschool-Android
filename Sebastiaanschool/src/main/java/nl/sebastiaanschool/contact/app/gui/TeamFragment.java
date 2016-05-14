@@ -23,7 +23,7 @@ public class TeamFragment extends AbstractRVFragment<TeamRecyclerViewAdapter> {
 
     @Override
     protected TeamRecyclerViewAdapter createAdapter() {
-        final TeamRecyclerViewAdapter adapter = new TeamRecyclerViewAdapter(TeamRVDataSource.getInstance());
+        final TeamRecyclerViewAdapter adapter = new TeamRecyclerViewAdapter(TeamRVDataSource.getInstance(), this);
         subscriptions.add(adapter.itemsClicked().subscribe(new Action1<TeamItem>() {
             @Override
             public void call(TeamItem teamItem) {

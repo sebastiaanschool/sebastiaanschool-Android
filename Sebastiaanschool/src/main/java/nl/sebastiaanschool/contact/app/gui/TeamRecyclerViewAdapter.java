@@ -20,8 +20,8 @@ class TeamRecyclerViewAdapter extends AbstractRVAdapter<TeamItem, TeamRecyclerVi
     private final PublishSubject<TeamItem> itemsClicked = PublishSubject.create();
 
 
-    public TeamRecyclerViewAdapter(TeamRVDataSource teamDataSource) {
-        super(teamDataSource);
+    public TeamRecyclerViewAdapter(TeamRVDataSource teamDataSource, Listener listener) {
+        super(teamDataSource, listener);
     }
 
     /**

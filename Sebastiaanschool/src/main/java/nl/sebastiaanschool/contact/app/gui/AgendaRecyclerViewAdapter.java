@@ -23,8 +23,8 @@ class AgendaRecyclerViewAdapter extends AbstractRVAdapter<AgendaItem, AgendaRecy
 
     private final PublishSubject<AgendaItem> itemsClicked = PublishSubject.create();
 
-    public AgendaRecyclerViewAdapter(AgendaRVDataSource agendaDataSource) {
-        super(agendaDataSource);
+    public AgendaRecyclerViewAdapter(AgendaRVDataSource agendaDataSource, Listener listener) {
+        super(agendaDataSource, listener);
     }
 
     /**

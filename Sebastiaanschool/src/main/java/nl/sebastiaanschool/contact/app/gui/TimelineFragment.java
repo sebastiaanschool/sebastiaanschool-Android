@@ -20,6 +20,6 @@ public class TimelineFragment extends AbstractRVFragment<TimelineRecyclerViewAda
 
     @Override
     protected TimelineRecyclerViewAdapter createAdapter() {
-        return new TimelineRecyclerViewAdapter(TimelineRVDataSource.getInstance());
+        return new TimelineRecyclerViewAdapter(TimelineRVDataSource.getInstance(), this);
     }
 }

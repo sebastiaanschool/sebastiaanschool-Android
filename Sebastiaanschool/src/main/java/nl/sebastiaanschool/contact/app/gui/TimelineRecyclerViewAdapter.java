@@ -23,8 +23,8 @@ class TimelineRecyclerViewAdapter extends AbstractRVAdapter<TimelineItem, Timeli
     private static final int TYPE_BULLETIN = 1;
     private static final int TYPE_NEWSLETTER = 2;
 
-    public TimelineRecyclerViewAdapter(TimelineRVDataSource timelineDataSource) {
-        super(timelineDataSource);
+    public TimelineRecyclerViewAdapter(TimelineRVDataSource timelineDataSource, Listener listener) {
+        super(timelineDataSource, listener);
     }
 
     @Override
