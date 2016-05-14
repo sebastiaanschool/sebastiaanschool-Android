@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 /**
  * A fragment representing a list of Items.
  */
-public abstract class AbstractRVFragment<T extends AbstractRVFragment.DestroyableRecyclerViewAdapter> extends Fragment {
+public abstract class AbstractRVFragment<T extends AbstractRVAdapter> extends Fragment {
 
     private T adapter;
 

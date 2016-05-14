@@ -10,7 +10,7 @@ import nl.sebastiaanschool.contact.app.R;
 /**
  * Adds a bit of tasteful margin around the RecyclerView cards.
  */
-public class CardMarginsDecorator extends RecyclerView.ItemDecoration {
+class CardMarginsDecorator extends RecyclerView.ItemDecoration {
 
     private final int topMarginFirstItem;
     private final int topMarginNextItem;

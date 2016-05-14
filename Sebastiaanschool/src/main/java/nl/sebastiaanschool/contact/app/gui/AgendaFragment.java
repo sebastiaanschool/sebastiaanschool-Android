@@ -21,7 +21,7 @@ public class AgendaFragment extends AbstractRVFragment<AgendaRecyclerViewAdapter
 
     @Override
     protected AgendaRecyclerViewAdapter createAdapter() {
-        final AgendaRecyclerViewAdapter adapter = new AgendaRecyclerViewAdapter(AgendaDataSource.getInstance());
+        final AgendaRecyclerViewAdapter adapter = new AgendaRecyclerViewAdapter(AgendaRVDataSource.getInstance());
         this.subscriptions.add(adapter.itemsClicked().subscribe(new Action1<AgendaItem>() {
             @Override
             public void call(AgendaItem item) {

@@ -2,7 +2,6 @@ package nl.sebastiaanschool.contact.app.gui;
 
 import android.support.annotation.DrawableRes;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,59 +11,25 @@ import net.danlew.android.joda.DateUtils;
 
 import org.joda.time.Period;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import nl.sebastiaanschool.contact.app.R;
 import nl.sebastiaanschool.contact.app.data.server.TimelineItem;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  *
  */
-class TimelineRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecyclerViewAdapter<TimelineRecyclerViewAdapter.ViewHolder> {
+class TimelineRecyclerViewAdapter extends AbstractRVAdapter<TimelineItem, TimelineRecyclerViewAdapter.ViewHolder> {
 
     private static final int TYPE_UNKNOWN = 0;
     private static final int TYPE_BULLETIN = 1;
     private static final int TYPE_NEWSLETTER = 2;
 
-    private final List<TimelineItem> mValues;
-    private CompositeSubscription subscriptions = new CompositeSubscription();
-
-
-    public TimelineRecyclerViewAdapter(TimelineDataSource timelineDataSource) {
-        mValues = new ArrayList<>();
-        subscriptions.add(timelineDataSource.getTimeline()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<TimelineItem>>() {
-                    @Override
-                    public void onCompleted() {
-                        Log.d("TimelineAdapter", "onCompleted");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d("TimelineAdapter", "onError");
-                    }
-
-                    @Override
-                    public void onNext(List<TimelineItem> timelineItem) {
-                        Log.d("TimelineAdapter", "onNext - " + timelineItem.size());
-                        // TODO this is a bit blunt; I'm also unsure if the adapter should handle subscription.
-                        mValues.clear();
-                        mValues.addAll(timelineItem);
-                        notifyDataSetChanged();
-                    }
-                }));
+    public TimelineRecyclerViewAdapter(TimelineRVDataSource timelineDataSource) {
+        super(timelineDataSource);
     }
 
     @Override
     public int getItemViewType(int position) {
-        TimelineItem item = mValues.get(position);
+        TimelineItem item = items.get(position);
         if (item instanceof TimelineItem.Bulletin) {
             return TYPE_BULLETIN;
         } else if (item instanceof TimelineItem.Newsletter) {
@@ -92,17 +57,8 @@ class TimelineRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecycler
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final TimelineItem item = mValues.get(position);
+        final TimelineItem item = items.get(position);
         holder.setItem(item);
-    }
-
-    @Override
-    public int getItemCount() {
-        return mValues.size();
-    }
-
-    public void onDestroy() {
-        subscriptions.unsubscribe();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -129,11 +85,6 @@ class TimelineRecyclerViewAdapter extends AbstractRVFragment.DestroyableRecycler
                 TimelineItem.Bulletin bulletin = (TimelineItem.Bulletin) item;
                 this.mBody.setText(bulletin.body);
             }
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mTitle.getText() + "'";
         }
     }
 }
