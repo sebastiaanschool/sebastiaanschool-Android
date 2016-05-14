@@ -73,25 +73,9 @@ abstract class AbstractRVFragment<A extends AbstractRVAdapter> extends Fragment
     @Override
     public void finishedLoadingData(boolean successfully) {
         swipeRefreshLayout.setRefreshing(false);
-        if (!successfully) {
-            // TODO Fix Bug: snackbar is glitchy if server is down.
-            // The snackbar attaches to the CoordinatorLayout, of which one is shared for all tabs. This means that if the
-            // app has no access to the server, multiple snackbars fall push eachother out of the way and they also on top
-            // fragments that have no network function.
-            final boolean empty = adapter.getItemCount() == 0;
-            final int messageRes = empty ? R.string.data_loading_failed : R.string.data_refreshing_failed;
-            final int duration   = empty ? Snackbar.LENGTH_INDEFINITE   : Snackbar.LENGTH_SHORT;
-
-            final Snackbar snackbar = Snackbar.make(swipeRefreshLayout, messageRes, duration);
-            if (empty) {
-                snackbar.setAction(R.string.data_loading_retry, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        adapter.refresh();
-                    }
-                });
-            }
-            snackbar.show();
+        if (!successfully && adapter.getItemCount() > 0) {
+            Snackbar.make(swipeRefreshLayout,
+                    R.string.data_refreshing_failed, Snackbar.LENGTH_SHORT).show();
         }
     }
 
