@@ -7,7 +7,7 @@ import nl.sebastiaanschool.contact.app.data.server.AgendaItem;
 import rx.functions.Action1;
 import rx.internal.util.SubscriptionList;
 
-public class AgendaFragment extends AbstractRVFragment<AgendaRecyclerViewAdapter> {
+public class AgendaFragment extends AbstractRVFragment<AgendaRVAdapter> {
 
     private SubscriptionList subscriptions = new SubscriptionList();
 
@@ -20,8 +20,8 @@ public class AgendaFragment extends AbstractRVFragment<AgendaRecyclerViewAdapter
     }
 
     @Override
-    protected AgendaRecyclerViewAdapter createAdapter() {
-        final AgendaRecyclerViewAdapter adapter = new AgendaRecyclerViewAdapter(AgendaRVDataSource.getInstance(), this);
+    protected AgendaRVAdapter createAdapter() {
+        final AgendaRVAdapter adapter = new AgendaRVAdapter(AgendaRVDataSource.getInstance(), this);
         this.subscriptions.add(adapter.itemsClicked().subscribe(new Action1<AgendaItem>() {
             @Override
             public void call(AgendaItem item) {

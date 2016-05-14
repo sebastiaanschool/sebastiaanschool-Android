@@ -15,12 +15,12 @@ import rx.subjects.PublishSubject;
 /**
  * RecyclerView adapter for Agenda Items.
  */
-class TeamRecyclerViewAdapter extends AbstractRVAdapter<TeamItem, TeamRecyclerViewAdapter.ViewHolder> {
+class TeamRVAdapter extends AbstractRVAdapter<TeamItem, TeamRVAdapter.ViewHolder> {
 
     private final PublishSubject<TeamItem> itemsClicked = PublishSubject.create();
 
 
-    public TeamRecyclerViewAdapter(TeamRVDataSource teamDataSource, Listener listener) {
+    public TeamRVAdapter(TeamRVDataSource teamDataSource, Listener listener) {
         super(teamDataSource, listener);
     }
 

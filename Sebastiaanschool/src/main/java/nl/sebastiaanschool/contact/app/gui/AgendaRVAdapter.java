@@ -19,11 +19,11 @@ import rx.subjects.PublishSubject;
 /**
  * RecyclerView adapter for Agenda Items.
  */
-class AgendaRecyclerViewAdapter extends AbstractRVAdapter<AgendaItem, AgendaRecyclerViewAdapter.ViewHolder> {
+class AgendaRVAdapter extends AbstractRVAdapter<AgendaItem, AgendaRVAdapter.ViewHolder> {
 
     private final PublishSubject<AgendaItem> itemsClicked = PublishSubject.create();
 
-    public AgendaRecyclerViewAdapter(AgendaRVDataSource agendaDataSource, Listener listener) {
+    public AgendaRVAdapter(AgendaRVDataSource agendaDataSource, Listener listener) {
         super(agendaDataSource, listener);
     }
 

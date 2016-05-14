@@ -9,7 +9,7 @@ import nl.sebastiaanschool.contact.app.data.server.TeamItem;
 import rx.functions.Action1;
 import rx.internal.util.SubscriptionList;
 
-public class TeamFragment extends AbstractRVFragment<TeamRecyclerViewAdapter> {
+public class TeamFragment extends AbstractRVFragment<TeamRVAdapter> {
 
     private SubscriptionList subscriptions = new SubscriptionList();
 
@@ -22,8 +22,8 @@ public class TeamFragment extends AbstractRVFragment<TeamRecyclerViewAdapter> {
     }
 
     @Override
-    protected TeamRecyclerViewAdapter createAdapter() {
-        final TeamRecyclerViewAdapter adapter = new TeamRecyclerViewAdapter(TeamRVDataSource.getInstance(), this);
+    protected TeamRVAdapter createAdapter() {
+        final TeamRVAdapter adapter = new TeamRVAdapter(TeamRVDataSource.getInstance(), this);
         subscriptions.add(adapter.itemsClicked().subscribe(new Action1<TeamItem>() {
             @Override
             public void call(TeamItem teamItem) {

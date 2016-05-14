@@ -3,7 +3,7 @@ package nl.sebastiaanschool.contact.app.gui;
 /**
  * A fragment representing a list of Items.
  */
-public class TimelineFragment extends AbstractRVFragment<TimelineRecyclerViewAdapter> {
+public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter> {
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -19,7 +19,7 @@ public class TimelineFragment extends AbstractRVFragment<TimelineRecyclerViewAda
     }
 
     @Override
-    protected TimelineRecyclerViewAdapter createAdapter() {
-        return new TimelineRecyclerViewAdapter(TimelineRVDataSource.getInstance(), this);
+    protected TimelineRVAdapter createAdapter() {
+        return new TimelineRVAdapter(TimelineRVDataSource.getInstance(), this);
     }
 }

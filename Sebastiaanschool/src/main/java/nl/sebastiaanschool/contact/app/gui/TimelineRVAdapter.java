@@ -17,13 +17,13 @@ import nl.sebastiaanschool.contact.app.data.server.TimelineItem;
 /**
  *
  */
-class TimelineRecyclerViewAdapter extends AbstractRVAdapter<TimelineItem, TimelineRecyclerViewAdapter.ViewHolder> {
+class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapter.ViewHolder> {
 
     private static final int TYPE_UNKNOWN = 0;
     private static final int TYPE_BULLETIN = 1;
     private static final int TYPE_NEWSLETTER = 2;
 
-    public TimelineRecyclerViewAdapter(TimelineRVDataSource timelineDataSource, Listener listener) {
+    public TimelineRVAdapter(TimelineRVDataSource timelineDataSource, Listener listener) {
         super(timelineDataSource, listener);
     }
 
