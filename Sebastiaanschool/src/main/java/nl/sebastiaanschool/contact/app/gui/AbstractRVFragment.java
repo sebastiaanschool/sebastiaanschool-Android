@@ -57,7 +57,10 @@ abstract class AbstractRVFragment<A extends AbstractRVAdapter> extends Fragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        adapter.onDestroy();
+        if (adapter != null) {
+            // This reference could be null if you rotate multiple times in quick succession.
+            adapter.onDestroy();
+        }
     }
 
     @Override
