@@ -1,12 +1,14 @@
 package nl.sebastiaanschool.contact.app.data;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 import com.squareup.moshi.Moshi;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import nl.sebastiaanschool.contact.app.BuildConfig;
 import nl.sebastiaanschool.contact.app.data.server.AgendaJsonConverter;
@@ -16,6 +18,7 @@ import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -40,7 +43,7 @@ public class BackendInterface {
         if (instance != null) {
             throw new IllegalStateException("Already initialised.");
         }
-        instance = new BackendInterface(context.getCacheDir());
+        instance = new BackendInterface(context.getCacheDir(), constructUserAgent(context));
     }
 
     public static synchronized BackendInterface getInstance() {
@@ -50,10 +53,18 @@ public class BackendInterface {
         return instance;
     }
 
-    private BackendInterface(File cacheDir) {
+    private BackendInterface(File cacheDir, final String userAgent) {
         final Cache cache = new Cache(cacheDir, CACHE_SIZE_BYTES);
         okHttpClient = new OkHttpClient.Builder()
                 .cache(cache)
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        return chain.proceed(chain.request().newBuilder()
+                                .header("User-Agent", userAgent)
+                                .build());
+                    }
+                })
                 .build();
         final Moshi moshi = new Moshi.Builder()
                 .add(new TimelineJsonConverter())
@@ -108,5 +119,22 @@ public class BackendInterface {
                 });
             }
         });
+    }
+
+    /**
+     * Creates a user-agent string that should generally be RFC compliant. If the device constants
+     * contain context-invalid characters these are used as-is and RFC compliance will suffer.
+     * @param context used to obtain some device data.
+     * @return e.g. "Sebastiaanschool/2.0.0 (LGE; Nexus 5; Android 6.1 SDK 23; nl_NL)"
+     */
+    private static String constructUserAgent(Context context) {
+        return  new StringBuilder(256)
+                .append("Sebastiaanschool/").append(BuildConfig.VERSION_NAME)
+                .append(" (").append(Build.MANUFACTURER).append("; ").append(Build.MODEL)
+                .append("; Android ").append(Build.VERSION.RELEASE)
+                .append(" SDK ").append(Build.VERSION.SDK_INT)
+                .append("; ").append(context.getResources().getConfiguration().locale)
+                .append(')')
+                .toString();
     }
 }
