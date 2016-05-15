@@ -12,17 +12,18 @@ package nl.sebastiaanschool.contact.app;
 import android.app.Application;
 import android.os.StrictMode;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import nl.sebastiaanschool.contact.app.data.BackendInterface;
 
 public class SebApp extends Application {
 
-    // TODO add LeakCanary
-
     @Override
     public void onCreate() {
         super.onCreate();
+        LeakCanary.install(this);
         JodaTimeAndroid.init(this);
         BackendInterface.init(this);
 
