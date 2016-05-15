@@ -46,6 +46,8 @@
             android:layout_height="wrap_content"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
+            tools:drawableLeft="@drawable/ic_timeline_bulletin_24dp"
+            tools:drawableTint="@color/sebastiaan_blue"
             tools:text="16 oktober 2015, 16:00" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

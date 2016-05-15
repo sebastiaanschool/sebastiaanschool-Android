@@ -32,7 +32,9 @@
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 android:drawablePadding="16dp"
-                android:text="@string/contact__call" />
+                android:text="@string/contact__call"
+                tools:drawableLeft="@drawable/ic_contact_phone_32dp"
+                tools:drawableTint="@color/sebastiaan_blue"/>
 
 
             <TextView
@@ -45,7 +47,8 @@
                 android:paddingRight="12dp"
                 android:layout_marginTop="@dimen/card_margin_top_next"
                 android:drawablePadding="16dp"
-                android:text="@string/contact__twitter" />
+                android:text="@string/contact__twitter"
+                tools:drawableLeft="@drawable/ic_twitter_blue"/>
 
             <TextView
                 android:id="@+id/contact_yurls"
@@ -57,7 +60,8 @@
                 android:paddingRight="12dp"
                 android:layout_marginTop="@dimen/card_margin_top_next"
                 android:drawablePadding="16dp"
-                android:text="@string/contact__yurls" />
+                android:text="@string/contact__yurls"
+                tools:drawableLeft="@drawable/ic_yurls_blue"/>
 
             <TextView
                 android:id="@+id/contact_homepage"
@@ -69,7 +73,9 @@
                 android:paddingRight="12dp"
                 android:layout_marginTop="@dimen/card_margin_top_next"
                 android:drawablePadding="16dp"
-                android:text="@string/contact__homepage" />
+                android:text="@string/contact__homepage"
+                tools:drawableLeft="@drawable/ic_contact_homepage_32dp"
+                tools:drawableTint="@color/sebastiaan_blue"/>
 
 
         </LinearLayout>

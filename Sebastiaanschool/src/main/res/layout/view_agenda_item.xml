@@ -38,6 +38,8 @@
             android:layout_height="wrap_content"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
+            tools:drawableLeft="@drawable/ic_agenda_event_24dp"
+            tools:drawableTint="@color/sebastiaan_blue"
             tools:text="4 maart 2016 t/m 11 maart 2016" />
     </LinearLayout>
 </android.support.v7.widget.CardView>
