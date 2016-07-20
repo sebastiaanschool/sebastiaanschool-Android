@@ -13,7 +13,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.android.tools.build:gradle:2.1.2'
     }
 }
 apply plugin: 'com.android.application'
@@ -23,8 +23,8 @@ repositories {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -48,7 +48,7 @@ android {
         versionCode 5
         versionName "2.0.0"
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 24
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resConfigs "en", "nl"
         vectorDrawables.useSupportLibrary = true
@@ -73,8 +73,8 @@ if (extraConf.exists()) {
 }
 
 project.ext {
-    retrofitVersion = '2.0.2'
-    supportLibVersion = '23.4.0'
+    retrofitVersion = '2.1.0'
+    supportLibVersion = '24.1.0'
     testSupportVersion = '2.2.2'
     leakCanaryVersion = '1.4-beta2'
 }
@@ -89,15 +89,15 @@ dependencies {
     compile "com.android.support:support-annotations:${project.ext.supportLibVersion}"
     compile "com.android.support:recyclerview-v7:${project.ext.supportLibVersion}"
     compile "com.android.support:support-vector-drawable:${project.ext.supportLibVersion}"
-    compile 'io.reactivex:rxandroid:1.2.0'
-    compile 'io.reactivex:rxjava:1.1.4'
-    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.7'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile "com.squareup.retrofit2:retrofit:${project.ext.retrofitVersion}"
     compile "com.squareup.retrofit2:adapter-rxjava:${project.ext.retrofitVersion}"
     compile "com.squareup.retrofit2:converter-moshi:${project.ext.retrofitVersion}"
-    compile 'com.squareup.moshi:moshi:1.1.0'
-    compile 'com.google.android.gms:play-services-gcm:8.4.0'
-    compile 'net.danlew:android.joda:2.9.3'
+    compile 'com.squareup.moshi:moshi:1.2.0'
+    compile 'com.google.android.gms:play-services-gcm:9.2.1'
+    compile 'net.danlew:android.joda:2.9.4.1'
     debugCompile "com.squareup.leakcanary:leakcanary-android:${project.ext.leakCanaryVersion}"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${project.ext.leakCanaryVersion}"
     testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${project.ext.leakCanaryVersion}"
