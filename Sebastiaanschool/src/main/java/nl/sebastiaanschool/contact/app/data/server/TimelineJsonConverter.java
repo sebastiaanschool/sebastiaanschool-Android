@@ -27,11 +27,11 @@ public class TimelineJsonConverter {
                 ? dtp.parseDateTime(item.publishedAt)
                 : new DateTime(2000, 1, 1, 0, 0);
         if ("newsletter".equals(item.type)) {
-            result = new TimelineItem.Newsletter(item.title, published, item.documentUrl);
+            result = TimelineItem.newsletter(item.title, item.documentUrl, published);
         } else if ("bulletin".equals(item.type)) {
-            result = new TimelineItem.Bulletin(item.title, published, item.body);
+            result = TimelineItem.bulletin(item.title, item.body, published);
         } else {
-            result = new TimelineItem.Unknown(item.title, published, item.type);
+            result = TimelineItem.unknown(item.title, published);
         }
         return result;
     }

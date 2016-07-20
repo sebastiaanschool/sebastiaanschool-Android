@@ -21,10 +21,6 @@ import rx.subjects.PublishSubject;
  */
 class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapter.ViewHolder> {
 
-    private static final int TYPE_UNKNOWN = 0;
-    private static final int TYPE_BULLETIN = 1;
-    private static final int TYPE_NEWSLETTER = 2;
-
     private final PublishSubject<TimelineItem> itemsClicked = PublishSubject.create();
 
     public TimelineRVAdapter(TimelineRVDataSource timelineDataSource, Listener listener) {
@@ -42,23 +38,17 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
     @Override
     public int getItemViewType(int position) {
         TimelineItem item = items.get(position);
-        if (item instanceof TimelineItem.Bulletin) {
-            return TYPE_BULLETIN;
-        } else if (item instanceof TimelineItem.Newsletter) {
-            return TYPE_NEWSLETTER;
-        } else {
-            return TYPE_UNKNOWN;
-        }
+        return item.type;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
-            case TYPE_BULLETIN:
+            case TimelineItem.TYPE_BULLETIN:
                 return new ViewHolder(inflater.inflate(R.layout.view_bulletin_item, parent, false),
                         R.drawable.ic_timeline_bulletin_24dp);
-            case TYPE_NEWSLETTER:
+            case TimelineItem.TYPE_NEWSLETTER:
                 return new ViewHolder(inflater.inflate(R.layout.view_newsletter_item, parent, false),
                         R.drawable.ic_timeline_newsletter_24dp);
             default:
@@ -94,9 +84,8 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
             this.mItem = item;
             this.mTitle.setText(item.title);
             this.mPublishedAt.setText(DateUtils.getRelativeDateTimeString(mView.getContext(), item.publishedAt, Period.weeks(1), 0));
-            if (item instanceof TimelineItem.Bulletin) {
-                TimelineItem.Bulletin bulletin = (TimelineItem.Bulletin) item;
-                this.mBody.setText(bulletin.body);
+            if (item.type == TimelineItem.TYPE_BULLETIN) {
+                this.mBody.setText(item.body);
             }
         }
 

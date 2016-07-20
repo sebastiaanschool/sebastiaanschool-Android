@@ -34,13 +34,12 @@ public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter> {
                 .filter(new Func1<TimelineItem, Boolean>() {
                     @Override
                     public Boolean call(TimelineItem timelineItem) {
-                        return timelineItem instanceof TimelineItem.Newsletter;
+                        return timelineItem.type == TimelineItem.TYPE_NEWSLETTER;
                     }
                 })
-                .cast(TimelineItem.Newsletter.class)
-                .subscribe(new Action1<TimelineItem.Newsletter>() {
+                .subscribe(new Action1<TimelineItem>() {
                     @Override
-                    public void call(TimelineItem.Newsletter newsletter) {
+                    public void call(TimelineItem newsletter) {
                         Log.i("Timeline", "Newsletter clicked: " + newsletter.documentUrl);
                         GrabBag.openUri(getContext(), newsletter.documentUrl);
                     }
