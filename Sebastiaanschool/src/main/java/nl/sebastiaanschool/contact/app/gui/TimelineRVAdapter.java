@@ -13,9 +13,11 @@ import org.joda.time.Period;
 
 import nl.sebastiaanschool.contact.app.R;
 import nl.sebastiaanschool.contact.app.data.server.TimelineItem;
+import rx.Observable;
+import rx.subjects.PublishSubject;
 
 /**
- *
+ * RecyclerView adapter for Timeline Items.
  */
 class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapter.ViewHolder> {
 
@@ -23,8 +25,18 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
     private static final int TYPE_BULLETIN = 1;
     private static final int TYPE_NEWSLETTER = 2;
 
+    private final PublishSubject<TimelineItem> itemsClicked = PublishSubject.create();
+
     public TimelineRVAdapter(TimelineRVDataSource timelineDataSource, Listener listener) {
         super(timelineDataSource, listener);
+    }
+
+    /**
+     * A hot observable that emits items that have been tapped/clicked by the operator.
+     * @return an observable.
+     */
+    public Observable<TimelineItem> itemsClicked() {
+        return itemsClicked;
     }
 
     @Override
@@ -61,7 +73,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         holder.setItem(item);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
         public final TextView mTitle;
         public final TextView mBody;
@@ -71,6 +83,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         public ViewHolder(View view, @DrawableRes int iconRes) {
             super(view);
             mView = view;
+            mView.setOnClickListener(this);
             mTitle = (TextView) view.findViewById(R.id.item__title);
             mBody = (TextView) view.findViewById(R.id.item__body);
             mPublishedAt = (TextView) view.findViewById(R.id.item__published_at);
@@ -86,5 +99,11 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
                 this.mBody.setText(bulletin.body);
             }
         }
+
+        @Override
+        public void onClick(View v) {
+            itemsClicked.onNext(mItem);
+        }
+
     }
 }
