@@ -57,7 +57,6 @@
         <item name="android:layout_marginBottom">@dimen/navigation_item_vertical_margin</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:drawablePadding">16dp</item>
-        <item name="android:background">@drawable/list_item_background</item>
         <item name="android:textColor">@drawable/navigation_item_textcolor</item>
         <item name="android:textIsSelectable">false</item>
         <item name="android:focusable">true</item>
@@ -65,7 +64,6 @@
     </style>
 
     <style name="ListItem">
-        <item name="android:background">@drawable/list_item_background</item>
         <item name="android:padding">4dp</item>
     </style>
 
@@ -76,7 +74,6 @@
 
     <style name="ListItemTitle" parent="android:TextAppearance.Holo.Medium">
         <item name="android:textIsSelectable">false</item>
-        <item name="android:textColor">@drawable/list_item_textcolor</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
     </style>
@@ -87,7 +84,6 @@
 
     <style name="ListItemDate" parent="android:TextAppearance.Holo.Small">
         <item name="android:textIsSelectable">false</item>
-        <item name="android:textColor">@drawable/list_item_textcolor</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
     </style>
@@ -98,7 +94,6 @@
 
     <style name="ListItemText" parent="android:TextAppearance.Holo.Medium">
         <item name="android:textIsSelectable">false</item>
-        <item name="android:textColor">@drawable/list_item_textcolor</item>
     </style>
 
     <style name="ListItemText.Bulletin" parent="ListItemText">
