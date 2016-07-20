@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:autoLink="email|web"
             android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             tools:text="U bent van harte welkom vanaf 11.00 uur! Als het goed zijn de verhalen minder langdradig dan hetgeen ik hier intyp om een paar regels tekstomloop te bewerkstelligen. Android heeft trouwens geen hyphenation, dus woorden als &quot;bewerkstelligen&quot; doen het in deze context leuk." />
 
         <TextView
