@@ -18,27 +18,42 @@
     app:contentPadding="4dp">
 
     <LinearLayout
-        style="@style/ListItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/item__title"
-            style="@style/TextAppearance.AppCompat.Title"
-            android:layout_width="match_parent"
+        <LinearLayout
+            style="@style/ListItem"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="Vandaag, 16 oktober: Open Podium" />
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/item__published_at"
-            style="@style/TextAppearance.AppCompat.Caption"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="8dp"
-            android:gravity="center_vertical"
-            tools:text="16 oktober 2015, 16:00"
-            tools:drawableLeft="@drawable/ic_timeline_newsletter_24dp"
-            tools:drawableTint="@color/sebastiaan_blue"/>
+            <TextView
+                android:id="@+id/item__title"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Vandaag, 16 oktober: Open Podium" />
+
+            <TextView
+                android:id="@+id/item__published_at"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                tools:drawableLeft="@drawable/ic_timeline_newsletter_24dp"
+                tools:drawableTint="@color/sebastiaan_blue"
+                tools:text="16 oktober 2015, 16:00" />
+        </LinearLayout>
+
+        <nl.sebastiaanschool.contact.app.gui.DownloadStatusView
+            android:id="@+id/item__download_status"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"/>
+
     </LinearLayout>
+
 </android.support.v7.widget.CardView>

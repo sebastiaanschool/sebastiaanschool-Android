@@ -19,9 +19,9 @@ import rx.subjects.PublishSubject;
 /**
  * RecyclerView adapter for Timeline Items.
  */
-class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapter.ViewHolder> {
+class TimelineRVAdapter extends AbstractRVAdapter<TimelineItemViewModel, TimelineRVAdapter.ViewHolder> {
 
-    private final PublishSubject<TimelineItem> itemsClicked = PublishSubject.create();
+    private final PublishSubject<TimelineItemViewModel> itemsClicked = PublishSubject.create();
 
     public TimelineRVAdapter(TimelineRVDataSource timelineDataSource, Listener listener) {
         super(timelineDataSource, listener);
@@ -31,13 +31,13 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
      * A hot observable that emits items that have been tapped/clicked by the operator.
      * @return an observable.
      */
-    public Observable<TimelineItem> itemsClicked() {
+    public Observable<TimelineItemViewModel> itemsClicked() {
         return itemsClicked;
     }
 
     @Override
     public int getItemViewType(int position) {
-        TimelineItem item = items.get(position);
+        TimelineItemViewModel item = items.get(position);
         return item.type;
     }
 
@@ -59,7 +59,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final TimelineItem item = items.get(position);
+        final TimelineItemViewModel item = items.get(position);
         holder.setItem(item);
     }
 
@@ -68,7 +68,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         public final TextView mTitle;
         public final TextView mBody;
         public final TextView mPublishedAt;
-        public TimelineItem mItem;
+        public TimelineItemViewModel mItem;
 
         public ViewHolder(View view, @DrawableRes int iconRes) {
             super(view);
@@ -80,7 +80,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
             GrabBag.applyVectorDrawableLeft(mPublishedAt, iconRes);
         }
 
-        public void setItem(TimelineItem item) {
+        public void setItem(TimelineItemViewModel item) {
             this.mItem = item;
             this.mTitle.setText(item.title);
             this.mPublishedAt.setText(DateUtils.getRelativeDateTimeString(mView.getContext(), item.publishedAt, Period.weeks(1), 0));

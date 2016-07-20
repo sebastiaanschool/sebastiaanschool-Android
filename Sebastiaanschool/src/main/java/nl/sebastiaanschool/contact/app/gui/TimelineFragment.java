@@ -31,15 +31,15 @@ public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter> {
     protected TimelineRVAdapter createAdapter() {
         final TimelineRVAdapter adapter = new TimelineRVAdapter(TimelineRVDataSource.getInstance(), this);
         subscriptions.add(adapter.itemsClicked()
-                .filter(new Func1<TimelineItem, Boolean>() {
+                .filter(new Func1<TimelineItemViewModel, Boolean>() {
                     @Override
-                    public Boolean call(TimelineItem timelineItem) {
+                    public Boolean call(TimelineItemViewModel timelineItem) {
                         return timelineItem.type == TimelineItem.TYPE_NEWSLETTER;
                     }
                 })
-                .subscribe(new Action1<TimelineItem>() {
+                .subscribe(new Action1<TimelineItemViewModel>() {
                     @Override
-                    public void call(TimelineItem newsletter) {
+                    public void call(TimelineItemViewModel newsletter) {
                         Log.i("Timeline", "Newsletter clicked: " + newsletter.documentUrl);
                         GrabBag.openUri(getContext(), newsletter.documentUrl);
                     }
