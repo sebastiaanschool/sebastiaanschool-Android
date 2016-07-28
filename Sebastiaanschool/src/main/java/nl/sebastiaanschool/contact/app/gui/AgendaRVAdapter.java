@@ -44,7 +44,7 @@ class AgendaRVAdapter extends AbstractRVAdapter<AgendaItem, AgendaRVAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final AgendaItem item = items.get(position);
+        final AgendaItem item = itemsShowing.get(position);
         holder.setItem(item);
     }
 

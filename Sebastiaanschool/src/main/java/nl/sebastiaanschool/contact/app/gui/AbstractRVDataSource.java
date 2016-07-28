@@ -20,18 +20,18 @@ abstract class AbstractRVDataSource<I> {
     }
 
     private BackendApi backend;
-    private Observable<List<I>> items;
+    private Observable<I> items;
 
-    public Observable<List<I>> getItems() {
+    public Observable<I> getItems() {
         return getItems(false);
     }
 
-    public Observable<List<I>> getItems(boolean force) {
+    public Observable<I> getItems(boolean force) {
         if (items == null || force) {
             items = loadItems(backend).retry(2).cache();
         }
         return items;
     }
 
-    protected abstract Observable<List<I>> loadItems(BackendApi backend);
+    protected abstract Observable<I> loadItems(BackendApi backend);
 }

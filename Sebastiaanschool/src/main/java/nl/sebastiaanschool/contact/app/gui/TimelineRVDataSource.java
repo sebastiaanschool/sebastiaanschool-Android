@@ -1,6 +1,5 @@
 package nl.sebastiaanschool.contact.app.gui;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import nl.sebastiaanschool.contact.app.data.server.BackendApi;
@@ -28,18 +27,19 @@ class TimelineRVDataSource extends AbstractRVDataSource<TimelineItemViewModel> {
     }
 
     @Override
-    protected Observable<List<TimelineItemViewModel>> loadItems(BackendApi backend) {
-        return backend.getTimeline().map(WRAP_IN_VIEW_MODEL);
+    protected Observable<TimelineItemViewModel> loadItems(BackendApi backend) {
+        return backend.getTimeline()
+                .flatMap(new Func1<List<TimelineItem>, Observable<TimelineItem>>() {
+                    @Override
+                    public Observable<TimelineItem> call(List<TimelineItem> items) {
+                        return Observable.from(items);
+                    }
+                })
+                .map(new Func1<TimelineItem, TimelineItemViewModel>() {
+                    @Override
+                    public TimelineItemViewModel call(TimelineItem item) {
+                        return new TimelineItemViewModel(item);
+                    }
+                });
     }
-
-    private static Func1<List<TimelineItem>, List<TimelineItemViewModel>> WRAP_IN_VIEW_MODEL = new Func1<List<TimelineItem>, List<TimelineItemViewModel>>() {
-        @Override
-        public List<TimelineItemViewModel> call(List<TimelineItem> timelineItems) {
-            List<TimelineItemViewModel> output = new ArrayList<>(timelineItems.size());
-            for (TimelineItem item: timelineItems) {
-                output.add(new TimelineItemViewModel(item));
-            }
-            return output;
-        }
-    };
 }

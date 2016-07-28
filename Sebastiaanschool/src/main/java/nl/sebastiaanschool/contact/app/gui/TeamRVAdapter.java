@@ -41,7 +41,7 @@ class TeamRVAdapter extends AbstractRVAdapter<TeamItem, TeamRVAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final TeamItem item = items.get(position);
+        final TeamItem item = itemsShowing.get(position);
         holder.setItem(item);
     }
 

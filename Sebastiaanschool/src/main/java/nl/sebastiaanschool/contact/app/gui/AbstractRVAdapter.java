@@ -8,6 +8,7 @@ import java.util.List;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -19,8 +20,9 @@ abstract class AbstractRVAdapter<I, VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH> {
 
     protected final CompositeSubscription subscriptions = new CompositeSubscription();
-    protected final List<I> items = new ArrayList<>(32);
     protected final AbstractRVDataSource<I> dataSource;
+    protected final List<I> itemsShowing = new ArrayList<>(32);
+    private final List<I> itemsLoading = new ArrayList<>(32);
     private Listener listener;
 
     protected AbstractRVAdapter(AbstractRVDataSource<I> dataSource, Listener listener) {
@@ -33,34 +35,50 @@ abstract class AbstractRVAdapter<I, VH extends RecyclerView.ViewHolder>
         subscribe(dataSource.getItems(true));
     }
 
-    private void subscribe(Observable<List<I>> itemListObservable) {
+    private void subscribe(Observable<I> itemListObservable) {
         listener.startedLoadingData();
+        itemsLoading.clear();
         subscriptions.add(itemListObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<I>>() {
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        listener.finishedLoadingData(true);
+                    }
+                })
+                .subscribe(new Subscriber<I>() {
                     @Override
                     public void onCompleted() {
-                        listener.finishedLoadingData(true);
+                        AbstractRVAdapter.this.onCompleted();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        listener.finishedLoadingData(false);
+
                     }
 
                     @Override
-                    public void onNext(List<I> agendaItem) {
-                        AbstractRVAdapter.this.items.clear();
-                        AbstractRVAdapter.this.items.addAll(agendaItem);
-                        notifyDataSetChanged();
+                    public void onNext(I item) {
+                        AbstractRVAdapter.this.onNext(item);
                     }
                 }));
     }
 
+    protected void onNext(I item) {
+        AbstractRVAdapter.this.itemsLoading.add(item);
+    }
+
+    protected void onCompleted() {
+        itemsShowing.clear();
+        itemsShowing.addAll(itemsLoading);
+        itemsLoading.clear();
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
-        return items.size();
+        return itemsShowing.size();
     }
 
     protected void onDestroy() {

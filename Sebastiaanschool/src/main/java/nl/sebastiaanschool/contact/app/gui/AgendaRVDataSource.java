@@ -5,6 +5,7 @@ import java.util.List;
 import nl.sebastiaanschool.contact.app.data.server.AgendaItem;
 import nl.sebastiaanschool.contact.app.data.server.BackendApi;
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Wraps the {@link BackendApi#getAgenda()} in a caching observable so that we can disconnect and
@@ -26,7 +27,12 @@ class AgendaRVDataSource extends AbstractRVDataSource<AgendaItem> {
     }
 
     @Override
-    protected Observable<List<AgendaItem>> loadItems(BackendApi backend) {
-        return backend.getAgenda();
+    protected Observable<AgendaItem> loadItems(BackendApi backend) {
+        return backend.getAgenda().flatMap(new Func1<List<AgendaItem>, Observable<AgendaItem>>() {
+            @Override
+            public Observable<AgendaItem> call(List<AgendaItem> items) {
+                return Observable.from(items);
+            }
+        });
     }
 }

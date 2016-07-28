@@ -5,6 +5,7 @@ import java.util.List;
 import nl.sebastiaanschool.contact.app.data.server.BackendApi;
 import nl.sebastiaanschool.contact.app.data.server.TeamItem;
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Wraps the {@link BackendApi#getTeam()} in a caching observable so that we can disconnect and
@@ -26,7 +27,12 @@ class TeamRVDataSource extends AbstractRVDataSource<TeamItem> {
     }
 
     @Override
-    protected Observable<List<TeamItem>> loadItems(BackendApi backend) {
-        return backend.getTeam();
+    protected Observable<TeamItem> loadItems(BackendApi backend) {
+        return backend.getTeam().flatMap(new Func1<List<TeamItem>, Observable<TeamItem>>() {
+            @Override
+            public Observable<TeamItem> call(List<TeamItem> items) {
+                return Observable.from(items);
+            }
+        });
     }
 }

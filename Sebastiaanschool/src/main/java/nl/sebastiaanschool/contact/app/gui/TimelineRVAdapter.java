@@ -37,7 +37,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItemViewModel, Timelin
 
     @Override
     public int getItemViewType(int position) {
-        TimelineItemViewModel item = items.get(position);
+        TimelineItemViewModel item = itemsShowing.get(position);
         return item.type;
     }
 
@@ -59,7 +59,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItemViewModel, Timelin
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final TimelineItemViewModel item = items.get(position);
+        final TimelineItemViewModel item = itemsShowing.get(position);
         holder.setItem(item);
     }
 
