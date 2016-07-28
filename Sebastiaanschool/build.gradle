@@ -74,7 +74,7 @@ if (extraConf.exists()) {
 
 project.ext {
     retrofitVersion = '2.1.0'
-    supportLibVersion = '24.1.0'
+    supportLibVersion = '24.1.1'
     testSupportVersion = '2.2.2'
     leakCanaryVersion = '1.4-beta2'
 }
