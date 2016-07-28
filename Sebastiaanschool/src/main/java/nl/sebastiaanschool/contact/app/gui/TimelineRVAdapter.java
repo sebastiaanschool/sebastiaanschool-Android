@@ -73,7 +73,6 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItemViewModel, Timelin
         public ViewHolder(View view, @DrawableRes int iconRes) {
             super(view);
             mView = view;
-            mView.setOnClickListener(this);
             mTitle = (TextView) view.findViewById(R.id.item__title);
             mBody = (TextView) view.findViewById(R.id.item__body);
             mPublishedAt = (TextView) view.findViewById(R.id.item__published_at);
@@ -86,6 +85,12 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItemViewModel, Timelin
             this.mPublishedAt.setText(DateUtils.getRelativeDateTimeString(mView.getContext(), item.publishedAt, Period.weeks(1), 0));
             if (item.type == TimelineItem.TYPE_BULLETIN) {
                 this.mBody.setText(item.body);
+                mView.setOnClickListener(null);
+                mView.setClickable(false);
+            }
+            if (item.type == TimelineItem.TYPE_NEWSLETTER) {
+                mView.setOnClickListener(this);
+                mView.setClickable(true);
             }
         }
 

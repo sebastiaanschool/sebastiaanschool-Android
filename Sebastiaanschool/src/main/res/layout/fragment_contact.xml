@@ -28,13 +28,14 @@
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                android:drawablePadding="16dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:drawablePadding="16dp"
                 android:text="@string/contact__call"
                 tools:drawableLeft="@drawable/ic_contact_phone_32dp"
-                tools:drawableTint="@color/sebastiaan_blue"/>
+                tools:drawableTint="@color/sebastiaan_blue" />
 
 
             <TextView
@@ -42,40 +43,43 @@
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                android:layout_marginTop="@dimen/card_margin_top_next"
+                android:drawablePadding="16dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:layout_marginTop="@dimen/card_margin_top_next"
-                android:drawablePadding="16dp"
                 android:text="@string/contact__twitter"
-                tools:drawableLeft="@drawable/ic_twitter_blue"/>
+                tools:drawableLeft="@drawable/ic_twitter_blue" />
 
             <TextView
                 android:id="@+id/contact_yurls"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                android:layout_marginTop="@dimen/card_margin_top_next"
+                android:drawablePadding="16dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:layout_marginTop="@dimen/card_margin_top_next"
-                android:drawablePadding="16dp"
                 android:text="@string/contact__yurls"
-                tools:drawableLeft="@drawable/ic_yurls_blue"/>
+                tools:drawableLeft="@drawable/ic_yurls_blue" />
 
             <TextView
                 android:id="@+id/contact_homepage"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                android:layout_marginTop="@dimen/card_margin_top_next"
+                android:drawablePadding="16dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:layout_marginTop="@dimen/card_margin_top_next"
-                android:drawablePadding="16dp"
                 android:text="@string/contact__homepage"
                 tools:drawableLeft="@drawable/ic_contact_homepage_32dp"
-                tools:drawableTint="@color/sebastiaan_blue"/>
+                tools:drawableTint="@color/sebastiaan_blue" />
 
 
         </LinearLayout>

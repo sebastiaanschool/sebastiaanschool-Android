@@ -10,12 +10,9 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/list_card_style"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/cardview_light_background"
-    app:cardCornerRadius="2dp"
-    app:cardElevation="1dp"
-    app:contentPadding="4dp">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         style="@style/ListItem.Bulletin"
@@ -36,8 +33,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="email|web"
-            android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:paddingTop="8dp"
             tools:text="U bent van harte welkom vanaf 11.00 uur! Als het goed zijn de verhalen minder langdradig dan hetgeen ik hier intyp om een paar regels tekstomloop te bewerkstelligen. Android heeft trouwens geen hyphenation, dus woorden als &quot;bewerkstelligen&quot; doen het in deze context leuk." />
 
         <TextView
