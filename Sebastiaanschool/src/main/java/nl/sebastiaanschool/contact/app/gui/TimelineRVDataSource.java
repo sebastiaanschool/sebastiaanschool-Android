@@ -29,6 +29,7 @@ class TimelineRVDataSource extends AbstractRVDataSource<TimelineItemViewModel> {
     @Override
     protected Observable<TimelineItemViewModel> loadItems(BackendApi backend) {
         return backend.getTimeline()
+                .toObservable()
                 .flatMap(new Func1<List<TimelineItem>, Observable<TimelineItem>>() {
                     @Override
                     public Observable<TimelineItem> call(List<TimelineItem> items) {

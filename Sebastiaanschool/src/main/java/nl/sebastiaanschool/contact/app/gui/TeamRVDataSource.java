@@ -28,7 +28,9 @@ class TeamRVDataSource extends AbstractRVDataSource<TeamItem> {
 
     @Override
     protected Observable<TeamItem> loadItems(BackendApi backend) {
-        return backend.getTeam().flatMap(new Func1<List<TeamItem>, Observable<TeamItem>>() {
+        return backend.getTeam()
+                .toObservable()
+                .flatMap(new Func1<List<TeamItem>, Observable<TeamItem>>() {
             @Override
             public Observable<TeamItem> call(List<TeamItem> items) {
                 return Observable.from(items);

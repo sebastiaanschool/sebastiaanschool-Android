@@ -3,7 +3,7 @@ package nl.sebastiaanschool.contact.app.data.server;
 import java.util.List;
 
 import retrofit2.http.GET;
-import rx.Observable;
+import rx.Single;
 
 /**
  * Retrofit binding interface for our backend service.
@@ -11,10 +11,10 @@ import rx.Observable;
 public interface BackendApi {
 
     @GET("/api/timeline/")
-    Observable<List<TimelineItem>> getTimeline();
+    Single<List<TimelineItem>> getTimeline();
 
     @GET("/api/agendaItems/")
-    Observable<List<AgendaItem>> getAgenda();
+    Single<List<AgendaItem>> getAgenda();
 
     /**
      * Here's a mismatch between the API URL and the Java class names. This is unfortunate, but I
@@ -22,5 +22,5 @@ public interface BackendApi {
      * "team".
      */
     @GET("/api/contactItems/")
-    Observable<List<TeamItem>> getTeam();
+    Single<List<TeamItem>> getTeam();
 }

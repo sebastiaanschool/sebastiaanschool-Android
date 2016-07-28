@@ -28,7 +28,9 @@ class AgendaRVDataSource extends AbstractRVDataSource<AgendaItem> {
 
     @Override
     protected Observable<AgendaItem> loadItems(BackendApi backend) {
-        return backend.getAgenda().flatMap(new Func1<List<AgendaItem>, Observable<AgendaItem>>() {
+        return backend.getAgenda()
+                .toObservable()
+                .flatMap(new Func1<List<AgendaItem>, Observable<AgendaItem>>() {
             @Override
             public Observable<AgendaItem> call(List<AgendaItem> items) {
                 return Observable.from(items);
