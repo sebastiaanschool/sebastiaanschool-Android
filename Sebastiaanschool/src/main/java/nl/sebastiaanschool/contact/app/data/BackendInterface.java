@@ -92,7 +92,8 @@ public class BackendInterface {
                 Request req = new Request.Builder()
                         .head()
                         .url(target)
-                        .addHeader("Accept", "application/pdf,image/*")
+                        .addHeader("Accept", "*/*")
+                        .addHeader("Accept-Encoding", "identity") // Disable gzip, or OkHttp discards Content-Length.
                         .build();
                 okHttpClient.newCall(req).enqueue(new Callback() {
                     @Override
@@ -105,6 +106,7 @@ public class BackendInterface {
                     public void onResponse(Call call, Response response) throws IOException {
                         // We're not interested in the response body, there shouldn't even be any.
                         response.body().close();
+                        // TODO propagate HTTP/404 to observer, disqualify the download
                         final String contentLength = response.header("Content-Length", "-1");
                         long result;
                         try {
