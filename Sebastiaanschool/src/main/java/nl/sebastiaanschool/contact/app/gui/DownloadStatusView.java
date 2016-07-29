@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import nl.sebastiaanschool.contact.app.R;
+import nl.sebastiaanschool.contact.app.data.downloadmanager.Download;
 
 /**
  * Displays newsletter download status.
@@ -38,7 +39,7 @@ public class DownloadStatusView extends FrameLayout {
     private ImageView icon;
     private TextView label;
 
-    private DownloadStatus status;
+    private Download status;
 
     public DownloadStatusView(Context context) {
         super(context);
@@ -66,10 +67,10 @@ public class DownloadStatusView extends FrameLayout {
         this.icon = (ImageView) findViewById(R.id.vds__icon);
         this.label = (TextView) findViewById(R.id.vds__label);
         label.setVisibility(GONE);
-        updateStatusImage(DownloadStatus.STATUS_PENDING);
+        updateStatusImage(Download.STATUS_PENDING);
     }
 
-    public void setStatus(@NonNull DownloadStatus status) {
+    public void setStatus(@NonNull Download status) {
         if (this.status != status) {
             this.status = status;
             updateStatusImage(status.statusCode);
@@ -78,7 +79,7 @@ public class DownloadStatusView extends FrameLayout {
     }
 
     private void updateSizeLabel() {
-        if (status.sizeInBytes == DownloadStatus.SIZE_UNKNOWN) {
+        if (status.sizeInBytes == Download.SIZE_UNKNOWN) {
             label.setVisibility(GONE);
         } else {
             label.setText(Formatter.formatShortFileSize(getContext(), status.sizeInBytes));
@@ -86,7 +87,7 @@ public class DownloadStatusView extends FrameLayout {
         }
     }
 
-    private void updateStatusImage(@DownloadStatus.DownloadStatusCode int statusCode) {
+    private void updateStatusImage(@Download.StatusCode int statusCode) {
         this.icon.setImageDrawable(GrabBag.loadVectorDrawable(getContext(),
                 STATUS_ICONS[statusCode]));
         this.icon.setContentDescription(getContext().getString(CONTENT_DESCRIPTIONS[statusCode]));

@@ -14,6 +14,7 @@ import org.joda.time.Period;
 
 import nl.sebastiaanschool.contact.app.R;
 import nl.sebastiaanschool.contact.app.data.BackendInterface;
+import nl.sebastiaanschool.contact.app.data.downloadmanager.Download;
 import nl.sebastiaanschool.contact.app.data.server.TimelineItem;
 import rx.Observable;
 import rx.Observer;
@@ -29,7 +30,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
     /**
      * Downloads are kept separately from the list items because this makes the Rx flows simpler.
      */
-    private final SimpleArrayMap<String, DownloadStatus> downloads = new SimpleArrayMap<>(20);
+    private final SimpleArrayMap<String, Download> downloads = new SimpleArrayMap<>(20);
     private final PublishSubject<TimelineItem> itemsClicked = PublishSubject.create();
     private final BackendInterface backendApi;
 
@@ -81,12 +82,12 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         if (item.type == TimelineItem.TYPE_NEWSLETTER) {
             final String url = item.documentUrl;
             if (!this.downloads.containsKey(url)) {
-                final DownloadStatus status = new DownloadStatus(url);
-                this.downloads.put(url, status);
+                final Download download = new Download(url);
+                this.downloads.put(url, download);
                 // TODO Locate item in DownloadManager
                 // TODO If found - update status
                 // (else) if not found - obtain download size
-                subscriptions.add(backendApi.getDownloadSize(url)
+                subscriptions.add(backendApi.getDownloadSize(download)
                         .subscribeOn(Schedulers.io())
                         .toObservable()
                         .observeOn(AndroidSchedulers.mainThread())
@@ -96,7 +97,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         super.onNext(item);
     }
 
-    private final Observer<DownloadStatus> downloadStatusObserver = new Observer<DownloadStatus>() {
+    private final Observer<Download> downloadStatusObserver = new Observer<Download>() {
         @Override
         public void onCompleted() {
             // Ignored
@@ -108,10 +109,10 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         }
 
         @Override
-        public void onNext(DownloadStatus downloadStatus) {
-            downloads.put(downloadStatus.url, downloadStatus);
+        public void onNext(Download download) {
+            downloads.put(download.url, download);
             for (int position = 0, max = itemsShowing.size(); position < max; position++) {
-                if (downloadStatus.url.equals(itemsShowing.get(position).documentUrl)) {
+                if (download.url.equals(itemsShowing.get(position).documentUrl)) {
                     notifyItemChanged(position);
                 }
             }

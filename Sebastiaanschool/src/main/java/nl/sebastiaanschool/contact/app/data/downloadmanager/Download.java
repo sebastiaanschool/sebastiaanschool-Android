@@ -1,4 +1,4 @@
-package nl.sebastiaanschool.contact.app.gui;
+package nl.sebastiaanschool.contact.app.data.downloadmanager;
 
 import android.support.annotation.IntDef;
 
@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 /**
  * Mutable state for presenting download feedback in the UI.
  */
-public class DownloadStatus {
+public class Download {
     /**
      * Download hasn't started yet.
      */
@@ -37,23 +37,21 @@ public class DownloadStatus {
     public static final long SIZE_UNKNOWN = -1L;
 
     public final String url;
-
-    public DownloadStatus(String url) {
-        this.url = url;
-    }
-
-    public DownloadStatus(String url, long sizeInBytes) {
-        this.url = url;
-        this.sizeInBytes = sizeInBytes;
-    }
-
     public long sizeInBytes = SIZE_UNKNOWN;
-
-    @DownloadStatusCode
+    @StatusCode
     public int statusCode;
+
+    public Download(String url) {
+        this.url = url;
+    }
+
+    public Download withSizeInBytes(long sizeInBytes) {
+        this.sizeInBytes = sizeInBytes;
+        return this;
+    }
 
     @IntDef({ STATUS_PENDING, STATUS_DOWNLOADING, STATUS_COMPLETED, STATUS_FAILED})
     @Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD})
     @Retention(RetentionPolicy.CLASS)
-    public @interface DownloadStatusCode {}
+    public @interface StatusCode {}
 }

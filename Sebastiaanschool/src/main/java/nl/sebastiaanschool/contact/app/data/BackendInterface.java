@@ -13,7 +13,7 @@ import nl.sebastiaanschool.contact.app.BuildConfig;
 import nl.sebastiaanschool.contact.app.data.server.AgendaJsonConverter;
 import nl.sebastiaanschool.contact.app.data.server.BackendApi;
 import nl.sebastiaanschool.contact.app.data.server.TimelineJsonConverter;
-import nl.sebastiaanschool.contact.app.gui.DownloadStatus;
+import nl.sebastiaanschool.contact.app.data.downloadmanager.Download;
 import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -85,13 +85,13 @@ public class BackendInterface {
      * @param target an URL.
      * @return its content-length, or {@code -1} if unknown.
      */
-    public Single<DownloadStatus> getDownloadSize(final String target) {
-        return Single.create(new Single.OnSubscribe<DownloadStatus>() {
+    public Single<Download> getDownloadSize(final Download target) {
+        return Single.create(new Single.OnSubscribe<Download>() {
             @Override
-            public void call(final SingleSubscriber<? super DownloadStatus> subscriber) {
+            public void call(final SingleSubscriber<? super Download> subscriber) {
                 Request req = new Request.Builder()
                         .head()
-                        .url(HttpUrl.parse(target))
+                        .url(HttpUrl.parse(target.url))
                         .addHeader("Accept", "*/*")
                         .addHeader("Accept-Encoding", "identity") // Disable gzip, or OkHttp discards Content-Length.
                         .build();
@@ -100,7 +100,7 @@ public class BackendInterface {
                     public void onFailure(Call call, IOException e) {
                         Log.d("BINF", "Download size error: " + e + " of " + target);
                         // We're not propagating the error, simply "size unknown".
-                        subscriber.onSuccess(new DownloadStatus(target));
+                        subscriber.onSuccess(target.withSizeInBytes(Download.SIZE_UNKNOWN));
                     }
 
                     @Override
@@ -116,7 +116,7 @@ public class BackendInterface {
                             sizeInBytes = -1;
                         }
                         Log.d("BINF", "Download size: " + sizeInBytes + " of " + target);
-                        subscriber.onSuccess(new DownloadStatus(target, sizeInBytes));
+                        subscriber.onSuccess(target.withSizeInBytes(sizeInBytes));
                     }
                 });
             }
