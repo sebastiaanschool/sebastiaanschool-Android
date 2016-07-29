@@ -21,6 +21,7 @@ abstract class AbstractRVFragment<A extends AbstractRVAdapter> extends Fragment
 
     private A adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
+    protected RecyclerView recyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -41,7 +42,7 @@ abstract class AbstractRVFragment<A extends AbstractRVAdapter> extends Fragment
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
         adapter = createAdapter();
-        final RecyclerView recyclerView = new RecyclerView(context);
+        recyclerView = new RecyclerView(context);
         recyclerView.setId(R.id.gui__recycler_view);
         recyclerView.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,

@@ -8,12 +8,12 @@ import com.squareup.moshi.Moshi;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
 
 import nl.sebastiaanschool.contact.app.BuildConfig;
 import nl.sebastiaanschool.contact.app.data.server.AgendaJsonConverter;
 import nl.sebastiaanschool.contact.app.data.server.BackendApi;
 import nl.sebastiaanschool.contact.app.data.server.TimelineJsonConverter;
+import nl.sebastiaanschool.contact.app.gui.DownloadStatus;
 import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -85,13 +85,13 @@ public class BackendInterface {
      * @param target an URL.
      * @return its content-length, or {@code -1} if unknown.
      */
-    public Single<Long> getDownloadSize(final HttpUrl target) {
-        return Single.create(new Single.OnSubscribe<Long>() {
+    public Single<DownloadStatus> getDownloadSize(final String target) {
+        return Single.create(new Single.OnSubscribe<DownloadStatus>() {
             @Override
-            public void call(final SingleSubscriber<? super Long> subscriber) {
+            public void call(final SingleSubscriber<? super DownloadStatus> subscriber) {
                 Request req = new Request.Builder()
                         .head()
-                        .url(target)
+                        .url(HttpUrl.parse(target))
                         .addHeader("Accept", "*/*")
                         .addHeader("Accept-Encoding", "identity") // Disable gzip, or OkHttp discards Content-Length.
                         .build();
@@ -99,24 +99,24 @@ public class BackendInterface {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Log.d("BINF", "Download size error: " + e + " of " + target);
-                        subscriber.onError(e);
+                        // We're not propagating the error, simply "size unknown".
+                        subscriber.onSuccess(new DownloadStatus(target));
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         // We're not interested in the response body, there shouldn't even be any.
                         response.body().close();
-                        // TODO propagate HTTP/404 to observer, disqualify the download
                         final String contentLength = response.header("Content-Length", "-1");
-                        long result;
+                        long sizeInBytes;
                         try {
-                            result = Long.parseLong(contentLength);
+                            sizeInBytes = Long.parseLong(contentLength);
                         } catch (NumberFormatException e) {
                             Log.d("BINF", "Download size: NFE on " + contentLength + " of " + target);
-                            result = -1;
+                            sizeInBytes = -1;
                         }
-                        Log.d("BINF", "Download size: " + result + " of " + target);
-                        subscriber.onSuccess(result);
+                        Log.d("BINF", "Download size: " + sizeInBytes + " of " + target);
+                        subscriber.onSuccess(new DownloadStatus(target, sizeInBytes));
                     }
                 });
             }

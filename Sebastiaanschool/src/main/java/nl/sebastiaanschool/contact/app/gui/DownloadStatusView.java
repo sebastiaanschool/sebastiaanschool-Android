@@ -19,8 +19,9 @@ public class DownloadStatusView extends FrameLayout {
 
     private static final int[] STATUS_ICONS = {
             R.drawable.ic_download_pending_24dp,
-            R.drawable.ic_download_cancel_24dp,
-            R.drawable.ic_download_complete_24dp
+            R.drawable.ic_download_in_progress_24dp,
+            R.drawable.ic_download_complete_24dp,
+            R.drawable.ic_download_failed_24dp
     };
 
     private ImageView icon;

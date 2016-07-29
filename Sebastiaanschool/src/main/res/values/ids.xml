@@ -2,4 +2,6 @@
 <resources>
     <item name="gui__recycler_view" type="id"/>
     <item name="gui__swipe_refresh" type="id"/>
+
+    <item name="ic_download_in_progress_24dp" type="drawable">@drawable/ic_download_pending_24dp</item>
 </resources>

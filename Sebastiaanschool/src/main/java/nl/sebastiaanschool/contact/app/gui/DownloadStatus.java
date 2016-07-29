@@ -27,16 +27,32 @@ public class DownloadStatus {
     public static final int STATUS_COMPLETED = 2;
 
     /**
+     * Download has failed.
+     */
+    public static final int STATUS_FAILED = 3;
+
+    /**
      * File size is unknown.
      */
     public static final long SIZE_UNKNOWN = -1L;
+
+    public final String url;
+
+    public DownloadStatus(String url) {
+        this.url = url;
+    }
+
+    public DownloadStatus(String url, long sizeInBytes) {
+        this.url = url;
+        this.sizeInBytes = sizeInBytes;
+    }
 
     public long sizeInBytes = SIZE_UNKNOWN;
 
     @DownloadStatusCode
     public int statusCode;
 
-    @IntDef({ STATUS_PENDING, STATUS_DOWNLOADING, STATUS_COMPLETED})
+    @IntDef({ STATUS_PENDING, STATUS_DOWNLOADING, STATUS_COMPLETED, STATUS_FAILED})
     @Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD})
     @Retention(RetentionPolicy.CLASS)
     public @interface DownloadStatusCode {}

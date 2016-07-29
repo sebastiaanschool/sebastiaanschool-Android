@@ -1,6 +1,7 @@
 package nl.sebastiaanschool.contact.app.gui;
 
 import android.support.annotation.DrawableRes;
+import android.support.v4.util.SimpleArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,32 +13,50 @@ import net.danlew.android.joda.DateUtils;
 import org.joda.time.Period;
 
 import nl.sebastiaanschool.contact.app.R;
+import nl.sebastiaanschool.contact.app.data.BackendInterface;
 import nl.sebastiaanschool.contact.app.data.server.TimelineItem;
 import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
 /**
  * RecyclerView adapter for Timeline Items.
  */
-class TimelineRVAdapter extends AbstractRVAdapter<TimelineItemViewModel, TimelineRVAdapter.ViewHolder> {
+class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapter.ViewHolder> {
 
-    private final PublishSubject<TimelineItemViewModel> itemsClicked = PublishSubject.create();
+    /**
+     * Downloads are kept separately from the list items because this makes the Rx flows simpler.
+     */
+    private final SimpleArrayMap<String, DownloadStatus> downloads = new SimpleArrayMap<>(20);
+    private final PublishSubject<TimelineItem> itemsClicked = PublishSubject.create();
+    private final BackendInterface backendApi;
 
-    public TimelineRVAdapter(TimelineRVDataSource timelineDataSource, Listener listener) {
+    public TimelineRVAdapter(TimelineRVDataSource timelineDataSource, Listener listener,
+                             BackendInterface backendApi) {
         super(timelineDataSource, listener);
+        this.backendApi = backendApi;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Note that we're clearing downloads onDestroy() but not onRefresh(); the url's generally won't change.
+        this.downloads.clear();
     }
 
     /**
      * A hot observable that emits items that have been tapped/clicked by the operator.
      * @return an observable.
      */
-    public Observable<TimelineItemViewModel> itemsClicked() {
+    public Observable<TimelineItem> itemsClicked() {
         return itemsClicked;
     }
 
     @Override
     public int getItemViewType(int position) {
-        TimelineItemViewModel item = itemsShowing.get(position);
+        TimelineItem item = itemsShowing.get(position);
         return item.type;
     }
 
@@ -58,8 +77,50 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItemViewModel, Timelin
     }
 
     @Override
+    protected void onNext(final TimelineItem item) {
+        if (item.type == TimelineItem.TYPE_NEWSLETTER) {
+            final String url = item.documentUrl;
+            if (!this.downloads.containsKey(url)) {
+                final DownloadStatus status = new DownloadStatus(url);
+                this.downloads.put(url, status);
+                // TODO Locate item in DownloadManager
+                // TODO If found - update status
+                // (else) if not found - obtain download size
+                subscriptions.add(backendApi.getDownloadSize(url)
+                        .subscribeOn(Schedulers.io())
+                        .toObservable()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(downloadStatusObserver));
+            }
+        }
+        super.onNext(item);
+    }
+
+    private final Observer<DownloadStatus> downloadStatusObserver = new Observer<DownloadStatus>() {
+        @Override
+        public void onCompleted() {
+            // Ignored
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            // Ignored
+        }
+
+        @Override
+        public void onNext(DownloadStatus downloadStatus) {
+            downloads.put(downloadStatus.url, downloadStatus);
+            for (int position = 0, max = itemsShowing.size(); position < max; position++) {
+                if (downloadStatus.url.equals(itemsShowing.get(position).documentUrl)) {
+                    notifyItemChanged(position);
+                }
+            }
+        }
+    };
+
+    @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final TimelineItemViewModel item = itemsShowing.get(position);
+        final TimelineItem item = itemsShowing.get(position);
         holder.setItem(item);
     }
 
@@ -68,7 +129,8 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItemViewModel, Timelin
         public final TextView mTitle;
         public final TextView mBody;
         public final TextView mPublishedAt;
-        public TimelineItemViewModel mItem;
+        public final DownloadStatusView mDownloadStatus;
+        public TimelineItem mItem;
 
         public ViewHolder(View view, @DrawableRes int iconRes) {
             super(view);
@@ -76,10 +138,11 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItemViewModel, Timelin
             mTitle = (TextView) view.findViewById(R.id.item__title);
             mBody = (TextView) view.findViewById(R.id.item__body);
             mPublishedAt = (TextView) view.findViewById(R.id.item__published_at);
+            mDownloadStatus = (DownloadStatusView) view.findViewById(R.id.item__download_status);
             GrabBag.applyVectorDrawableLeft(mPublishedAt, iconRes);
         }
 
-        public void setItem(TimelineItemViewModel item) {
+        public void setItem(TimelineItem item) {
             this.mItem = item;
             this.mTitle.setText(item.title);
             this.mPublishedAt.setText(DateUtils.getRelativeDateTimeString(mView.getContext(), item.publishedAt, Period.weeks(1), 0));
@@ -91,6 +154,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItemViewModel, Timelin
             if (item.type == TimelineItem.TYPE_NEWSLETTER) {
                 mView.setOnClickListener(this);
                 mView.setClickable(true);
+                mDownloadStatus.setStatus(downloads.get(item.documentUrl));
             }
         }
 
