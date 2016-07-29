@@ -22,8 +22,8 @@
     <string name="download_started">Download Started</string>
     <string name="download_pending">Tap to Download</string>
     <string name="download_complete">Tap to Open</string>
-    <string name="download_in_progress">Now downloading</string>
-    <string name="download_failed">Download failed, tap to retry</string>
+    <string name="download_in_progress">Downloading</string>
+    <string name="download_failed">Failed, tap to retry</string>
     <string name="team_email_body">Dear %1$s,</string>
     <string name="download_newsletter_description">Sebastiaanschool Newsletter</string>
     <string name="download_newsletter_referer" translatable="false">Sebastiaan Android v%d</string>

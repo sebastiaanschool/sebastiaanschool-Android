@@ -10,11 +10,6 @@
 package nl.sebastiaanschool.contact.app;
 
 import android.annotation.SuppressLint;
-import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -31,9 +26,6 @@ import nl.sebastiaanschool.contact.app.gui.NavigationPagerAdapter;
  * values, then the activity automatically navigates to the corresponding screen.</p>
  */
 public class MainActivity extends AppCompatActivity {
-    private static final IntentFilter DOWNLOAD_COMPLETED_BROADCASTS = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
-
-    private NewsletterDownloadHelper newsletterDownloadHelper;
 
     @Override
     @SuppressLint("NewApi")
@@ -47,30 +39,5 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tl = (TabLayout) findViewById(R.id.detail_tabs);
         tl.setupWithViewPager(vp);
-
-        getApplicationContext().registerReceiver(downloadCompletionReceiver, DOWNLOAD_COMPLETED_BROADCASTS);
     }
-
-    @Override
-    protected void onDestroy() {
-        getApplicationContext().unregisterReceiver(downloadCompletionReceiver);
-        super.onDestroy();
-    }
-
-    /**
-     * Listens for the Download service to tell us one of our downloads finished, then launches the file.
-     */
-    private final BroadcastReceiver downloadCompletionReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (newsletterDownloadHelper == null) {
-                newsletterDownloadHelper = new NewsletterDownloadHelper(MainActivity.this);
-            }
-            if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(intent.getAction())) {
-                final long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1L);
-                DownloadManagerAsyncTask newsletterDownloadAsyncTask = new DownloadManagerAsyncTask(MainActivity.this, MainActivity.this.newsletterDownloadHelper);
-                newsletterDownloadAsyncTask.execute(new DownloadManagerAsyncTask.Param(downloadId));
-            }
-        }
-    };
 }

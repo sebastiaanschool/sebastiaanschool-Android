@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.text.format.Formatter;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -22,10 +23,11 @@ public class DownloadStatusView extends FrameLayout {
 
     @DrawableRes
     private static final int[] STATUS_ICONS = {
-            R.drawable.ic_download_pending_24dp,
-            R.drawable.ic_download_in_progress_24dp,
-            R.drawable.ic_download_complete_24dp,
-            R.drawable.ic_download_failed_24dp
+            R.drawable.ic_download_pending_24dp,     // Pending
+            R.drawable.ic_download_in_progress_24dp, // In progress
+            R.drawable.ic_download_launch_24dp,      // Completed
+            R.drawable.ic_download_failed_24dp,      // Failed
+            R.drawable.ic_download_launch_24dp       // Open on web
     };
 
     @StringRes
@@ -33,7 +35,8 @@ public class DownloadStatusView extends FrameLayout {
             R.string.download_pending,
             R.string.download_in_progress,
             R.string.download_complete,
-            R.string.download_failed
+            R.string.download_failed,
+            R.string.download_complete
     };
 
     private ImageView icon;
@@ -71,15 +74,14 @@ public class DownloadStatusView extends FrameLayout {
     }
 
     public void setStatus(@NonNull Download status) {
-        if (this.status != status) {
-            this.status = status;
-            updateStatusImage(status.statusCode);
-            updateSizeLabel();
-        }
+        this.status = status;
+        updateStatusImage(status.statusCode);
+        updateSizeLabel();
     }
 
     private void updateSizeLabel() {
-        if (status.sizeInBytes == Download.SIZE_UNKNOWN) {
+        if (status.sizeInBytes == Download.SIZE_UNKNOWN
+                || status.statusCode == Download.STATUS_COMPLETED) {
             label.setVisibility(GONE);
         } else {
             label.setText(Formatter.formatShortFileSize(getContext(), status.sizeInBytes));

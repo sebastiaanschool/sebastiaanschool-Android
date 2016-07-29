@@ -1,7 +1,5 @@
 package nl.sebastiaanschool.contact.app.gui;
 
-import java.util.List;
-
 import nl.sebastiaanschool.contact.app.data.BackendInterface;
 import nl.sebastiaanschool.contact.app.data.server.BackendApi;
 import rx.Observable;

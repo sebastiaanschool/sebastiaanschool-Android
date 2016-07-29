@@ -1,8 +1,13 @@
 package nl.sebastiaanschool.contact.app.gui;
 
+import android.app.DownloadManager;
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.Nullable;
 import android.support.v4.util.SimpleArrayMap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +19,14 @@ import org.joda.time.Period;
 
 import nl.sebastiaanschool.contact.app.R;
 import nl.sebastiaanschool.contact.app.data.BackendInterface;
+import nl.sebastiaanschool.contact.app.data.DownloadManagerInterface;
 import nl.sebastiaanschool.contact.app.data.downloadmanager.Download;
 import nl.sebastiaanschool.contact.app.data.server.TimelineItem;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
@@ -33,11 +41,105 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
     private final SimpleArrayMap<String, Download> downloads = new SimpleArrayMap<>(20);
     private final PublishSubject<TimelineItem> itemsClicked = PublishSubject.create();
     private final BackendInterface backendApi;
+    private final Context context;
 
     public TimelineRVAdapter(TimelineRVDataSource timelineDataSource, Listener listener,
-                             BackendInterface backendApi) {
+                             BackendInterface backendApi, final Context context) {
         super(timelineDataSource, listener);
         this.backendApi = backendApi;
+        this.context = context;
+        subscriptions.add(itemsClicked
+                .filter(new Func1<TimelineItem, Boolean>() {
+                    @Override
+                    public Boolean call(TimelineItem timelineItem) {
+                        return timelineItem.type == TimelineItem.TYPE_NEWSLETTER;
+                    }
+                })
+                .map(new Func1<TimelineItem, Download>() {
+                    @Override
+                    public Download call(TimelineItem timelineItem) {
+                        return downloads.get(timelineItem.documentUrl);
+                    }
+                })
+                .subscribe(new Action1<Download>() {
+                    @Override
+                    public void call(Download download) {
+                        switch (download.statusCode) {
+                            case Download.STATUS_COMPLETED:
+                                //fall-through
+                            case Download.STATUS_OPEN_ON_WEB:
+                                launch(download);
+                                break;
+                            case Download.STATUS_PENDING:
+                                enqueue(download);
+                                break;
+                            case Download.STATUS_DOWNLOADING:
+                                // TODO confirm first?
+                                // TODO this doesn't seem to cancel the notification.
+                                remove(download);
+                                break;
+                            case Download.STATUS_FAILED:
+                                Log.d("Timeline", "TODO retry failed download");
+                                // TODO retry. Issue some kind of notification first?
+                                break;
+                            default:
+                                // Ignored.
+                        }
+                    }
+                }));
+        subscriptions.add(DownloadManagerInterface.getInstance()
+                .statusUpdates()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<DownloadManagerInterface.DownloadEvent>() {
+            @Override
+            public void call(DownloadManagerInterface.DownloadEvent event) {
+                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(event.type)) {
+                    Download download = findDownloadByDownloadManagerId(event.downloadManagerId);
+                    if (download != null) {
+                        // Get up-to-date status info from DownloadManager
+                        DownloadManagerInterface.getInstance().findExistingEntry(download)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(downloadStatusObserver);
+                    }
+                }
+            }
+        }));
+    }
+
+    @Nullable
+    private Download findDownloadByDownloadManagerId(long dmId) {
+        for (int i = 0, max = downloads.size(); i < max; i++) {
+            Download d = downloads.valueAt(i);
+            if (d.downloadManagerId == dmId) {
+                return d;
+            }
+        }
+        return null;
+    }
+
+    private void enqueue(Download download) {
+        subscriptions.add(DownloadManagerInterface.getInstance()
+                .enqueueDownload(download)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(downloadStatusObserver));
+    }
+
+    private void launch(final Download download) {
+        subscriptions.add(download.createOpeningIntent(context)
+            .subscribe(new Action1<Intent>() {
+                @Override
+                public void call(Intent intent) {
+                    GrabBag.openUri(context, intent);
+                }
+            })
+        );
+    }
+
+    private void remove(Download download) {
+        subscriptions.add(DownloadManagerInterface.getInstance()
+                .remove(download)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(downloadStatusObserver));
     }
 
     @Override
@@ -84,14 +186,17 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
             if (!this.downloads.containsKey(url)) {
                 final Download download = new Download(url);
                 this.downloads.put(url, download);
-                // TODO Locate item in DownloadManager
-                // TODO If found - update status
-                // (else) if not found - obtain download size
-                subscriptions.add(backendApi.getDownloadSize(download)
-                        .subscribeOn(Schedulers.io())
-                        .toObservable()
+                if (download.statusCode != Download.STATUS_OPEN_ON_WEB) {
+                    subscriptions.add(
+                        // 1. Look for the existing item in the DownloadManager.
+                        DownloadManagerInterface.getInstance().findExistingEntry(download)
+                        // 2. If not found, go get its (uncompressed) file size.
+                        .onErrorResumeNext(
+                                backendApi.getDownloadSize(download).subscribeOn(Schedulers.io())
+                        )
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(downloadStatusObserver));
+                }
             }
         }
         super.onNext(item);
@@ -110,9 +215,10 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
 
         @Override
         public void onNext(Download download) {
-            downloads.put(download.url, download);
+            Log.d("Timeline", "onNext: " + download);
+            downloads.put(download.remoteUrl, download);
             for (int position = 0, max = itemsShowing.size(); position < max; position++) {
-                if (download.url.equals(itemsShowing.get(position).documentUrl)) {
+                if (download.remoteUrl.equals(itemsShowing.get(position).documentUrl)) {
                     notifyItemChanged(position);
                 }
             }

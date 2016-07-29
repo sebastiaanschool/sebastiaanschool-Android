@@ -1,6 +1,7 @@
 package nl.sebastiaanschool.contact.app.gui;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,7 @@ abstract class AbstractRVAdapter<I, VH extends RecyclerView.ViewHolder>
 
                     @Override
                     public void onError(Throwable e) {
-
+                        AbstractRVAdapter.this.onError(e);
                     }
 
                     @Override
@@ -74,6 +75,10 @@ abstract class AbstractRVAdapter<I, VH extends RecyclerView.ViewHolder>
         itemsShowing.addAll(itemsLoading);
         itemsLoading.clear();
         notifyDataSetChanged();
+    }
+
+    protected void onError(Throwable e) {
+        Log.w("Adapter", "Caught exception: ", e);
     }
 
     @Override

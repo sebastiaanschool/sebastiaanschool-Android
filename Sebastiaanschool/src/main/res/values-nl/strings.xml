@@ -15,7 +15,7 @@
     <string name="download_pending">Tik om te downloaden</string>
     <string name="download_complete">Tik om te openen</string>
     <string name="download_in_progress">Aan het downloaden</string>
-    <string name="download_failed">Download mislukt, tik voor opnieuw</string>
+    <string name="download_failed">Mislukt, tik voor opnieuw</string>
     <string name="contact__call">Bellen: 055 533 53 55</string>
     <string name="team_email_body">Beste %1$s,</string>
     <string name="download_newsletter_description">Sebastiaanschool Nieuwsbrief</string>

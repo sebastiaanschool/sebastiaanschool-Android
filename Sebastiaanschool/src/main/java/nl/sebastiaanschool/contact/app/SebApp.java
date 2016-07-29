@@ -17,6 +17,7 @@ import com.squareup.leakcanary.LeakCanary;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import nl.sebastiaanschool.contact.app.data.BackendInterface;
+import nl.sebastiaanschool.contact.app.data.DownloadManagerInterface;
 
 public class SebApp extends Application {
 
@@ -26,6 +27,7 @@ public class SebApp extends Application {
         LeakCanary.install(this);
         JodaTimeAndroid.init(this);
         BackendInterface.init(this);
+        DownloadManagerInterface.init(this);
 
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()

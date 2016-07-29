@@ -1,7 +1,6 @@
 package nl.sebastiaanschool.contact.app.data;
 
 import android.content.Context;
-import android.os.Build;
 import android.util.Log;
 
 import com.squareup.moshi.Moshi;
@@ -10,10 +9,10 @@ import java.io.File;
 import java.io.IOException;
 
 import nl.sebastiaanschool.contact.app.BuildConfig;
+import nl.sebastiaanschool.contact.app.data.downloadmanager.Download;
 import nl.sebastiaanschool.contact.app.data.server.AgendaJsonConverter;
 import nl.sebastiaanschool.contact.app.data.server.BackendApi;
 import nl.sebastiaanschool.contact.app.data.server.TimelineJsonConverter;
-import nl.sebastiaanschool.contact.app.data.downloadmanager.Download;
 import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -43,7 +42,7 @@ public class BackendInterface {
         if (instance != null) {
             throw new IllegalStateException("Already initialised.");
         }
-        instance = new BackendInterface(context.getCacheDir(), constructUserAgent(context));
+        instance = new BackendInterface(context.getCacheDir(), GrabBag.constructUserAgent(context));
     }
 
     public static synchronized BackendInterface getInstance() {
@@ -81,7 +80,7 @@ public class BackendInterface {
     }
 
     /**
-     * Returns a cold observable that yields the content-length of the given URL.
+     * Returns a cold observable that yields the uncompressed content-length of the given URL.
      * @param target an URL.
      * @return its content-length, or {@code -1} if unknown.
      */
@@ -91,7 +90,7 @@ public class BackendInterface {
             public void call(final SingleSubscriber<? super Download> subscriber) {
                 Request req = new Request.Builder()
                         .head()
-                        .url(HttpUrl.parse(target.url))
+                        .url(HttpUrl.parse(target.remoteUrl))
                         .addHeader("Accept", "*/*")
                         .addHeader("Accept-Encoding", "identity") // Disable gzip, or OkHttp discards Content-Length.
                         .build();
@@ -121,22 +120,5 @@ public class BackendInterface {
                 });
             }
         });
-    }
-
-    /**
-     * Creates a user-agent string that should generally be RFC compliant. If the device constants
-     * contain context-invalid characters these are used as-is and RFC compliance will suffer.
-     * @param context used to obtain some device data.
-     * @return e.g. "Sebastiaanschool/2.0.0 (LGE; Nexus 5; Android 6.1 SDK 23; nl_NL)"
-     */
-    private static String constructUserAgent(Context context) {
-        return  new StringBuilder(256)
-                .append("Sebastiaanschool/").append(BuildConfig.VERSION_NAME)
-                .append(" (").append(Build.MANUFACTURER).append("; ").append(Build.MODEL)
-                .append("; Android ").append(Build.VERSION.RELEASE)
-                .append(" SDK ").append(Build.VERSION.SDK_INT)
-                .append("; ").append(context.getResources().getConfiguration().locale)
-                .append(')')
-                .toString();
     }
 }
