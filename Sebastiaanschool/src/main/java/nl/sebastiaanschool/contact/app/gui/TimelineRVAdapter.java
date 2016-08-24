@@ -51,61 +51,13 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         this.backendApi = backendApi;
         this.context = context;
         subscriptions.add(itemsClicked
-                .filter(new Func1<TimelineItem, Boolean>() {
-                    @Override
-                    public Boolean call(TimelineItem timelineItem) {
-                        return timelineItem.type == TimelineItem.TYPE_NEWSLETTER;
-                    }
-                })
-                .map(new Func1<TimelineItem, Download>() {
-                    @Override
-                    public Download call(TimelineItem timelineItem) {
-                        return downloads.get(timelineItem.documentUrl);
-                    }
-                })
-                .subscribe(new Action1<Download>() {
-                    @Override
-                    public void call(Download download) {
-                        switch (download.statusCode) {
-                            case Download.STATUS_COMPLETED:
-                                //fall-through
-                            case Download.STATUS_OPEN_ON_WEB:
-                                launch(download);
-                                break;
-                            case Download.STATUS_PENDING:
-                                enqueue(download);
-                                break;
-                            case Download.STATUS_DOWNLOADING:
-                                // TODO confirm first?
-                                // TODO this doesn't seem to cancel the notification.
-                                remove(download);
-                                break;
-                            case Download.STATUS_FAILED:
-                                Log.d("Timeline", "TODO retry failed download");
-                                // TODO retry. Issue some kind of notification first?
-                                break;
-                            default:
-                                // Ignored.
-                        }
-                    }
-                }));
+                .filter(isNewsletter)
+                .map(getDownloadForNewsletter)
+                .subscribe(downloadClickHandler));
         subscriptions.add(DownloadManagerInterface.getInstance()
                 .statusUpdates()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<DownloadManagerInterface.DownloadEvent>() {
-            @Override
-            public void call(DownloadManagerInterface.DownloadEvent event) {
-                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(event.type)) {
-                    Download download = findDownloadByDownloadManagerId(event.downloadManagerId);
-                    if (download != null) {
-                        // Get up-to-date status info from DownloadManager
-                        DownloadManagerInterface.getInstance().findExistingEntry(download)
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(downloadStatusObserver);
-                    }
-                }
-            }
-        }));
+                .subscribe(downloadEventHandler));
     }
 
     @Override
@@ -193,14 +145,24 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        final int layout;
         switch (viewType) {
             case TimelineItem.TYPE_BULLETIN:
-                return new ViewHolder(inflater.inflate(R.layout.view_bulletin_item, parent, false));
+                layout = R.layout.view_bulletin_item;
+                break;
             case TimelineItem.TYPE_NEWSLETTER:
-                return new ViewHolder(inflater.inflate(R.layout.view_newsletter_item, parent, false));
+                layout = R.layout.view_newsletter_item;
+                break;
             default:
-                return new ViewHolder(inflater.inflate(R.layout.view_unknown_item, parent, false));
+                layout = R.layout.view_unknown_item;
         }
+        return new ViewHolder(inflater.inflate(layout, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        final TimelineItem item = itemsShowing.get(position);
+        holder.setItem(item);
     }
 
     @Override
@@ -259,11 +221,64 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         }
     };
 
-    @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        final TimelineItem item = itemsShowing.get(position);
-        holder.setItem(item);
-    }
+    private final Func1<TimelineItem, Boolean> isNewsletter = new Func1<TimelineItem, Boolean>() {
+        @Override
+        public Boolean call(TimelineItem timelineItem) {
+            return timelineItem.type == TimelineItem.TYPE_NEWSLETTER;
+        }
+    };
+
+    private final Func1<TimelineItem, Download> getDownloadForNewsletter = new Func1<TimelineItem, Download>() {
+        @Override
+        public Download call(TimelineItem timelineItem) {
+            return downloads.get(timelineItem.documentUrl);
+        }
+    };
+
+    private final Action1<DownloadManagerInterface.DownloadEvent> downloadEventHandler = new Action1<DownloadManagerInterface.DownloadEvent>() {
+        @Override
+        public void call(DownloadManagerInterface.DownloadEvent event) {
+            if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(event.type)) {
+                Download download = findDownloadByDownloadManagerId(event.downloadManagerId);
+                if (download != null) {
+                    // Get up-to-date status info from DownloadManager
+                    DownloadManagerInterface.getInstance().findExistingEntry(download)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(downloadStatusObserver);
+                }
+            }
+        }
+    };
+
+    private final Action1<Download> downloadClickHandler = new Action1<Download>() {
+        @Override
+        public void call(Download download) {
+            if (download == null) {
+                return;
+            }
+            switch (download.statusCode) {
+                case Download.STATUS_COMPLETED:
+                    //fall-through
+                case Download.STATUS_OPEN_ON_WEB:
+                    launch(download);
+                    break;
+                case Download.STATUS_PENDING:
+                    enqueue(download);
+                    break;
+                case Download.STATUS_DOWNLOADING:
+                    // TODO confirm first?
+                    // TODO this doesn't seem to cancel the notification.
+                    remove(download);
+                    break;
+                case Download.STATUS_FAILED:
+                    Log.d("Timeline", "TODO retry failed download");
+                    // TODO retry. Issue some kind of notification first?
+                    break;
+                default:
+                    // Ignored.
+            }
+        }
+    };
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
