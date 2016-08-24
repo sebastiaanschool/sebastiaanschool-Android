@@ -24,7 +24,6 @@ import nl.sebastiaanschool.contact.app.data.BackendInterface;
 import nl.sebastiaanschool.contact.app.data.DownloadManagerInterface;
 import nl.sebastiaanschool.contact.app.data.downloadmanager.Download;
 import nl.sebastiaanschool.contact.app.data.server.TimelineItem;
-import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -179,14 +178,6 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         super.onDestroy();
         // Note that we're clearing downloads onDestroy() but not onRefresh(); the url's generally won't change.
         this.downloads.clear();
-    }
-
-    /**
-     * A hot observable that emits items that have been tapped/clicked by the operator.
-     * @return an observable.
-     */
-    public Observable<TimelineItem> itemsClicked() {
-        return itemsClicked;
     }
 
     @Override
