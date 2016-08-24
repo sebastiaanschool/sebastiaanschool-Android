@@ -29,14 +29,15 @@
     <string name="download_newsletter_referer" translatable="false">Sebastiaan Android v%d</string>
     <string name="open_uri_failed">Could not open file</string>
     <string name="settings__about">About this App</string>
-    <string name="settings__version_title">Version information</string>
+    <string name="settings__version_title">Version</string>
     <string name="settings__version_summary">Version %s.</string>
     <string name="settings__author_title">Authors</string>
-    <string name="settings__author_summary">This app has been built by Barend Garvelink and Jeroen Leenarts.</string>
+    <string name="settings__author_summary">Barend Garvelink and Jeroen Leenarts</string>
     <string name="settings__github_title">Source Code</string>
     <string name="settings__github_summary">https://github.com/sebastiaanschool</string>
-    <string name="settings__push">Push Notifications</string>
-    <string name="settings__push_news">Notify me of News Items</string>
+    <string name="settings__push">News</string>
+    <string name="settings__push_news">Notify me</string>
+    <string name="settings__push_view_downloads">View Downloads</string>
     <string name="settings__attribution">Attribution</string>
     <string name="settings__square_title">OkHttp, Okio, Retrofit, Moshi</string>
     <string name="settings__square_summary">This app uses OkHttp, Okio, Retrofit and Moshi, all published by Square Inc. under the Apache 2.0 License. Tap for more information.</string>

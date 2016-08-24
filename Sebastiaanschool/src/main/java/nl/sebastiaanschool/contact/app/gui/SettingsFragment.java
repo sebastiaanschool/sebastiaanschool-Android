@@ -21,6 +21,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.preferences);
         String versionSummary = getString(R.string.settings__version_summary, BuildConfig.VERSION_NAME);
-        getPreferenceManager().findPreference("pref_version").setSummary(versionSummary);
+        getPreferenceManager().findPreference("pref_version").setTitle(versionSummary);
     }
 }
