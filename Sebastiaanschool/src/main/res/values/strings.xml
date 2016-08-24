@@ -20,6 +20,7 @@
     <string name="contact__homepage" translatable="false">Website</string>
     <string name="contact__homepage_url" translatable="false">http://www.sebastiaanschool.nl/</string>
     <string name="download_started">Download Started</string>
+    <string name="download_stopped">Download Stopped</string>
     <string name="download_pending">Tap to Download</string>
     <string name="download_complete">Tap to Open</string>
     <string name="download_in_progress">Downloading</string>

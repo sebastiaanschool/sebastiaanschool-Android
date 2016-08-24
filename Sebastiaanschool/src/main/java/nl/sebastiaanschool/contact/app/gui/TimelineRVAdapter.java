@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
 import android.support.v4.util.SimpleArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -42,6 +44,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
     private final PublishSubject<TimelineItem> itemsClicked = PublishSubject.create();
     private final BackendInterface backendApi;
     private final Context context;
+    private RecyclerView recyclerView;
 
     public TimelineRVAdapter(TimelineRVDataSource timelineDataSource, Listener listener,
                              BackendInterface backendApi, final Context context) {
@@ -106,6 +109,16 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         }));
     }
 
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        this.recyclerView = recyclerView;
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        this.recyclerView = null;
+    }
+
     @Nullable
     private Download findDownloadByDownloadManagerId(long dmId) {
         for (int i = 0, max = downloads.size(); i < max; i++) {
@@ -121,6 +134,12 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         subscriptions.add(DownloadManagerInterface.getInstance()
                 .enqueueDownload(download)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(new Action1<Download>() {
+                    @Override
+                    public void call(Download download) {
+                        TimelineRVAdapter.this.notify(R.string.download_started);
+                    }
+                })
                 .subscribe(downloadStatusObserver));
     }
 
@@ -139,7 +158,20 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         subscriptions.add(DownloadManagerInterface.getInstance()
                 .remove(download)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(new Action1<Download>() {
+                    @Override
+                    public void call(Download download) {
+                        TimelineRVAdapter.this.notify(R.string.download_stopped);
+                    }
+                })
                 .subscribe(downloadStatusObserver));
+    }
+
+    private void notify(@StringRes int message) {
+        if (recyclerView != null) {
+            // TODO dismiss existing snackbar, etc.
+            Snackbar.make(recyclerView, message, Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     @Override
