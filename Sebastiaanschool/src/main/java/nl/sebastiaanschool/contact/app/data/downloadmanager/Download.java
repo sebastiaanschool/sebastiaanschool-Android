@@ -51,6 +51,7 @@ public class Download {
     @NonNull public final String remoteUrl;
     public long sizeInBytes = SIZE_UNKNOWN;
     @StatusCode public int statusCode;
+    public int lastStatusCode;
     public long downloadManagerId;
     public String localUri;
     public String localMimeType;
@@ -66,6 +67,7 @@ public class Download {
     }
 
     public Download withStatusCode(@StatusCode int code) {
+        this.lastStatusCode = this.statusCode;
         this.statusCode = code;
         return this;
     }

@@ -7,6 +7,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.util.SimpleArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -133,12 +134,6 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         subscriptions.add(DownloadManagerInterface.getInstance()
                 .enqueueDownload(download)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess(new Action1<Download>() {
-                    @Override
-                    public void call(Download download) {
-                        TimelineRVAdapter.this.notify(R.string.download_started);
-                    }
-                })
                 .subscribe(downloadStatusObserver));
     }
 
@@ -168,8 +163,18 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
 
     private void notify(@StringRes int message) {
         if (recyclerView != null) {
-            // TODO dismiss existing snackbar, etc.
             Snackbar.make(recyclerView, message, Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    private void notifyWithAction(@StringRes int message, @StringRes int actionTitle,
+                                  View.OnClickListener callback) {
+        if (recyclerView != null) {
+            Snackbar.make(recyclerView, message, Snackbar.LENGTH_LONG)
+                    .setActionTextColor(ResourcesCompat.getColor(context.getResources(),
+                            R.color.sebastiaan_blue, context.getTheme()))
+                    .setAction(actionTitle, callback)
+                    .show();
         }
     }
 
@@ -237,13 +242,23 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         }
 
         @Override
-        public void onNext(Download download) {
+        public void onNext(final Download download) {
             Log.d("Timeline", "onNext: " + download);
             downloads.put(download.remoteUrl, download);
             for (int position = 0, max = itemsShowing.size(); position < max; position++) {
                 if (download.remoteUrl.equals(itemsShowing.get(position).documentUrl)) {
                     notifyItemChanged(position);
                 }
+            }
+            if (download.statusCode == Download.STATUS_COMPLETED
+                    && download.lastStatusCode == Download.STATUS_DOWNLOADING) {
+                notifyWithAction(R.string.download_completed, R.string.download_action_open,
+                        new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        launch(download);
+                    }
+                });
             }
         }
     };
