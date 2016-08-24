@@ -38,6 +38,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
 
     /**
      * Downloads are kept separately from the list items because this makes the Rx flows simpler.
+     * Note that downloads are <b>not</b> immutable; instances held in this map <b>do</b> change.
      */
     private final SimpleArrayMap<String, Download> downloads = new SimpleArrayMap<>(20);
     private final PublishSubject<TimelineItem> itemsClicked = PublishSubject.create();
@@ -256,8 +257,11 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
                             .onErrorReturn(new Func1<Throwable, Download>() {
                                 @Override
                                 public Download call(Throwable throwable) {
-                                    // If we can't find the download here, assume it failed.
-                                    return download.withStatusCode(Download.STATUS_FAILED);
+                                    // If we can't find the download here, it was either cancelled or it failed.
+                                    return download.withStatusCode(
+                                            download.lastStatusCode == Download.STATUS_CANCELLED
+                                                    ? Download.STATUS_PENDING
+                                                    : Download.STATUS_FAILED);
                                 }
                             })
                             .subscribe(downloadStatusObserver);
@@ -282,7 +286,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
                     enqueue(download);
                     break;
                 case Download.STATUS_DOWNLOADING:
-                    remove(download);
+                    remove(download.withStatusCode(Download.STATUS_CANCELLED));
                     break;
                 case Download.STATUS_FAILED:
                     enqueue(download);

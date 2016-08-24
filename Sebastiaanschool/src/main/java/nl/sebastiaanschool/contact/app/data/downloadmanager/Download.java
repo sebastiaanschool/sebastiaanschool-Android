@@ -44,6 +44,11 @@ public class Download {
     public static final int STATUS_OPEN_ON_WEB = 4;
 
     /**
+     * The download was cancelled by the user.
+     */
+    public static final int STATUS_CANCELLED = 5;
+
+    /**
      * File size is unknown.
      */
     public static final long SIZE_UNKNOWN = -1L;
@@ -134,7 +139,8 @@ public class Download {
         }
     }
 
-    @IntDef({ STATUS_PENDING, STATUS_DOWNLOADING, STATUS_COMPLETED, STATUS_FAILED, STATUS_OPEN_ON_WEB})
+    @IntDef({ STATUS_PENDING, STATUS_DOWNLOADING, STATUS_COMPLETED, STATUS_FAILED,
+            STATUS_OPEN_ON_WEB, STATUS_CANCELLED})
     @Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD})
     @Retention(RetentionPolicy.CLASS)
     public @interface StatusCode {}

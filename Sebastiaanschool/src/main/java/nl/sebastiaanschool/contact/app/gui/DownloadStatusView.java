@@ -27,7 +27,8 @@ public class DownloadStatusView extends FrameLayout {
             R.drawable.ic_download_in_progress_24dp, // In progress
             R.drawable.ic_download_launch_24dp,      // Completed
             R.drawable.ic_download_failed_24dp,      // Failed
-            R.drawable.ic_download_launch_24dp       // Open on web
+            R.drawable.ic_download_launch_24dp,      // Open on web
+            R.drawable.ic_download_cancelled_24dp,   // Cancelled
     };
 
     @StringRes
@@ -36,7 +37,8 @@ public class DownloadStatusView extends FrameLayout {
             R.string.download_in_progress,
             R.string.download_complete,
             R.string.download_failed,
-            R.string.download_complete
+            R.string.download_complete,
+            R.string.download_cancelled,
     };
 
     private ImageView icon;
