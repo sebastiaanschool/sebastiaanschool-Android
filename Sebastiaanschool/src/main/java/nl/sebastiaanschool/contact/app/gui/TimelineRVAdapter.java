@@ -3,7 +3,6 @@ package nl.sebastiaanschool.contact.app.gui;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
@@ -196,14 +195,11 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
             case TimelineItem.TYPE_BULLETIN:
-                return new ViewHolder(inflater.inflate(R.layout.view_bulletin_item, parent, false),
-                        R.drawable.ic_timeline_bulletin_24dp);
+                return new ViewHolder(inflater.inflate(R.layout.view_bulletin_item, parent, false));
             case TimelineItem.TYPE_NEWSLETTER:
-                return new ViewHolder(inflater.inflate(R.layout.view_newsletter_item, parent, false),
-                        R.drawable.ic_timeline_newsletter_24dp);
+                return new ViewHolder(inflater.inflate(R.layout.view_newsletter_item, parent, false));
             default:
-                return new ViewHolder(inflater.inflate(R.layout.view_unknown_item, parent, false),
-                        R.drawable.ic_timeline_unknown_24dp);
+                return new ViewHolder(inflater.inflate(R.layout.view_unknown_item, parent, false));
         }
     }
 
@@ -277,14 +273,13 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         public final DownloadStatusView mDownloadStatus;
         public TimelineItem mItem;
 
-        public ViewHolder(View view, @DrawableRes int iconRes) {
+        public ViewHolder(View view) {
             super(view);
             mView = view;
             mTitle = (TextView) view.findViewById(R.id.item__title);
             mBody = (TextView) view.findViewById(R.id.item__body);
             mPublishedAt = (TextView) view.findViewById(R.id.item__published_at);
             mDownloadStatus = (DownloadStatusView) view.findViewById(R.id.item__download_status);
-            GrabBag.applyVectorDrawableLeft(mPublishedAt, iconRes);
         }
 
         public void setItem(TimelineItem item) {

@@ -8,7 +8,6 @@
     work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
 -->
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="?attr/list_card_style"
     android:layout_width="match_parent"
@@ -17,35 +16,54 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/item__title"
-            style="@style/TextAppearance.AppCompat.Title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Vandaag, 16 oktober: Open Podium" />
+        <ImageView
+            android:id="@+id/item__picture"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="top"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/team__picture_cdesc"
+            android:src="@drawable/ic_timeline_bulletin_24dp"
+            android:tint="@color/sebastiaan_blue"
+            tools:ignore="RtlHardcoded" />
 
-        <TextView
-            android:id="@+id/item__body"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:autoLink="email|web"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            tools:text="U bent van harte welkom vanaf 11.00 uur! Als het goed zijn de verhalen minder langdradig dan hetgeen ik hier intyp om een paar regels tekstomloop te bewerkstelligen. Android heeft trouwens geen hyphenation, dus woorden als &quot;bewerkstelligen&quot; doen het in deze context leuk." />
+            android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            tools:ignore="RtlHardcoded">
 
-        <TextView
-            android:id="@+id/item__published_at"
-            style="@style/TextAppearance.AppCompat.Caption"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="8dp"
-            android:gravity="center_vertical"
-            tools:drawableLeft="@drawable/ic_timeline_bulletin_24dp"
-            tools:drawableTint="@color/sebastiaan_blue"
-            tools:text="16 oktober 2015, 16:00" />
+            <TextView
+                android:id="@+id/item__title"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Vandaag, 16 oktober: Open Podium" />
+
+            <TextView
+                android:id="@+id/item__body"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="email|web"
+                android:gravity="center_vertical"
+                tools:text="U bent van harte welkom vanaf 11.00 uur! Als het goed zijn de verhalen minder langdradig dan hetgeen ik hier intyp om een paar regels tekstomloop te bewerkstelligen. Android heeft trouwens geen hyphenation, dus woorden als &quot;bewerkstelligen&quot; doen het in deze context leuk." />
+
+            <TextView
+                android:id="@+id/item__published_at"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                tools:text="16 oktober 2015, 16:00" />
+
+        </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>
 
