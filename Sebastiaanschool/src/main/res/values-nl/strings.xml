@@ -15,6 +15,7 @@
     <string name="download_pending">Tik om te downloaden</string>
     <string name="download_completed">Nieuwsbrief gedownload</string>
     <string name="download_action_open">Openen</string>
+    <string name="download_action_retry">Opnieuw</string>
     <string name="download_complete">Tik om te openen</string>
     <string name="download_in_progress">Aan het downloaden</string>
     <string name="download_failed">Mislukt, tik voor opnieuw</string>

@@ -22,6 +22,7 @@
     <string name="download_stopped">Download Stopped</string>
     <string name="download_completed">Newsletter Downloaded</string>
     <string name="download_action_open">Open</string>
+    <string name="download_action_retry">Retry</string>
     <string name="download_pending">Tap to Download</string>
     <string name="download_complete">Tap to Open</string>
     <string name="download_in_progress">Downloading</string>

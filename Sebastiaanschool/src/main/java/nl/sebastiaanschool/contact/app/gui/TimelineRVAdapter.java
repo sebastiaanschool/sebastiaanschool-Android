@@ -217,6 +217,15 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
                         launch(download);
                     }
                 });
+            } else if (download.statusCode == Download.STATUS_FAILED
+                    && download.lastStatusCode == Download.STATUS_DOWNLOADING) {
+                notifyWithAction(R.string.download_failed, R.string.download_action_retry,
+                        new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        enqueue(download);
+                    }
+                });
             }
         }
     };
@@ -266,13 +275,10 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
                     enqueue(download);
                     break;
                 case Download.STATUS_DOWNLOADING:
-                    // TODO confirm first?
-                    // TODO this doesn't seem to cancel the notification.
                     remove(download);
                     break;
                 case Download.STATUS_FAILED:
-                    Log.d("Timeline", "TODO retry failed download");
-                    // TODO retry. Issue some kind of notification first?
+                    enqueue(download);
                     break;
                 default:
                     // Ignored.
