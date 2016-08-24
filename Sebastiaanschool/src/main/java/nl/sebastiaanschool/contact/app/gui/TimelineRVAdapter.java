@@ -248,11 +248,18 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         @Override
         public void call(DownloadManagerInterface.DownloadEvent event) {
             if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(event.type)) {
-                Download download = findDownloadByDownloadManagerId(event.downloadManagerId);
+                final Download download = findDownloadByDownloadManagerId(event.downloadManagerId);
                 if (download != null) {
                     // Get up-to-date status info from DownloadManager
                     DownloadManagerInterface.getInstance().findExistingEntry(download)
                             .observeOn(AndroidSchedulers.mainThread())
+                            .onErrorReturn(new Func1<Throwable, Download>() {
+                                @Override
+                                public Download call(Throwable throwable) {
+                                    // If we can't find the download here, assume it failed.
+                                    return download.withStatusCode(Download.STATUS_FAILED);
+                                }
+                            })
                             .subscribe(downloadStatusObserver);
                 }
             }
