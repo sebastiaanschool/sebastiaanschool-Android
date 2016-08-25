@@ -24,7 +24,7 @@ repositories {
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion "24.0.2"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -72,42 +72,49 @@ if (extraConf.exists()) {
     apply from: 'signing-config.gradle'
 }
 
-project.ext {
-    retrofitVersion = '2.1.0'
-    supportLibVersion = '24.2.0'
-    testSupportVersion = '2.2.2'
-    leakCanaryVersion = '1.4-beta2'
-}
+project.ext.versions = [
+    jodaTime   : '2.9.4.1',
+    junit      : '4.12',
+    leakCanary : '1.4-beta2',
+    moshi      : '1.2.0',
+    okhttp     : '3.4.1',
+    retrofit   : '2.1.0',
+    rxAndroid  : '1.2.1',
+    rxJava     : '1.1.9',
+    supportLib : '24.2.0',
+    testRunner : '0.5',
+    testSupport: '2.2.2',
+]
 
 dependencies {
-    compile "com.android.support:support-v4:${project.ext.supportLibVersion}"
-    compile "com.android.support:appcompat-v7:${project.ext.supportLibVersion}"
-    compile "com.android.support:cardview-v7:${project.ext.supportLibVersion}"
-    compile "com.android.support:preference-v7:${project.ext.supportLibVersion}"
-    compile "com.android.support:design:${project.ext.supportLibVersion}"
-    compile "com.android.support:support-annotations:${project.ext.supportLibVersion}"
-    compile "com.android.support:recyclerview-v7:${project.ext.supportLibVersion}"
-    compile "com.android.support:support-vector-drawable:${project.ext.supportLibVersion}"
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.1.9'
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile "com.squareup.retrofit2:retrofit:${project.ext.retrofitVersion}"
-    compile "com.squareup.retrofit2:adapter-rxjava:${project.ext.retrofitVersion}"
-    compile "com.squareup.retrofit2:converter-moshi:${project.ext.retrofitVersion}"
-    compile 'com.squareup.moshi:moshi:1.2.0'
-    compile 'net.danlew:android.joda:2.9.4.1'
-    debugCompile "com.squareup.leakcanary:leakcanary-android:${project.ext.leakCanaryVersion}"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${project.ext.leakCanaryVersion}"
-    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${project.ext.leakCanaryVersion}"
-    testCompile 'junit:junit:4.12'
-    androidTestCompile "com.android.support.test.espresso:espresso-core:${project.ext.testSupportVersion}"
-    androidTestCompile "com.android.support.test.espresso:espresso-contrib:${project.ext.testSupportVersion}"
-    androidTestCompile "com.android.support.test.espresso:espresso-idling-resource:${project.ext.testSupportVersion}"
-    androidTestCompile "com.android.support.test.espresso:espresso-intents:${project.ext.testSupportVersion}"
-    androidTestCompile "com.android.support.test:runner:0.5"
-    androidTestCompile "com.android.support:support-annotations:${project.ext.supportLibVersion}"
-    androidTestCompile "com.android.support:support-v4:${project.ext.supportLibVersion}"
-    androidTestCompile "com.android.support:appcompat-v7:${project.ext.supportLibVersion}"
-    androidTestCompile "com.android.support:design:${project.ext.supportLibVersion}"
-    androidTestCompile "com.android.support:recyclerview-v7:${project.ext.supportLibVersion}"
+    compile "com.android.support:support-v4:${project.ext.versions.supportLib}"
+    compile "com.android.support:appcompat-v7:${project.ext.versions.supportLib}"
+    compile "com.android.support:cardview-v7:${project.ext.versions.supportLib}"
+    compile "com.android.support:preference-v7:${project.ext.versions.supportLib}"
+    compile "com.android.support:design:${project.ext.versions.supportLib}"
+    compile "com.android.support:support-annotations:${project.ext.versions.supportLib}"
+    compile "com.android.support:recyclerview-v7:${project.ext.versions.supportLib}"
+    compile "com.android.support:support-vector-drawable:${project.ext.versions.supportLib}"
+    compile "io.reactivex:rxandroid:${project.ext.versions.rxAndroid}"
+    compile "io.reactivex:rxjava:${project.ext.versions.rxJava}"
+    compile "com.squareup.okhttp3:okhttp:${project.ext.versions.okhttp}"
+    compile "com.squareup.retrofit2:retrofit:${project.ext.versions.retrofit}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${project.ext.versions.retrofit}"
+    compile "com.squareup.retrofit2:converter-moshi:${project.ext.versions.retrofit}"
+    compile "com.squareup.moshi:moshi:${project.ext.versions.moshi}"
+    compile "net.danlew:android.joda:${project.ext.versions.jodaTime}"
+    debugCompile "com.squareup.leakcanary:leakcanary-android:${project.ext.versions.leakCanary}"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${project.ext.versions.leakCanary}"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${project.ext.versions.leakCanary}"
+    testCompile "junit:junit:${project.ext.versions.junit}"
+    androidTestCompile "com.android.support.test.espresso:espresso-core:${project.ext.versions.testSupport}"
+    androidTestCompile "com.android.support.test.espresso:espresso-contrib:${project.ext.versions.testSupport}"
+    androidTestCompile "com.android.support.test.espresso:espresso-idling-resource:${project.ext.versions.testSupport}"
+    androidTestCompile "com.android.support.test.espresso:espresso-intents:${project.ext.versions.testSupport}"
+    androidTestCompile "com.android.support.test:runner:${project.ext.versions.testRunner}"
+    androidTestCompile "com.android.support:support-annotations:${project.ext.versions.supportLib}"
+    androidTestCompile "com.android.support:support-v4:${project.ext.versions.supportLib}"
+    androidTestCompile "com.android.support:appcompat-v7:${project.ext.versions.supportLib}"
+    androidTestCompile "com.android.support:design:${project.ext.versions.supportLib}"
+    androidTestCompile "com.android.support:recyclerview-v7:${project.ext.versions.supportLib}"
 }
