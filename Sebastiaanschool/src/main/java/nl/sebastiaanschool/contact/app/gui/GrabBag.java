@@ -20,6 +20,7 @@ import android.support.annotation.DrawableRes;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.util.LruCache;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -84,7 +85,16 @@ final class GrabBag {
 
     private static final LruCache<Integer, Drawable> vectorDrawableCache = new LruCache<>(32);
 
-    public static Drawable loadVectorDrawable(Context context, @DrawableRes int resId) {
+    /**
+     * Apply a vector drawable to an image view.
+     * @param imageView the imageView.
+     * @param resId the drawable resource.
+     */
+    public static void applyVectorImage(ImageView imageView, @DrawableRes int resId) {
+        imageView.setImageDrawable(loadVectorDrawable(imageView.getContext(), resId));
+    }
+
+    private static Drawable loadVectorDrawable(Context context, @DrawableRes int resId) {
         Drawable result = vectorDrawableCache.get(resId);
         if (result == null) {
             result = VectorDrawableCompat.create(context.getResources(), resId, context.getTheme());

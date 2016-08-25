@@ -91,8 +91,7 @@ public class DownloadStatusView extends FrameLayout {
     }
 
     private void updateStatusImage(@Download.StatusCode int statusCode) {
-        this.icon.setImageDrawable(GrabBag.loadVectorDrawable(getContext(),
-                STATUS_ICONS[statusCode]));
+        GrabBag.applyVectorImage(this.icon, STATUS_ICONS[statusCode]);
         this.icon.setContentDescription(getContext().getString(CONTENT_DESCRIPTIONS[statusCode]));
     }
 }

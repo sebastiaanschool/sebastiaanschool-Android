@@ -47,7 +47,6 @@ class TeamRVAdapter extends AbstractRVAdapter<TeamItem, TeamRVAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
-        public final ImageView mPicture;
         public final TextView mName;
         public final TextView mDescription;
         public final TextView mEmail;
@@ -57,8 +56,8 @@ class TeamRVAdapter extends AbstractRVAdapter<TeamItem, TeamRVAdapter.ViewHolder
             super(view);
             mView = view;
             mView.setOnClickListener(this);
-            mPicture = (ImageView) view.findViewById(R.id.item__picture);
-            mPicture.setImageDrawable(GrabBag.loadVectorDrawable(mPicture.getContext(), R.drawable.ic_team_person_24dp));
+            ImageView icon = (ImageView) view.findViewById(R.id.item__picture);
+            GrabBag.applyVectorImage(icon, R.drawable.ic_team_person_24dp);
             mName = (TextView) view.findViewById(R.id.item__name);
             mDescription = (TextView) view.findViewById(R.id.item__detail_text);
             mEmail = (TextView) view.findViewById(R.id.item__email);

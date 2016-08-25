@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.danlew.android.joda.DateUtils;
@@ -64,6 +65,8 @@ class AgendaRVAdapter extends AbstractRVAdapter<AgendaItem, AgendaRVAdapter.View
             mView.setOnClickListener(this);
             mTitle = (TextView) view.findViewById(R.id.item__title);
             mDateRange = (TextView) view.findViewById(R.id.item__date_range);
+            ImageView icon = (ImageView) view.findViewById(R.id.item__picture);
+            GrabBag.applyVectorImage(icon, R.drawable.ic_agenda_event_24dp);
         }
 
         public void setItem(AgendaItem item) {

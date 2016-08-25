@@ -3,6 +3,7 @@ package nl.sebastiaanschool.contact.app.gui;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.danlew.android.joda.DateUtils;
@@ -147,18 +149,21 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        final int layout;
+        final int layout, image;
         switch (viewType) {
             case TimelineItem.TYPE_BULLETIN:
                 layout = R.layout.view_bulletin_item;
+                image = R.drawable.ic_timeline_bulletin_24dp;
                 break;
             case TimelineItem.TYPE_NEWSLETTER:
                 layout = R.layout.view_newsletter_item;
+                image = R.drawable.ic_timeline_newsletter_24dp;
                 break;
             default:
                 layout = R.layout.view_unknown_item;
+                image = R.drawable.ic_timeline_unknown_24dp;
         }
-        return new ViewHolder(inflater.inflate(layout, parent, false));
+        return new ViewHolder(inflater.inflate(layout, parent, false), image);
     }
 
     @Override
@@ -308,13 +313,15 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         public final DownloadStatusView mDownloadStatus;
         public TimelineItem mItem;
 
-        public ViewHolder(View view) {
+        public ViewHolder(View view, @DrawableRes int pictureResId) {
             super(view);
             mView = view;
             mTitle = (TextView) view.findViewById(R.id.item__title);
             mBody = (TextView) view.findViewById(R.id.item__body);
             mPublishedAt = (TextView) view.findViewById(R.id.item__published_at);
             mDownloadStatus = (DownloadStatusView) view.findViewById(R.id.item__download_status);
+            ImageView icon = (ImageView) view.findViewById(R.id.item__picture);
+            GrabBag.applyVectorImage(icon, pictureResId);
         }
 
         public void setItem(TimelineItem item) {
