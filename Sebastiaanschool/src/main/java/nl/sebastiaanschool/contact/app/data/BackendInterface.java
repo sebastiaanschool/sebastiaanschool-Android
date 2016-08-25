@@ -39,10 +39,10 @@ public class BackendInterface {
     private final OkHttpClient okHttpClient;
 
     public static synchronized void init(Context context) {
-        if (instance != null) {
-            throw new IllegalStateException("Already initialised.");
+        if (instance == null) {
+            instance = new BackendInterface(context.getApplicationContext().getCacheDir(),
+                    GrabBag.constructUserAgent(context));
         }
-        instance = new BackendInterface(context.getCacheDir(), GrabBag.constructUserAgent(context));
     }
 
     public static synchronized BackendInterface getInstance() {

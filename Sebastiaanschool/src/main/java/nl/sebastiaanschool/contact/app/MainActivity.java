@@ -16,6 +16,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
+import nl.sebastiaanschool.contact.app.data.BackendInterface;
+import nl.sebastiaanschool.contact.app.data.DownloadManagerInterface;
 import nl.sebastiaanschool.contact.app.gui.NavigationPagerAdapter;
 
 /**
@@ -31,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        JodaTimeAndroid.init(this);
+        BackendInterface.init(this);
+        DownloadManagerInterface.init(this);
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.action_bar));
 

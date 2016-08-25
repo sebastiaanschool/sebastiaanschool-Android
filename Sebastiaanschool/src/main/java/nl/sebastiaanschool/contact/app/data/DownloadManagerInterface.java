@@ -38,11 +38,10 @@ public class DownloadManagerInterface {
     private final String userAgent;
 
     public static synchronized void init(Context context) {
-        if (instance != null) {
-            throw new IllegalStateException("Already initialised.");
+        if (instance == null) {
+            instance = new DownloadManagerInterface(context.getApplicationContext());
+            instance.registerReceiver();
         }
-        instance = new DownloadManagerInterface(context);
-        instance.registerReceiver();
     }
 
     public static synchronized DownloadManagerInterface getInstance() {
