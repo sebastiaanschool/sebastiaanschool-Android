@@ -78,7 +78,6 @@ project.ext {
     retrofitVersion = '2.1.0'
     supportLibVersion = '24.2.0'
     testSupportVersion = '2.2.2'
-    leakCanaryVersion = '1.4-beta2'
     firebaseVersion = '9.4.0'
 }
 
@@ -100,9 +99,6 @@ dependencies {
     compile 'com.squareup.moshi:moshi:1.2.0'
     compile 'net.danlew:android.joda:2.9.4.1'
     compile "com.google.firebase:firebase-crash:${project.ext.firebaseVersion}"
-    debugCompile "com.squareup.leakcanary:leakcanary-android:${project.ext.leakCanaryVersion}"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${project.ext.leakCanaryVersion}"
-    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${project.ext.leakCanaryVersion}"
     testCompile 'junit:junit:4.12'
     androidTestCompile "com.android.support.test.espresso:espresso-core:${project.ext.testSupportVersion}"
     androidTestCompile "com.android.support.test.espresso:espresso-contrib:${project.ext.testSupportVersion}"

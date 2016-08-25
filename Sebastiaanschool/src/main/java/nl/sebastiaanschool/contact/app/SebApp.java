@@ -12,8 +12,6 @@ package nl.sebastiaanschool.contact.app;
 import android.app.Application;
 import android.os.StrictMode;
 
-import com.squareup.leakcanary.LeakCanary;
-
 import nl.sebastiaanschool.contact.app.data.BackendInterface;
 
 public class SebApp extends Application {
@@ -21,7 +19,6 @@ public class SebApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        LeakCanary.install(this);
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                     .detectAll()
