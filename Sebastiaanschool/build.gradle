@@ -7,12 +7,13 @@ Creative Commons Attribution-NonCommercial 3.0 Unported License.
 You should have received a copy of the license along with this
 work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
 */
+
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'com.android.tools.build:gradle:2.1.3'
     }
 }
 apply plugin: 'com.android.application'
@@ -22,8 +23,8 @@ repositories {
 }
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -34,28 +35,35 @@ android {
         release {
             minifyEnabled true
             proguardFile file('proguard-shrink-only.txt')
-            buildConfigField "String", "PARSE_APPLICATION_ID", getEnv('PARSE_APPLICATION_ID')
-            buildConfigField "String", "PARSE_CLIENT_KEY", getEnv('PARSE_CLIENT_KEY')
+            buildConfigField "String", "ENDPOINT_URL", "\"https://backend-sebastiaanschool.rhcloud.com/\""
         }
         debug {
             minifyEnabled false
             proguardFile file('proguard-shrink-only.txt')
-            buildConfigField "String", "PARSE_APPLICATION_ID", getEnv('DEV_PARSE_APPLICATION_ID')
-            buildConfigField "String", "PARSE_CLIENT_KEY", getEnv('DEV_PARSE_CLIENT_KEY')
+            buildConfigField "String", "ENDPOINT_URL", "\"http://${getEnv('SEBASTIAAN_HOST', '10.0.2.2')}:8000/\""
         }
     }
 
     defaultConfig {
         versionCode 5
-        versionName "1.3.0"
+        versionName "2.0.0"
         minSdkVersion 14
-        targetSdkVersion 21
-        testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
+        targetSdkVersion 24
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resConfigs "en", "nl"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    android {
+        lintOptions {
+            disable 'InvalidPackage',          // This triggers on some files in Retrofit and Okio
+                    'GoogleAppIndexingWarning' // We're not interested in App Indexing
+        }
     }
 }
 
 def getEnv(key, defVal = '') {
-    "\"${System.env.containsKey(key) ? System.env.get(key) : defVal}\""
+    System.env.containsKey(key) ? System.env.get(key) : defVal
 }
 
 // Import code signing configuration from a separate file, outside version control.
@@ -64,9 +72,42 @@ if (extraConf.exists()) {
     apply from: 'signing-config.gradle'
 }
 
+project.ext {
+    retrofitVersion = '2.1.0'
+    supportLibVersion = '24.2.0'
+    testSupportVersion = '2.2.2'
+    leakCanaryVersion = '1.4-beta2'
+}
+
 dependencies {
-    compile 'com.android.support:support-v4:21.0.2'
-    compile files('libs/Parse-1.7.1.jar')
-    compile files('libs/bolts-android-1.1.3.jar')
-    androidTestCompile files('libs/espresso-1.1-bundled.jar')
+    compile "com.android.support:support-v4:${project.ext.supportLibVersion}"
+    compile "com.android.support:appcompat-v7:${project.ext.supportLibVersion}"
+    compile "com.android.support:cardview-v7:${project.ext.supportLibVersion}"
+    compile "com.android.support:preference-v7:${project.ext.supportLibVersion}"
+    compile "com.android.support:design:${project.ext.supportLibVersion}"
+    compile "com.android.support:support-annotations:${project.ext.supportLibVersion}"
+    compile "com.android.support:recyclerview-v7:${project.ext.supportLibVersion}"
+    compile "com.android.support:support-vector-drawable:${project.ext.supportLibVersion}"
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.9'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile "com.squareup.retrofit2:retrofit:${project.ext.retrofitVersion}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${project.ext.retrofitVersion}"
+    compile "com.squareup.retrofit2:converter-moshi:${project.ext.retrofitVersion}"
+    compile 'com.squareup.moshi:moshi:1.2.0'
+    compile 'net.danlew:android.joda:2.9.4.1'
+    debugCompile "com.squareup.leakcanary:leakcanary-android:${project.ext.leakCanaryVersion}"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${project.ext.leakCanaryVersion}"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${project.ext.leakCanaryVersion}"
+    testCompile 'junit:junit:4.12'
+    androidTestCompile "com.android.support.test.espresso:espresso-core:${project.ext.testSupportVersion}"
+    androidTestCompile "com.android.support.test.espresso:espresso-contrib:${project.ext.testSupportVersion}"
+    androidTestCompile "com.android.support.test.espresso:espresso-idling-resource:${project.ext.testSupportVersion}"
+    androidTestCompile "com.android.support.test.espresso:espresso-intents:${project.ext.testSupportVersion}"
+    androidTestCompile "com.android.support.test:runner:0.5"
+    androidTestCompile "com.android.support:support-annotations:${project.ext.supportLibVersion}"
+    androidTestCompile "com.android.support:support-v4:${project.ext.supportLibVersion}"
+    androidTestCompile "com.android.support:appcompat-v7:${project.ext.supportLibVersion}"
+    androidTestCompile "com.android.support:design:${project.ext.supportLibVersion}"
+    androidTestCompile "com.android.support:recyclerview-v7:${project.ext.supportLibVersion}"
 }

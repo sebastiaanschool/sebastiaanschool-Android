@@ -20,53 +20,29 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- We'll reintroduce push messaging later, let's not elide these permissions until then. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-
-    <permission
-        android:name="nl.sebastiaanschool.contact.app.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-    <uses-permission android:name="nl.sebastiaanschool.contact.app.permission.C2D_MESSAGE" />
 
     <application
         android:name=".SebApp"
         android:allowBackup="false"
-        android:icon="@drawable/ic_launcher"
-        android:logo="@drawable/ic_sebastiaan_48dp_white"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
-        <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/ic_push_ntf"/>
+        android:theme="@style/AppTheme" >
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:screenOrientation="sensorPortrait">
+            android:screenOrientation="sensor"
+            android:theme="@style/AppTheme.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="com.parse.PushService" />
-        <receiver
-            android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-
-                <category android:name="nl.sebastiaanschool.contact.app" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name=".PushMessageReceiver" android:exported="false">
-            <intent-filter>
-                <action android:name="com.parse.push.intent.RECEIVE" />
-                <action android:name="com.parse.push.intent.DELETE" />
-                <action android:name="com.parse.push.intent.OPEN" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

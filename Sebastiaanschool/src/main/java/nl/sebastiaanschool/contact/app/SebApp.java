@@ -10,45 +10,38 @@
 package nl.sebastiaanschool.contact.app;
 
 import android.app.Application;
-import android.view.Gravity;
-import android.widget.Toast;
+import android.os.StrictMode;
 
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseInstallation;
-import com.parse.ParseObject;
-import com.parse.SaveCallback;
+import com.squareup.leakcanary.LeakCanary;
 
-/**
- * Initializes the Parse SDK client.
- */
+import net.danlew.android.joda.JodaTimeAndroid;
+
+import nl.sebastiaanschool.contact.app.data.BackendInterface;
+import nl.sebastiaanschool.contact.app.data.DownloadManagerInterface;
+
 public class SebApp extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        ParseObject.registerSubclass(AgendaItem.class);
-        ParseObject.registerSubclass(Bulletin.class);
-        ParseObject.registerSubclass(Newsletter.class);
-        ParseObject.registerSubclass(TeamMember.class);
-        Parse.setLogLevel(BuildConfig.DEBUG ? Parse.LOG_LEVEL_DEBUG : Parse.LOG_LEVEL_NONE);
-        final String applicationId = BuildConfig.PARSE_APPLICATION_ID;
-        final String clientKey = BuildConfig.PARSE_CLIENT_KEY;
-        Parse.initialize(this, applicationId, clientKey);
-        if (applicationId == null || clientKey == null) {
-            final Toast toast = Toast.makeText(this, "NO PARSE API KEY DEFINED!", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-        } else {
-            final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
-            currentInstallation.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null) {
-                        new PushPreferencesUpdater(SebApp.this).updatePushPreferences();
-                    }
-                }
-            });
+        LeakCanary.install(this);
+        JodaTimeAndroid.init(this);
+        BackendInterface.init(this);
+        DownloadManagerInterface.init(this);
+
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .penaltyFlashScreen()
+                    .penaltyDeathOnNetwork()
+                    .build());
+
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .setClassInstanceLimit(BackendInterface.class, 1)
+                    .build());
         }
     }
 }

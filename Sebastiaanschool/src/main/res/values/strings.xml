@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright (c) 2014 Barend Garvelink
 
     SebastiaanSchool is licensed under a
@@ -8,52 +7,54 @@
     You should have received a copy of the license along with this
     work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:lang="en_US">
     <string name="app_name" translatable="false">Seb@stiaan</string>
-    <string name="call_url" translatable="false">tel:+31%2055%20533%2053%2055</string>
     <string name="call_failed_dialog_body">Could not initiate call. Please call manually. The number is:\n\n+31 55 533 53 55</string>
     <string name="close_button">Close</string>
-    <string name="home_url" translatable="false">http://www.sebastiaanschool.nl/</string>
-    <string name="twitter_url" translatable="false">http://www.twitter.com/KBSebastiaan</string>
-    <string name="yurls_url" translatable="false">http://sebastiaan.yurls.net/</string>
-    <string name="menu_downloads_folder">Open download folder</string>
-    <string name="download_started">Download Started</string>
-    <string name="navigation__homepage">Homepage</string>
-    <string name="navigation__twitter">\@KBSebastiaan</string>
-    <string name="navigation__twitter_desc">Twitter, button</string>
-    <string name="navigation__yurl">Yurls site</string>
-    <string name="navigation__yurl_desc">Yurls site, button</string>
-    <string name="navigation__agenda">Agenda</string>
-    <string name="navigation__agenda_desc">Agenda, button</string>
-    <string name="navigation__team">Team</string>
-    <string name="navigation__team_desc">Team, button</string>
-    <string name="navigation__call">Call</string>
-    <string name="navigation__call_desc">Call, button</string>
-    <string name="navigation__newsletter">Newsletter</string>
-    <string name="navigation__newsletter_desc">Newsletter, button</string>
-    <string name="navigation__bulletin">Bulletin</string>
-    <string name="navigation__bulletin_desc">Bulletin, button</string>
-    <string name="navigation__settings">Settings</string>
+    <string name="contact__call">Call: +31 55 533 53 55</string>
+    <string name="contact__call_url" translatable="false">tel:+31%2055%20533%2053%2055</string>
+    <string name="contact__twitter" translatable="false">Twitter: @KBSebastiaan</string>
+    <string name="contact__twitter_url" translatable="false">http://www.twitter.com/KBSebastiaan</string>
+    <string name="contact__yurls" translatable="false">Yurls site</string>
+    <string name="contact__yurls_url" translatable="false">http://sebastiaan.yurls.net/</string>
+    <string name="contact__homepage" translatable="false">Website</string>
+    <string name="contact__homepage_url" translatable="false">http://www.sebastiaanschool.nl/</string>
+    <string name="download_stopped">Download Stopped</string>
+    <string name="download_completed">Newsletter Downloaded</string>
+    <string name="download_action_open">Open</string>
+    <string name="download_action_retry">Retry</string>
+    <string name="download_pending">Tap to Download</string>
+    <string name="download_complete">Tap to Open</string>
+    <string name="download_in_progress">Downloading</string>
+    <string name="download_failed">Failed, tap to retry</string>
     <string name="team_email_body">Dear %1$s,</string>
     <string name="download_newsletter_description">Sebastiaanschool Newsletter</string>
-    <string name="download_newsletter_referer" translatable="false">Sebastiaan Android v%d</string>
     <string name="open_uri_failed">Could not open file</string>
-    <string name="navigation__home_as_up_desc">double-tap to return to main menu.</string>
-    <string name="accessibility__announce_return_home">Now showing the main menu.</string>
-    <string name="accessibility__announce_open_page">Now showing the %1$s page.</string>
-    <string name="accessibility__announce_open_agenda">Now showing the %1$s page. Double-tap an item to add it to your device calendar.</string>
-    <string name="accessibility__announce_open_newsletter">Now showing the %1$s page. Double-tap an item to download it.</string>
-    <string name="accessibility__announce_open_team">Now showing the %1$s page. Double-tap a team member to send them an email.</string>
     <string name="settings__about">About this App</string>
-    <string name="settings__version_title">Version information</string>
+    <string name="settings__version_title">Version</string>
     <string name="settings__version_summary">Version %s.</string>
     <string name="settings__author_title">Authors</string>
-    <string name="settings__author_summary">This app has been built by Barend Garvelink and Jeroen Leenarts.</string>
+    <string name="settings__author_summary">Barend Garvelink and Jeroen Leenarts</string>
     <string name="settings__github_title">Source Code</string>
     <string name="settings__github_summary">https://github.com/sebastiaanschool</string>
-    <string name="settings__push">Push Notifications</string>
-    <string name="settings__push_newsletter_title">Newsletter</string>
-    <string name="settings__push_newsletter_summary">Notify when a newsletter is made available.</string>
-    <string name="settings__push_bulletin_title">Bulletin</string>
-    <string name="settings__push_bulletin_summary">Notify when a bulletin is made available.</string>
+    <string name="settings__push">News</string>
+    <string name="settings__push_news">Notify me</string>
+    <string name="settings__push_view_downloads">View Downloads</string>
+    <string name="settings__attribution">Attribution</string>
+    <string name="settings__square_title">OkHttp, Okio, Retrofit, Moshi</string>
+    <string name="settings__square_summary">This app uses OkHttp, Okio, Retrofit and Moshi, all published by Square Inc. under the Apache 2.0 License. Tap for more information.</string>
+    <string name="settings__rx_title">RxJava, RxAndroid</string>
+    <string name="settings__rx_summary">This app uses RxJava by Netflix Inc. and RxAndroid by The RxAndroid Developers. Usage under the Apache 2.0 License. Tap for more information.</string>
+    <string name="settings__joda_title">Joda-Time Android</string>
+    <string name="settings__joda_summary">This app uses Joda-Time Android by Stephen Colebourne and Daniel Lew. Apache 2.0 License. Tap for more information.</string>
+    <string name="settings__icons_title">Android Studio Assets</string>
+    <string name="settings__icons_summary">This app uses vector images generated by Android Studio, licensed under CC BY 4.0. Tap for more information.</string>
+    <string name="team__picture_cdesc">Photo</string>
+    <string-array name="main__page_titles">
+        <item>News</item>
+        <item>Agenda</item>
+        <item>Contact</item>
+        <item>Team</item>
+        <item>Settings</item>
+    </string-array>
 </resources>

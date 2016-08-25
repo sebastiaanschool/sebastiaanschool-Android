@@ -11,43 +11,43 @@
 <resources>
     <string name="call_failed_dialog_body">Kon niet automatisch bellen. Belt u a.u.b. zelf. Het nummer is:\n\n+31 55 533 53 55</string>
     <string name="close_button">Sluiten</string>
-    <string name="menu_downloads_folder">Downloadmap openen</string>
-    <string name="download_started">Download gestart</string>
-    <string name="navigation__homepage">Homepage</string>
-    <string name="navigation__twitter">\@KBSebastiaan</string>
-    <string name="navigation__twitter_desc">Knop Twitter</string>
-    <string name="navigation__yurl">Yurls site</string>
-    <string name="navigation__yurl_desc">Knop Yurls site</string>
-    <string name="navigation__agenda">Agenda</string>
-    <string name="navigation__agenda_desc">Knop Agenda</string>
-    <string name="navigation__team">Team</string>
-    <string name="navigation__team_desc">Knop Team</string>
-    <string name="navigation__call">Bel</string>
-    <string name="navigation__call_desc">Knop Bel</string>
-    <string name="navigation__newsletter">Nieuwsbrief</string>
-    <string name="navigation__newsletter_desc">Knop Nieuwsbrief</string>
-    <string name="navigation__bulletin">Mededelingen</string>
-    <string name="navigation__bulletin_desc">Knop Mededelingen</string>
-    <string name="navigation__settings">Instellingen</string>
+    <string name="download_stopped">Download gestopt</string>
+    <string name="download_pending">Tik om te downloaden</string>
+    <string name="download_completed">Nieuwsbrief gedownload</string>
+    <string name="download_action_open">Openen</string>
+    <string name="download_action_retry">Opnieuw</string>
+    <string name="download_complete">Tik om te openen</string>
+    <string name="download_in_progress">Aan het downloaden</string>
+    <string name="download_failed">Mislukt, tik voor opnieuw</string>
+    <string name="contact__call">Bellen: 055 533 53 55</string>
     <string name="team_email_body">Beste %1$s,</string>
     <string name="download_newsletter_description">Sebastiaanschool Nieuwsbrief</string>
     <string name="open_uri_failed">Bestand openen niet gelukt</string>
-    <string name="navigation__home_as_up_desc">dubbel-tikken om naar het hoofdmenu terug te keren</string>
-    <string name="accessibility__announce_return_home">Het hoofdmenu wordt getoond</string>
-    <string name="accessibility__announce_open_page">De %1$s pagina wordt getoond</string>
-    <string name="accessibility__announce_open_agenda">De %1$s pagina wordt getoond. Dubbeltik op een item om het toe te voegen aan de agenda van je device.</string>
-    <string name="accessibility__announce_open_newsletter">De %1$s pagina wordt getoond. Dubbeltik op een nieuwsbrief om hem te downloaden.</string>
-    <string name="accessibility__announce_open_team">De %1$s pagina wordt getoond. Dubbeltik op een teamlid om hem of haar een email te sturen.</string>
     <string name="settings__about">Over deze app</string>
-    <string name="settings__version_title">Versie-informatie</string>
-    <string name="settings__version_summary">Versie %s.</string>
+    <string name="settings__version_title">Versie</string>
+    <string name="settings__version_summary">Versie %s</string>
     <string name="settings__author_title">Auteurs</string>
-    <string name="settings__author_summary">Deze app is gemaakt door Barend Garvelink en Jeroen Leenarts.</string>
+    <string name="settings__author_summary">Barend Garvelink en Jeroen Leenarts</string>
     <string name="settings__github_title">Broncode</string>
     <string name="settings__github_summary">https://github.com/sebastiaanschool</string>
-    <string name="settings__push">Push-berichten</string>
-    <string name="settings__push_newsletter_title">Nieuwsbrief</string>
-    <string name="settings__push_newsletter_summary">Ontvang een bericht wanneer er een nieuwsbrief wordt geplaatst.</string>
-    <string name="settings__push_bulletin_title">Bulletin</string>
-    <string name="settings__push_bulletin_summary">Ontvang een bericht wanneer er een bulletin wordt geplaatst.</string>
+    <string name="settings__push">Nieuws</string>
+    <string name="settings__push_news">Pushbericht</string>
+    <string name="settings__push_view_downloads">Downloads weergeven</string>
+    <string name="settings__attribution">Erkenningen</string>
+    <string name="settings__square_title">OkHttp, Okio, Retrofit, Moshi</string>
+    <string name="settings__square_summary">Deze app gebruikt OkHttp, Okio, Retrofit en Moshi, welke zijn gepubliceerd door Square Inc. met de Apache 2.0 Licentie. Tik voor meer informatie.</string>
+    <string name="settings__rx_title">RxJava, RxAndroid</string>
+    <string name="settings__rx_summary">Deze app gebruik RxJava door Netflix Inc. en RxAndroid door The RxAndroid Developers, onder de Apache 2.0 Licentie. Tik voor meer informatie.</string>
+    <string name="settings__joda_title">Joda-Time Android</string>
+    <string name="settings__joda_summary">Deze app gebruikt Joda-Time Android door Stephen Colebourne en Daniel Lew. Apache 2.0 Licentie. Tik voor meer informatie.</string>
+    <string name="settings__icons_title">Android Studio Assets</string>
+    <string name="settings__icons_summary">Deze app gebruikt vector plaatjes uit Android Studio, beschikbaar onder de CC BY 4.0 licentie. Tik voor meer informatie.</string>
+    <string name="team__picture_cdesc">Foto</string>
+    <string-array name="main__page_titles">
+        <item>Nieuws</item>
+        <item>Agenda</item>
+        <item>Contact</item>
+        <item>Team</item>
+        <item>Instellingen</item>
+    </string-array>
 </resources>

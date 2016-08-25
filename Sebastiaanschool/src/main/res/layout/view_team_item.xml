@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+    Copyright (c) 2014 Barend Garvelink
+
+    SebastiaanSchool is licensed under a
+    Creative Commons Attribution-NonCommercial 3.0 Unported License.
+
+    You should have received a copy of the license along with this
+    work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
+-->
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/list_card_style"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/item__picture"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="top"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/team__picture_cdesc"
+            tools:src="@drawable/ic_team_person_24dp"
+            tools:tint="@color/sebastiaan_blue"
+            tools:ignore="RtlHardcoded" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            tools:ignore="RtlHardcoded">
+
+            <TextView
+                android:id="@+id/item__name"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Jan Klaassen en Katrijn" />
+
+            <TextView
+                android:id="@+id/item__detail_text"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                tools:text="Jan Klaassen en Katrijn zijn poppenkastpoppen." />
+
+            <TextView
+                android:id="@+id/item__email"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                tools:text="jan-en-kaatje@example.com" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright (c) 2014 Barend Garvelink
 
     SebastiaanSchool is licensed under a
@@ -8,29 +7,63 @@
     You should have received a copy of the license along with this
     work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
 -->
-<nl.sebastiaanschool.contact.app.BulletinItemView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem.Bulletin"
-    android:orientation="vertical"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/list_card_style"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/bulletin__item_title"
-        style="@style/ListItemTitle.Bulletin"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
-
-    <TextView
-        android:id="@+id/bulletin__item_date"
-        style="@style/ListItemDate.Bulletin"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
-
-    <TextView
-        android:id="@+id/bulletin__item_text"
-        style="@style/ListItemText.Bulletin"
-        android:layout_height="wrap_content"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:paddingTop="8dp"
-        android:autoLink="email|web"/>
-</nl.sebastiaanschool.contact.app.BulletinItemView>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/item__picture"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="top"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/team__picture_cdesc"
+            tools:src="@drawable/ic_timeline_bulletin_24dp"
+            tools:tint="@color/sebastiaan_blue"
+            tools:ignore="RtlHardcoded" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            tools:ignore="RtlHardcoded">
+
+            <TextView
+                android:id="@+id/item__title"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Vandaag, 16 oktober: Open Podium" />
+
+            <TextView
+                android:id="@+id/item__body"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="email|web"
+                android:gravity="center_vertical"
+                tools:text="U bent van harte welkom vanaf 11.00 uur! Als het goed zijn de verhalen minder langdradig dan hetgeen ik hier intyp om een paar regels tekstomloop te bewerkstelligen. Android heeft trouwens geen hyphenation, dus woorden als &quot;bewerkstelligen&quot; doen het in deze context leuk." />
+
+            <TextView
+                android:id="@+id/item__published_at"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                tools:text="16 oktober 2015, 16:00" />
+
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
+

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright (c) 2014 Barend Garvelink
 
     SebastiaanSchool is licensed under a
@@ -8,10 +7,59 @@
     You should have received a copy of the license along with this
     work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main__content_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    tools:ignore="MergeRootFrame" />
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/main__content_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/main__toolbar_container"
+            android:layout_width="match_parent"
+            android:layout_height="192dp"
+            app:collapsedTitleTextAppearance="@style/AppCollapsedTitleTextAppearance"
+            app:expandedTitleTextAppearance="@style/AppExpandedTitleTextAppearance"
+            app:layout_scrollFlags="scroll|snap"
+            app:titleEnabled="true"
+            app:toolbarId="@+id/action_bar">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@id/action_bar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:theme="@style/AppToolbar"
+                app:layout_collapseMode="none"
+                app:layout_scrollFlags="scroll|snap"
+                app:popupTheme="@style/AppToolbarPopup" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/detail_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="bottom"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@android:color/white"
+            app:tabIndicatorHeight="4dp"
+            app:tabMode="scrollable"
+            app:tabPadding="4dp"
+            app:tabSelectedTextColor="@android:color/white"
+            app:tabTextColor="@android:color/white" />
+
+    </android.support.design.widget.AppBarLayout>
+
+</android.support.design.widget.CoordinatorLayout>
