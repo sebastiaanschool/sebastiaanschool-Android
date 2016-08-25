@@ -51,7 +51,7 @@ public class TimelineItem {
         return new TimelineItem(TYPE_UNKNOWN, title, null, null, publishedAt);
     }
 
-    protected TimelineItem(
+    private TimelineItem(
             @TimelineItemType int type,
             @NonNull String title,
             @Nullable String body,

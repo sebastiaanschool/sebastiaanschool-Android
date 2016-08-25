@@ -5,6 +5,7 @@ import java.util.Comparator;
 /**
  * Represents items shown on the contacts tab.
  */
+@SuppressWarnings("WeakerAccess")
 public class TeamItem {
 
     public final String displayName;

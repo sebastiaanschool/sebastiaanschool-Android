@@ -90,7 +90,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
     }
 
     private void launch(final Download download) {
-        subscriptions.add(download.createOpeningIntent(context)
+        subscriptions.add(download.createOpeningIntent()
             .subscribe(new Action1<Intent>() {
                 @Override
                 public void call(Intent intent) {
@@ -113,6 +113,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
                 .subscribe(downloadStatusObserver));
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void notify(@StringRes int message) {
         if (recyclerView != null) {
             Snackbar.make(recyclerView, message, Snackbar.LENGTH_SHORT).show();
@@ -170,7 +171,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
     protected void onNext(final TimelineItem item) {
         if (item.type == TimelineItem.TYPE_NEWSLETTER) {
             final String url = item.documentUrl;
-            if (!this.downloads.containsKey(url)) {
+            if (url != null && !this.downloads.containsKey(url)) {
                 final Download download = new Download(url);
                 this.downloads.put(url, download);
                 if (download.statusCode != Download.STATUS_OPEN_ON_WEB) {
@@ -278,7 +279,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
             }
             switch (download.statusCode) {
                 case Download.STATUS_COMPLETED:
-                    //fall-through
+                    // fall-through
                 case Download.STATUS_OPEN_ON_WEB:
                     launch(download);
                     break;
@@ -291,6 +292,8 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
                 case Download.STATUS_FAILED:
                     enqueue(download);
                     break;
+                case Download.STATUS_CANCELLED:
+                    // fall-through
                 default:
                     // Ignored.
             }

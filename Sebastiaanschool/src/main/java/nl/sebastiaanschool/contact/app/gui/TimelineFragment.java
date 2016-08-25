@@ -8,14 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import nl.sebastiaanschool.contact.app.data.BackendInterface;
-import rx.internal.util.SubscriptionList;
 
 /**
  * A fragment representing a list of Items.
  */
 public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter> {
-
-    private SubscriptionList subscriptions = new SubscriptionList();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -26,8 +23,7 @@ public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter> {
 
     @SuppressWarnings("unused")
     public static TimelineFragment newInstance() {
-        TimelineFragment fragment = new TimelineFragment();
-        return fragment;
+        return new TimelineFragment();
     }
 
     @Override

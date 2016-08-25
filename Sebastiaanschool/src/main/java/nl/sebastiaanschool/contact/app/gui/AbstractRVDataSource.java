@@ -17,7 +17,7 @@ abstract class AbstractRVDataSource<I> {
         backend = BackendInterface.getInstance().connector;
     }
 
-    private BackendApi backend;
+    private final BackendApi backend;
     private Observable<I> items;
 
     public Observable<I> getItems() {

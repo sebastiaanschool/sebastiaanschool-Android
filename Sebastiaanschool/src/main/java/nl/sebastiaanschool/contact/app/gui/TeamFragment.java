@@ -11,7 +11,7 @@ import rx.internal.util.SubscriptionList;
 
 public class TeamFragment extends AbstractRVFragment<TeamRVAdapter> {
 
-    private SubscriptionList subscriptions = new SubscriptionList();
+    private final SubscriptionList subscriptions = new SubscriptionList();
 
     public TeamFragment() {
         // Required empty public constructor

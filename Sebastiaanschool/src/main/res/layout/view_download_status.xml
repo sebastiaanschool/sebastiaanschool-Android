@@ -8,13 +8,15 @@
         android:layout_gravity="center_vertical"
         android:animateLayoutChanges="true"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:id="@+id/vds__icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            tools:src="@drawable/ic_download_pending_24dp" />
+            tools:src="@drawable/ic_download_pending_24dp"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/vds__label"

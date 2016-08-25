@@ -1,6 +1,5 @@
 package nl.sebastiaanschool.contact.app.data.downloadmanager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.IntDef;
@@ -58,8 +57,8 @@ public class Download {
     @StatusCode public int statusCode;
     public int lastStatusCode;
     public long downloadManagerId;
-    public String localUri;
-    public String localMimeType;
+    private String localUri;
+    private String localMimeType;
 
     public Download(@NonNull String url) {
         this.remoteUrl = url;
@@ -88,7 +87,7 @@ public class Download {
         return this;
     }
 
-    public Single<Intent> createOpeningIntent(final Context context) {
+    public Single<Intent> createOpeningIntent() {
         if (!(statusCode == STATUS_COMPLETED || statusCode == STATUS_OPEN_ON_WEB)) {
             return Single.error(new IllegalStateException());
         }
@@ -110,7 +109,7 @@ public class Download {
     @Override
     public String toString() {
         return "Download{" +
-                "status=" + status(statusCode) +
+                "status=" + statusCode +
                 ", downloadManagerId=" + downloadManagerId +
                 ", sizeInBytes=" + sizeInBytes +
                 ", remoteUrl='" + remoteUrl + '\'' +
@@ -120,23 +119,6 @@ public class Download {
     private static boolean isPdf(String url) {
         String s = Uri.parse(url).getLastPathSegment();
         return s != null && s.endsWith(".pdf");
-    }
-
-    private static String status(@StatusCode int code) {
-        switch (code) {
-            case STATUS_PENDING:
-                return "pending";
-            case STATUS_DOWNLOADING:
-                return "downloading";
-            case STATUS_COMPLETED:
-                return "completed";
-            case STATUS_FAILED:
-                return "failed";
-            case STATUS_OPEN_ON_WEB:
-                return "open_on_web";
-            default:
-                return "unknown";
-        }
     }
 
     @IntDef({ STATUS_PENDING, STATUS_DOWNLOADING, STATUS_COMPLETED, STATUS_FAILED,

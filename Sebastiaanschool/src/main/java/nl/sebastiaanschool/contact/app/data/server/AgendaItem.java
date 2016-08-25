@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 /**
  * Represents items shown on the agenda tab.
  */
+@SuppressWarnings("WeakerAccess")
 public class AgendaItem {
 
     public final String title;

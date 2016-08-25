@@ -2,7 +2,6 @@ package nl.sebastiaanschool.contact.app.gui;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -75,16 +74,8 @@ abstract class AbstractRVFragment<A extends AbstractRVAdapter> extends Fragment
     }
 
     @Override
-    public void finishedLoadingData(boolean successfully) {
+    public void finishedLoadingData() {
         swipeRefreshLayout.setRefreshing(false);
-        if (!successfully && adapter.getItemCount() > 0) {
-            Snackbar.make(swipeRefreshLayout,
-                    R.string.data_refreshing_failed, Snackbar.LENGTH_SHORT).show();
-        }
-    }
-
-    protected A getAdapter() {
-        return adapter;
     }
 
     protected abstract A createAdapter();

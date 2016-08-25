@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.util.LruCache;
 import android.widget.TextView;
 
@@ -68,8 +69,8 @@ final class GrabBag {
     public static void applyVectorDrawableLeft(TextView view, @DrawableRes int resId) {
         if (Build.VERSION.SDK_INT >= 21) {
             view.setCompoundDrawablesRelativeWithIntrinsicBounds(resId, 0, 0, 0);
-            view.getCompoundDrawablesRelative()[0].setTint(view.getResources()
-                    .getColor(R.color.sebastiaan_blue));
+            view.getCompoundDrawablesRelative()[0].setTint(ResourcesCompat
+                    .getColor(view.getResources(), R.color.sebastiaan_blue, view.getContext().getTheme()));
         } else {
             final Context context = view.getContext();
             final Drawable drawable = loadVectorDrawable(context, resId);
@@ -87,7 +88,11 @@ final class GrabBag {
         Drawable result = vectorDrawableCache.get(resId);
         if (result == null) {
             result = VectorDrawableCompat.create(context.getResources(), resId, context.getTheme());
-            vectorDrawableCache.put(resId, result);
+            if (result != null) {
+                vectorDrawableCache.put(resId, result);
+            } else {
+                vectorDrawableCache.remove(resId);
+            }
         }
         return result;
     }

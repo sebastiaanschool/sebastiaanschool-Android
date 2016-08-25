@@ -9,7 +9,7 @@ import rx.internal.util.SubscriptionList;
 
 public class AgendaFragment extends AbstractRVFragment<AgendaRVAdapter> {
 
-    private SubscriptionList subscriptions = new SubscriptionList();
+    private final SubscriptionList subscriptions = new SubscriptionList();
 
     public AgendaFragment() {
         // Required empty public constructor

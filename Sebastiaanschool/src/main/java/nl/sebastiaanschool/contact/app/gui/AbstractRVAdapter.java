@@ -24,7 +24,7 @@ abstract class AbstractRVAdapter<I, VH extends RecyclerView.ViewHolder>
     protected final AbstractRVDataSource<I> dataSource;
     protected final List<I> itemsShowing = new ArrayList<>(32);
     private final List<I> itemsLoading = new ArrayList<>(32);
-    private Listener listener;
+    private final Listener listener;
 
     protected AbstractRVAdapter(AbstractRVDataSource<I> dataSource, Listener listener) {
         this.dataSource = dataSource;
@@ -45,7 +45,7 @@ abstract class AbstractRVAdapter<I, VH extends RecyclerView.ViewHolder>
                 .doAfterTerminate(new Action0() {
                     @Override
                     public void call() {
-                        listener.finishedLoadingData(true);
+                        listener.finishedLoadingData();
                     }
                 })
                 .subscribe(new Subscriber<I>() {
@@ -100,6 +100,6 @@ abstract class AbstractRVAdapter<I, VH extends RecyclerView.ViewHolder>
     interface Listener {
         void startedLoadingData();
 
-        void finishedLoadingData(boolean successfully);
+        void finishedLoadingData();
     }
 }

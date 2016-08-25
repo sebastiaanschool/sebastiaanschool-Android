@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.text.format.Formatter;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -67,7 +66,7 @@ public class DownloadStatusView extends FrameLayout {
         init(context);
     }
 
-    private final void init(Context context) {
+    private void init(Context context) {
         LayoutInflater.from(context).inflate(R.layout.view_download_status, this, true);
         this.icon = (ImageView) findViewById(R.id.vds__icon);
         this.label = (TextView) findViewById(R.id.vds__label);
