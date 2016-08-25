@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import net.danlew.android.joda.DateUtils;
 
 import org.joda.time.Period;
@@ -204,6 +206,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         @Override
         public void onError(Throwable e) {
             // Ignored
+            FirebaseCrash.logcat(Log.DEBUG, "SebApp", "TRVA DS Last-Resort: " + e.toString());
         }
 
         @Override

@@ -2,6 +2,9 @@ package nl.sebastiaanschool.contact.app.gui;
 
 
 import android.content.Intent;
+import android.util.Log;
+
+import com.google.firebase.crash.FirebaseCrash;
 
 import nl.sebastiaanschool.contact.app.data.server.AgendaItem;
 import rx.functions.Action1;
@@ -50,7 +53,7 @@ public class AgendaFragment extends AbstractRVFragment<AgendaRVAdapter> {
             getActivity().startActivity(intent);
         } catch (Exception e) {
             // Fail silently.
-            android.util.Log.e("AgendaFragment", "Failed to ACTION_EDIT a vnd.android.cursor.item/event", e);
+            FirebaseCrash.logcat(Log.DEBUG, "AF", "No handler for calendar event. " + e.toString());
         }
     }
 }

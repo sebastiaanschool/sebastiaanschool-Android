@@ -7,10 +7,13 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.firebase.crash.FirebaseCrash;
 
 import java.util.List;
 
@@ -81,6 +84,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         }
         if (fail) {
             // Unlikely to occur. Tablets generally register their contacts app to handle tel: URI's.
+            FirebaseCrash.logcat(Log.DEBUG, "CF", "No handler for tel: URI");
             new AlertDialog.Builder(getActivity())
                     .setCancelable(true)
                     .setMessage(R.string.call_failed_dialog_body)

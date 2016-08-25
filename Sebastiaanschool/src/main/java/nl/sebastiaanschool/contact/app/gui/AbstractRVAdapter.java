@@ -3,6 +3,8 @@ package nl.sebastiaanschool.contact.app.gui;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +80,7 @@ abstract class AbstractRVAdapter<I, VH extends RecyclerView.ViewHolder>
     }
 
     protected void onError(Throwable e) {
-        Log.w("Adapter", "Caught exception: ", e);
+        FirebaseCrash.logcat(Log.DEBUG, "ARVA", "ARVA Last-Resort: " + e.toString());
     }
 
     @Override

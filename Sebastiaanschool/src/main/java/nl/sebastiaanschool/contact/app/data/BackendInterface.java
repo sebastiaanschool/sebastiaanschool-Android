@@ -1,7 +1,6 @@
 package nl.sebastiaanschool.contact.app.data;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.squareup.moshi.Moshi;
 
@@ -97,7 +96,6 @@ public class BackendInterface {
                 okHttpClient.newCall(req).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Log.d("BINF", "Download size error: " + e + " of " + target);
                         // We're not propagating the error, simply "size unknown".
                         subscriber.onSuccess(target.withSizeInBytes(Download.SIZE_UNKNOWN));
                     }
@@ -111,10 +109,8 @@ public class BackendInterface {
                         try {
                             sizeInBytes = Long.parseLong(contentLength);
                         } catch (NumberFormatException e) {
-                            Log.d("BINF", "Download size: NFE on " + contentLength + " of " + target);
                             sizeInBytes = -1;
                         }
-                        Log.d("BINF", "Download size: " + sizeInBytes + " of " + target);
                         subscriber.onSuccess(target.withSizeInBytes(sizeInBytes));
                     }
                 });
