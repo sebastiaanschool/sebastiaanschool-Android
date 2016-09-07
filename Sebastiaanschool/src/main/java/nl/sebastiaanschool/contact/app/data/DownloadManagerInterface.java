@@ -106,7 +106,7 @@ public class DownloadManagerInterface {
                 }
                 Cursor cursor = downloadManager.query(query);
                 try {
-                    if (cursor.moveToFirst()) {
+                    if (cursor != null && cursor.moveToFirst()) {
                         while (!cursor.isAfterLast()) {
                             String remoteUri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_URI));
                             if (download.remoteUrl.equals(remoteUri)) {
@@ -142,7 +142,9 @@ public class DownloadManagerInterface {
                         }
                     }
                 } finally {
-                    cursor.close();
+                    if (cursor != null) {
+                        cursor.close();
+                    }
                 }
                 singleSubscriber.onError(new FileNotFoundException());
             }
