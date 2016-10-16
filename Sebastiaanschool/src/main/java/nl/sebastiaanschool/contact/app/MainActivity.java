@@ -11,7 +11,9 @@ package nl.sebastiaanschool.contact.app;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.TabLayout;
+import android.support.v4.os.TraceCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -35,9 +37,8 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        JodaTimeAndroid.init(this);
-        BackendInterface.init(this);
-        DownloadManagerInterface.init(this);
+        initializeStrictMode();
+        initializeApplicationServices();
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.action_bar));
 
@@ -46,5 +47,34 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tl = (TabLayout) findViewById(R.id.detail_tabs);
         tl.setupWithViewPager(vp);
+    }
+
+    private void initializeApplicationServices() {
+        TraceCompat.beginSection("Initialize services");
+        try {
+            JodaTimeAndroid.init(this);
+            BackendInterface.init(this);
+            DownloadManagerInterface.init(this);
+        } finally {
+            TraceCompat.endSection();
+        }
+    }
+
+    private void initializeStrictMode() {
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .penaltyFlashScreen()
+                    .penaltyDeathOnNetwork()
+                    .build());
+
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .setClassInstanceLimit(BackendInterface.class, 1)
+                    .setClassInstanceLimit(DownloadManagerInterface.class, 1)
+                    .build());
+        }
     }
 }
