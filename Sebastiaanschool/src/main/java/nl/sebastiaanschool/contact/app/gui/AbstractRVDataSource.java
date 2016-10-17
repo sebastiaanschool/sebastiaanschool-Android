@@ -1,6 +1,6 @@
 package nl.sebastiaanschool.contact.app.gui;
 
-import nl.sebastiaanschool.contact.app.data.BackendInterface;
+import nl.sebastiaanschool.contact.app.data.server.BackendInterface;
 import nl.sebastiaanschool.contact.app.data.server.BackendApi;
 import rx.Observable;
 

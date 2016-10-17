@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import nl.sebastiaanschool.contact.app.data.BackendInterface;
+import nl.sebastiaanschool.contact.app.data.server.BackendInterface;
 
 /**
  * A fragment representing a list of Items.

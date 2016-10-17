@@ -1,4 +1,4 @@
-package nl.sebastiaanschool.contact.app.data;
+package nl.sebastiaanschool.contact.app.data.server;
 
 import android.content.Context;
 
@@ -8,10 +8,8 @@ import java.io.File;
 import java.io.IOException;
 
 import nl.sebastiaanschool.contact.app.BuildConfig;
+import nl.sebastiaanschool.contact.app.data.GrabBag;
 import nl.sebastiaanschool.contact.app.data.downloadmanager.Download;
-import nl.sebastiaanschool.contact.app.data.server.AgendaJsonConverter;
-import nl.sebastiaanschool.contact.app.data.server.BackendApi;
-import nl.sebastiaanschool.contact.app.data.server.TimelineJsonConverter;
 import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;

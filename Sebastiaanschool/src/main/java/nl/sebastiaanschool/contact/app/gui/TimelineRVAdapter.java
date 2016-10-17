@@ -24,8 +24,8 @@ import net.danlew.android.joda.DateUtils;
 import org.joda.time.Period;
 
 import nl.sebastiaanschool.contact.app.R;
-import nl.sebastiaanschool.contact.app.data.BackendInterface;
-import nl.sebastiaanschool.contact.app.data.DownloadManagerInterface;
+import nl.sebastiaanschool.contact.app.data.server.BackendInterface;
+import nl.sebastiaanschool.contact.app.data.downloadmanager.DownloadManagerInterface;
 import nl.sebastiaanschool.contact.app.data.downloadmanager.Download;
 import nl.sebastiaanschool.contact.app.data.server.TimelineItem;
 import rx.Observer;

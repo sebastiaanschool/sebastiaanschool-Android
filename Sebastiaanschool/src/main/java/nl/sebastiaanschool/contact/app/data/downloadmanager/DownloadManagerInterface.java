@@ -1,4 +1,4 @@
-package nl.sebastiaanschool.contact.app.data;
+package nl.sebastiaanschool.contact.app.data.downloadmanager;
 
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
@@ -16,7 +16,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import nl.sebastiaanschool.contact.app.R;
-import nl.sebastiaanschool.contact.app.data.downloadmanager.Download;
+import nl.sebastiaanschool.contact.app.data.GrabBag;
 import rx.Observable;
 import rx.Scheduler;
 import rx.Single;
@@ -34,13 +34,13 @@ public class DownloadManagerInterface {
     private final DownloadManager downloadManager;
     private final Scheduler downloadManagerAccessor = Schedulers.io();
     private final PublishSubject<DownloadEvent> updates = PublishSubject.create();
-    private final Context context;
     private final String userAgent;
+    private final String downloadDescription;
 
     public static synchronized void init(Context context) {
         if (instance == null) {
             instance = new DownloadManagerInterface(context.getApplicationContext());
-            instance.registerReceiver();
+            instance.registerReceiver(context);
         }
     }
 
@@ -52,12 +52,12 @@ public class DownloadManagerInterface {
     }
 
     private DownloadManagerInterface(Context context) {
-        this.context = context;
         this.userAgent = GrabBag.constructUserAgent(context);
+        this.downloadDescription = context.getString(R.string.download_newsletter_description);
         downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
     }
 
-    private void registerReceiver() {
+    private void registerReceiver(Context context) {
         IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
         filter.addAction(DownloadManager.ACTION_NOTIFICATION_CLICKED);
         context.registerReceiver(downloadCompletionReceiver, filter);
@@ -165,7 +165,7 @@ public class DownloadManagerInterface {
                  DownloadManager.Request request = new DownloadManager.Request(uri);
                  request.addRequestHeader("User-Agent", userAgent);
                  request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-                 request.setDescription(context.getString(R.string.download_newsletter_description));
+                 request.setDescription(downloadDescription);
                  request.setTitle(uri.getLastPathSegment());
                  long downloadId = downloadManager.enqueue(request);
                  singleSubscriber.onSuccess(
@@ -202,7 +202,7 @@ public class DownloadManagerInterface {
         public final String type;
         public final long downloadManagerId;
 
-        public DownloadEvent(String type, long downloadManagerId) {
+        DownloadEvent(String type, long downloadManagerId) {
             this.type = type;
             this.downloadManagerId = downloadManagerId;
         }
