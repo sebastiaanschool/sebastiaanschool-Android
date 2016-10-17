@@ -32,7 +32,7 @@ public class BackendInterface {
     private static final long CACHE_SIZE_BYTES = 512 * 1024;
     private static BackendInterface instance;
 
-    public final BackendApi connector;
+    private final BackendApi backendApi;
     private final OkHttpClient okHttpClient;
 
     public static synchronized void init(Context context) {
@@ -72,7 +72,7 @@ public class BackendInterface {
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
-        connector = retrofit
+        backendApi = retrofit
                 .create(BackendApi.class);
     }
 
@@ -114,5 +114,9 @@ public class BackendInterface {
                 });
             }
         });
+    }
+
+    public BackendApi getBackendApi() {
+        return backendApi;
     }
 }

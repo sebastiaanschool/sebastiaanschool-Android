@@ -14,7 +14,7 @@ import rx.Observable;
 abstract class AbstractRVDataSource<I> {
 
     protected AbstractRVDataSource() {
-        backend = BackendInterface.getInstance().connector;
+        backend = BackendInterface.getInstance().getBackendApi();
     }
 
     private final BackendApi backend;
