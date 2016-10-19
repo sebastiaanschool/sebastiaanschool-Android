@@ -1,3 +1,4 @@
 /build
 /libs/Parse-*.jar
 signing-config.gradle
+google-services.json
