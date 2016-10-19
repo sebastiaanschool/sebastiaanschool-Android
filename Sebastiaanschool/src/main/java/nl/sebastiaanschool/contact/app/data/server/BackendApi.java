@@ -2,14 +2,18 @@ package nl.sebastiaanschool.contact.app.data.server;
 
 import java.util.List;
 
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.POST;
+import rx.Completable;
 import rx.Single;
 
 /**
- * Retrofit binding interface for our backend service.
+ * Retrofit binding interface for getting our data.
  */
 public interface BackendApi {
-
     @GET("/api/timeline/")
     Single<List<TimelineItem>> getTimeline();
 

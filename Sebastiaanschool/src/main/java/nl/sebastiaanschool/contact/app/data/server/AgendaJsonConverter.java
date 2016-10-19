@@ -8,7 +8,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
- * Handles polymorphism when parsing the {@code /timeline} API call.
+ * Handles data conversion when parsing the {@code /timeline} API call.
  */
 public class AgendaJsonConverter {
 

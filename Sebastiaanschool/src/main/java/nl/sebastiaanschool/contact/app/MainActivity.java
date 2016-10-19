@@ -20,8 +20,8 @@ import android.support.v7.widget.Toolbar;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import nl.sebastiaanschool.contact.app.data.server.BackendInterface;
 import nl.sebastiaanschool.contact.app.data.downloadmanager.DownloadManagerInterface;
+import nl.sebastiaanschool.contact.app.data.server.BackendInterface;
 import nl.sebastiaanschool.contact.app.gui.NavigationPagerAdapter;
 
 /**

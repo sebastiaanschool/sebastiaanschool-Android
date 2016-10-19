@@ -33,6 +33,7 @@ public class BackendInterface {
     private static BackendInterface instance;
 
     private final BackendApi backendApi;
+    private final NotificationApi notificationApi;
     private final OkHttpClient okHttpClient;
 
     public static synchronized void init(Context context) {
@@ -74,6 +75,8 @@ public class BackendInterface {
                 .build();
         backendApi = retrofit
                 .create(BackendApi.class);
+        notificationApi = retrofit
+                .create(NotificationApi.class);
     }
 
     /**
@@ -118,5 +121,9 @@ public class BackendInterface {
 
     public BackendApi getBackendApi() {
         return backendApi;
+    }
+
+    public NotificationApi getNotificationApi() {
+        return notificationApi;
     }
 }
