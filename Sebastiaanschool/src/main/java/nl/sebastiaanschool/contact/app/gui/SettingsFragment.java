@@ -19,6 +19,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
+        getPreferenceManager().setSharedPreferencesName("Sebastiaanschool_prefs");
         addPreferencesFromResource(R.xml.preferences);
         String versionSummary = getString(R.string.settings__version_summary, BuildConfig.VERSION_NAME);
         getPreferenceManager().findPreference("pref_version").setTitle(versionSummary);
