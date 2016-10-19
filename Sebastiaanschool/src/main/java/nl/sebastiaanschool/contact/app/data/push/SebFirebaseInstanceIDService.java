@@ -10,7 +10,12 @@ public class SebFirebaseInstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         if (refreshedToken != null) {
-            // TODO upload to backend
+            try {
+                PushNotificationManager.getInstance().submitFirebaseInstanceId(refreshedToken);
+            } catch (IllegalStateException e) {
+                // Race condition: we beat PushNotificationManager in initialization order.
+                // This is harmless; PNM will obtain the refreshedToken in its own time.
+            }
         }
     }
 }

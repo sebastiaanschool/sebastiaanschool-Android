@@ -21,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import nl.sebastiaanschool.contact.app.data.downloadmanager.DownloadManagerInterface;
+import nl.sebastiaanschool.contact.app.data.push.PushNotificationManager;
 import nl.sebastiaanschool.contact.app.data.server.BackendInterface;
 import nl.sebastiaanschool.contact.app.gui.NavigationPagerAdapter;
 
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
             JodaTimeAndroid.init(this);
             BackendInterface.init(this);
             DownloadManagerInterface.init(this);
+            PushNotificationManager.init(this, BackendInterface.getInstance().getNotificationApi());
+            PushNotificationManager.getInstance().start();
         } finally {
             TraceCompat.endSection();
         }
