@@ -59,6 +59,10 @@ public class NavigationPagerAdapter extends FragmentPagerAdapter {
         return pageTitles[position];
     }
 
+    public void onTimelineUpdateNotification() {
+        ((TimelineFragment) fragments[0]).onActivatedFromNotification();
+    }
+
     private class AnalyticsPageChangeListener
             extends ViewPager.SimpleOnPageChangeListener {
         private final AnalyticsInterface analytics;

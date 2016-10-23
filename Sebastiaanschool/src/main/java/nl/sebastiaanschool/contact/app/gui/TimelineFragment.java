@@ -68,4 +68,13 @@ public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter>
             adapter.enableAnalytics(analytics, category);
         }
     }
+
+    public void onActivatedFromNotification() {
+        if (recyclerView != null) {
+            recyclerView.smoothScrollToPosition(0);
+            if (!adapter.isRefreshing()) {
+                this.onRefresh();
+            }
+        }
+    }
 }

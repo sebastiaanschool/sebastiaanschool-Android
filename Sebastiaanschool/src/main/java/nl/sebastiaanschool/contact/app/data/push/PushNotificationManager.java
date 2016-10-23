@@ -1,6 +1,7 @@
 package nl.sebastiaanschool.contact.app.data.push;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -45,6 +46,15 @@ public class PushNotificationManager implements SharedPreferences.OnSharedPrefer
             throw new IllegalStateException("Not initialised.");
         }
         return instance;
+    }
+
+    /**
+     * Returns whether the given intent is a timeline update notification tapped.
+     */
+    public static boolean isTimelineUpdateNotification(Intent intent) {
+        return intent != null
+                && intent.hasExtra("from")
+                && "/topics/sebastiaanschool.app.timeline".equals(intent.getStringExtra("from"));
     }
 
     private PushNotificationManager(Context context, NotificationApi backend) {

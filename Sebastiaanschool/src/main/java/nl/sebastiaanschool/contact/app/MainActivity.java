@@ -10,6 +10,7 @@
 package nl.sebastiaanschool.contact.app;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.TabLayout;
@@ -37,6 +38,8 @@ import nl.sebastiaanschool.contact.app.gui.NavigationPagerAdapter;
 public class MainActivity extends AppCompatActivity {
 
     private AnalyticsInterface analytics;
+    private ViewPager viewPager;
+    private NavigationPagerAdapter viewPagerAdapter;
 
     @Override
     @SuppressLint("NewApi")
@@ -47,15 +50,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.action_bar));
 
-        final ViewPager vp = (ViewPager) findViewById(R.id.main__content_container);
-        final NavigationPagerAdapter pagerAdapter =
-                new NavigationPagerAdapter(this, getSupportFragmentManager());
-        vp.setAdapter(pagerAdapter);
-        vp.setOffscreenPageLimit(5);
-        vp.addOnPageChangeListener(pagerAdapter.enableAnalytics(analytics));
+        viewPager = (ViewPager) findViewById(R.id.main__content_container);
+        viewPagerAdapter = new NavigationPagerAdapter(this, getSupportFragmentManager());
+        viewPager.setAdapter(viewPagerAdapter);
+        viewPager.setOffscreenPageLimit(5);
+        viewPager.addOnPageChangeListener(viewPagerAdapter.enableAnalytics(analytics));
 
         TabLayout tl = (TabLayout) findViewById(R.id.detail_tabs);
-        tl.setupWithViewPager(vp);
+        tl.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (PushNotificationManager.isTimelineUpdateNotification(intent)) {
+            if (viewPager != null) {
+                viewPager.setCurrentItem(0, true);
+                viewPagerAdapter.onTimelineUpdateNotification();
+            }
+        }
     }
 
     private void initializeApplicationServices() {
