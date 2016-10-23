@@ -10,10 +10,14 @@
 package nl.sebastiaanschool.contact.app;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.os.TraceCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -71,6 +75,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void onTimelineUpdateBroadcastReceived() {
+        // TODO show a snackbar
+        // TODO add action to jump to timeline, trigger refresh
+        // TODO if going to timeline organically, trigger refresh
+        // TODO already on timeline, trigger refresh
+    }
+
     private void initializeApplicationServices() {
         TraceCompat.beginSection("Initialize services");
         try {
@@ -79,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
             analytics = FirebaseWrapper.init(this);
             DownloadManagerInterface.init(this);
             PushNotificationManager.init(this, BackendInterface.getInstance().getNotificationApi());
+            IntentFilter filter = PushNotificationManager.createTimelineUpdateBroadcastFilter();
+            LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver, filter);
         } finally {
             TraceCompat.endSection();
         }
@@ -88,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         DownloadManagerInterface.getInstance().destroy(this);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(localBroadcastReceiver);
     }
 
     private void initializeStrictMode() {
@@ -107,4 +121,18 @@ public class MainActivity extends AppCompatActivity {
                     .build());
         }
     }
+
+    private final BroadcastReceiver localBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (PushNotificationManager.isTimelineUpdateBroadcast(intent)) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        onTimelineUpdateBroadcastReceived();
+                    }
+                });
+            }
+        }
+    };
 }

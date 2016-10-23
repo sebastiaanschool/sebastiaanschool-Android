@@ -2,12 +2,14 @@ package nl.sebastiaanschool.contact.app.data.push;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.UUID;
 
@@ -25,7 +27,9 @@ import rx.schedulers.Schedulers;
 
 public class PushNotificationManager implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private static final String TIMELINE_UPDATED = "sebastiaanschool.Broadcast.TimelineUpdated";
     private static final String FIREBASE_TOPIC = "sebastiaanschool.app.timeline";
+    private static final String FIREBASE_TOPIC_REF = "/topics/sebastiaanschool.app.timeline";
     private static final String PREF_PROMPT_SEEN = "push_prompt_seen";
     private static final String PREF_ENABLED = "push_enabled";
     private static final String PREF_USERNAME = "push_uuid0";
@@ -48,25 +52,55 @@ public class PushNotificationManager implements SharedPreferences.OnSharedPrefer
         return instance;
     }
 
-    /**
-     * Returns whether the given intent is a timeline update notification tapped.
-     */
-    public static boolean isTimelineUpdateNotification(Intent intent) {
-        return intent != null
-                && intent.hasExtra("from")
-                && "/topics/sebastiaanschool.app.timeline".equals(intent.getStringExtra("from"));
-    }
-
     private PushNotificationManager(Context context, NotificationApi backend) {
         this.backend = backend;
         pushPrefs = context.getSharedPreferences("Sebastiaanschool_prefs", 0);
         pushPrefs.registerOnSharedPreferenceChangeListener(this);
     }
 
-    // TODO handle the Play Services Unavailable scenario (GoogleApiAvailability; getErrorDialog)
+    /**
+     * Returns whether the given remote message is a timeline update broadcast.
+     */
+    public static boolean isTimelineUpdateBroadcast(Intent intent) {
+        return intent != null
+                && TIMELINE_UPDATED.equals(intent.getAction());
+    }
+
+    /**
+     * Returns whether the given remote message is a timeline update notification.
+     */
+    public static boolean isTimelineUpdateMessage(RemoteMessage message) {
+        return message != null
+                && FIREBASE_TOPIC_REF.equals(message.getFrom());
+    }
+
+    /**
+     * Returns whether the given intent is a timeline update notification tapped.
+     */
+    public static boolean isTimelineUpdateNotification(Intent intent) {
+        return intent != null
+                && intent.hasExtra("from")
+                && FIREBASE_TOPIC_REF.equals(intent.getStringExtra("from"));
+    }
+
+    /**
+     * Returns an intent filter that matches timeline update broadcasts.
+     */
+    public static IntentFilter createTimelineUpdateBroadcastFilter() {
+        return new IntentFilter(TIMELINE_UPDATED);
+    }
+
+    /**
+     * Returns a broadcast intent that indicates that new timeline data is available.
+     */
+    public static Intent createTimelineUpdateBroadcast(Context context) {
+        return new Intent(TIMELINE_UPDATED);
+    }
+
     // https://developers.google.com/android/guides/api-client#ignoring_api_connection_failures
 
-    // TODO on first launch request user permission to enable push messaging
+    // TODO handle the Play Services Unavailable scenario (GoogleApiAvailability; getErrorDialog)
+    // TODO on first launch: request user permission to enable push messaging
 
     public boolean isPromptSeen() {
         return pushPrefs.getBoolean(PREF_ENABLED, false);
@@ -77,7 +111,6 @@ public class PushNotificationManager implements SharedPreferences.OnSharedPrefer
     }
 
     void onFirebaseInstanceIdChanged() {
-        Log.i("SebApp", "New Firebase IID");
         sync();
     }
 
@@ -177,12 +210,12 @@ public class PushNotificationManager implements SharedPreferences.OnSharedPrefer
     private SingleSubscriber<PostPushSettingsResponse> syncSubscriber = new SingleSubscriber<PostPushSettingsResponse>() {
         @Override
         public void onSuccess(PostPushSettingsResponse response) {
-            Log.i("SebApp", "Push sync: Successful (active=" + response.active + ")");
+            Log.d("SebApp", "Push sync: Successful (active=" + response.active + ")");
         }
 
         @Override
         public void onError(Throwable error) {
-            Log.i("SebApp", "Push sync: Failed", error);
+            Log.w("SebApp", "Push sync: Failed", error);
             FirebaseCrash.log("Failed to sync push token: " + error);
         }
     };
