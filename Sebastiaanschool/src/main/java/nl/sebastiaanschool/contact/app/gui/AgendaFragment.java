@@ -38,6 +38,7 @@ public class AgendaFragment extends AbstractRVFragment<AgendaRVAdapter>
         return adapter;
     }
 
+    @Override
     public void enableAnalytics(AnalyticsInterface analytics, String category) {
         this.analytics = analytics;
         this.analyticsCategory = category;

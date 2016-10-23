@@ -18,8 +18,13 @@ import com.google.firebase.crash.FirebaseCrash;
 import java.util.List;
 
 import nl.sebastiaanschool.contact.app.R;
+import nl.sebastiaanschool.contact.app.data.analytics.AnalyticsInterface;
 
-public class ContactFragment extends Fragment implements View.OnClickListener {
+public class ContactFragment extends Fragment
+        implements View.OnClickListener, AnalyticsCapableFragment {
+
+    private AnalyticsInterface analytics;
+    private String analyticsCategory;
 
     public ContactFragment() {
         // Required empty public constructor
@@ -54,16 +59,31 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void enableAnalytics(AnalyticsInterface analytics, String category) {
+        this.analytics = analytics;
+        this.analyticsCategory = category;
+    }
+
+    @Override
     public void onClick(View v) {
         if (v == callButton) {
             callSebastiaan();
         } else if (v == twitterButton) {
+            if (analytics != null) {
+                analytics.itemSelected(analyticsCategory, "twitter", "Twitter Page");
+            }
             String twitterUrl = getString(R.string.contact__twitter_url);
             GrabBag.openUri(getContext(), twitterUrl);
         } else if (v == yurlsButton) {
+            if (analytics != null) {
+                analytics.itemSelected(analyticsCategory, "yurls", "Yurls Page");
+            }
             String yurlsUrl = getString(R.string.contact__yurls_url);
             GrabBag.openUri(getContext(), yurlsUrl);
         } else if (v == homepageButton) {
+            if (analytics != null) {
+                analytics.itemSelected(analyticsCategory, "home", "Sebastiaanschool Homepage");
+            }
             String homepageUrl = getString(R.string.contact__homepage_url);
             GrabBag.openUri(getContext(), homepageUrl);
         }
@@ -77,6 +97,9 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         boolean fail = handlers.isEmpty();
         if (!fail) {
             try {
+                if (analytics != null) {
+                    analytics.itemSelected(analyticsCategory, "call", "Call Sebastiaanschool");
+                }
                 startActivity(dial);
             } catch (Exception e) {
                 fail = true;
