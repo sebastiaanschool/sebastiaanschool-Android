@@ -20,6 +20,9 @@ public class TimelineItem {
     public static final int TYPE_BULLETIN = 1;
     public static final int TYPE_NEWSLETTER = 2;
 
+    /** Canonical ID. */
+    @NonNull
+    public final String url;
     @TimelineItemType
     public final int type;
     @NonNull
@@ -32,32 +35,37 @@ public class TimelineItem {
     public final DateTime publishedAt;
 
     public static TimelineItem bulletin(
+            @NonNull String url,
             @NonNull String title,
             @NonNull String body,
             @NonNull DateTime publishedAt) {
-        return new TimelineItem(TYPE_BULLETIN, title, body, null, publishedAt);
+        return new TimelineItem(TYPE_BULLETIN, url, title, body, null, publishedAt);
     }
 
     public static TimelineItem newsletter(
+            @NonNull String url,
             @NonNull String title,
             @NonNull String documentUrl,
             @NonNull DateTime publishedAt) {
-        return new TimelineItem(TYPE_NEWSLETTER, title, null, documentUrl, publishedAt);
+        return new TimelineItem(TYPE_NEWSLETTER, url, title, null, documentUrl, publishedAt);
     }
 
     public static TimelineItem unknown(
+            @NonNull String url,
             @NonNull String title,
             @NonNull DateTime publishedAt) {
-        return new TimelineItem(TYPE_UNKNOWN, title, null, null, publishedAt);
+        return new TimelineItem(TYPE_UNKNOWN, url, title, null, null, publishedAt);
     }
 
     private TimelineItem(
             @TimelineItemType int type,
+            @NonNull String url,
             @NonNull String title,
             @Nullable String body,
             @Nullable String documentUrl,
             @NonNull DateTime publishedAt) {
         this.type = type;
+        this.url = url;
         this.title = title;
         this.body = body;
         this.documentUrl = documentUrl;
