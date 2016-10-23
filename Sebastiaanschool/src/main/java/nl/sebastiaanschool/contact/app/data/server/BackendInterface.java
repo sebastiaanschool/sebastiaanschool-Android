@@ -102,7 +102,6 @@ public class BackendInterface {
      * @return its content-length, or {@code -1} if unknown.
      */
     public Single<Download> getDownloadSize(final Download target) {
-        // TODO we're hitting the backend way more than we need to. Apply caching.
         return Single.create(new Single.OnSubscribe<Download>() {
             @Override
             public void call(final SingleSubscriber<? super Download> subscriber) {
