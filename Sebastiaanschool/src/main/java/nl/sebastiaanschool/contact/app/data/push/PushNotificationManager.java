@@ -85,7 +85,16 @@ public class PushNotificationManager implements SharedPreferences.OnSharedPrefer
         final boolean enable = pushPrefs.getBoolean(PREF_ENABLED, false);
         final String token = FirebaseInstanceId.getInstance().getToken();
         authorize(username, password)
-            .onErrorResumeNext(enroll())
+            .onErrorResumeNext(new Func1<Throwable, Single<String>>() {
+                @Override
+                public Single<String> call(Throwable t) {
+                    if ((t instanceof HttpException) && ((HttpException) t).code() == 403) {
+                        FirebaseCrash.log("Auth failure of stored credentials");
+                        return enroll();
+                    }
+                    return Single.error(t);
+                }
+            })
             .flatMap(new Func1<String, Single<PostPushSettingsResponse>>() {
                 @Override
                 public Single<PostPushSettingsResponse> call(String authorization) {
