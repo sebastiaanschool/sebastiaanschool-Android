@@ -48,6 +48,8 @@ public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter>
             public boolean animateChange(RecyclerView.ViewHolder oldHolder,
                                          RecyclerView.ViewHolder newHolder,
                                          int fromX, int fromY, int toX, int toY) {
+                // Suppress itemChanged events, these fire when download state changes and we don't
+                // want the list item to blink if that happens.
                 dispatchChangeFinished(oldHolder, true);
                 if (newHolder != null && newHolder != oldHolder) {
                     dispatchChangeFinished(newHolder, false);

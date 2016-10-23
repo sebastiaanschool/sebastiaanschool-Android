@@ -15,6 +15,8 @@ import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static nl.sebastiaanschool.contact.app.gui.GrabBag.assertOnMainThread;
+
 /**
  * Base class for binding data to {@link AbstractRVFragment}s in the GUI.
  * @param <I> the data type shown.
@@ -24,7 +26,9 @@ abstract class AbstractRVAdapter<I, VH extends RecyclerView.ViewHolder>
 
     protected final CompositeSubscription subscriptions = new CompositeSubscription();
     protected final AbstractRVDataSource<I> dataSource;
+    /** Access on main thread only */
     protected final List<I> itemsShowing = new ArrayList<>(32);
+    /** Access on main thread only */
     private final List<I> itemsLoading = new ArrayList<>(32);
     private final Listener listener;
 
@@ -69,10 +73,12 @@ abstract class AbstractRVAdapter<I, VH extends RecyclerView.ViewHolder>
     }
 
     protected void onNext(I item) {
+        assertOnMainThread();
         AbstractRVAdapter.this.itemsLoading.add(item);
     }
 
     protected void onCompleted() {
+        assertOnMainThread();
         itemsShowing.clear();
         itemsShowing.addAll(itemsLoading);
         itemsLoading.clear();

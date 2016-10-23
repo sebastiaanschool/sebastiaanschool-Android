@@ -25,9 +25,9 @@ import org.joda.time.Period;
 
 import nl.sebastiaanschool.contact.app.R;
 import nl.sebastiaanschool.contact.app.data.analytics.AnalyticsInterface;
-import nl.sebastiaanschool.contact.app.data.server.BackendInterface;
-import nl.sebastiaanschool.contact.app.data.downloadmanager.DownloadManagerInterface;
 import nl.sebastiaanschool.contact.app.data.downloadmanager.Download;
+import nl.sebastiaanschool.contact.app.data.downloadmanager.DownloadManagerInterface;
+import nl.sebastiaanschool.contact.app.data.server.BackendInterface;
 import nl.sebastiaanschool.contact.app.data.server.TimelineItem;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -35,6 +35,8 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
+
+import static nl.sebastiaanschool.contact.app.gui.GrabBag.assertOnMainThread;
 
 /**
  * RecyclerView adapter for Timeline Items.
@@ -44,6 +46,8 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
     /**
      * Downloads are kept separately from the list items because this makes the Rx flows simpler.
      * Note that downloads are <b>not</b> immutable; instances held in this map <b>do</b> change.
+     *
+     * Access on main thread only.
      */
     private final SimpleArrayMap<String, Download> downloads = new SimpleArrayMap<>(20);
     private final PublishSubject<TimelineItem> itemsClicked = PublishSubject.create();
@@ -70,6 +74,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
         this.recyclerView = recyclerView;
     }
 
@@ -85,6 +90,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
 
     @Nullable
     private Download findDownloadByDownloadManagerId(long dmId) {
+        assertOnMainThread();
         for (int i = 0, max = downloads.size(); i < max; i++) {
             Download d = downloads.valueAt(i);
             if (d.downloadManagerId == dmId) {
@@ -184,6 +190,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
 
     @Override
     protected void onNext(final TimelineItem item) {
+        assertOnMainThread();
         if (item.type == TimelineItem.TYPE_NEWSLETTER) {
             final String url = item.documentUrl;
             if (url != null && !this.downloads.containsKey(url)) {
@@ -219,6 +226,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
 
         @Override
         public void onNext(final Download download) {
+            assertOnMainThread();
             Log.d("Timeline", "onNext: " + download);
             downloads.put(download.remoteUrl, download);
             for (int position = 0, max = itemsShowing.size(); position < max; position++) {
@@ -258,6 +266,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
     private final Func1<TimelineItem, Download> getDownloadForNewsletter = new Func1<TimelineItem, Download>() {
         @Override
         public Download call(TimelineItem timelineItem) {
+            assertOnMainThread();
             return downloads.get(timelineItem.documentUrl);
         }
     };
