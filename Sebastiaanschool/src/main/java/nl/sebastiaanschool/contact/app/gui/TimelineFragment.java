@@ -7,12 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import nl.sebastiaanschool.contact.app.data.analytics.AnalyticsInterface;
 import nl.sebastiaanschool.contact.app.data.server.BackendInterface;
 
 /**
  * A fragment representing a list of Items.
  */
-public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter> {
+public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter>
+        implements AnalyticsCapableFragment {
+
+    private TimelineRVAdapter adapter;
+    private AnalyticsInterface analytics;
+    private String analyticsCategory;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -28,8 +34,10 @@ public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter> {
 
     @Override
     protected TimelineRVAdapter createAdapter() {
-        return new TimelineRVAdapter(TimelineRVDataSource.getInstance(),
+        adapter = new TimelineRVAdapter(TimelineRVDataSource.getInstance(),
                 this, BackendInterface.getInstance(), getContext());
+        adapter.enableAnalytics(analytics, analyticsCategory);
+        return adapter;
     }
 
     @Override
@@ -48,5 +56,14 @@ public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter> {
             }
         });
         return view;
+    }
+
+    @Override
+    public void enableAnalytics(AnalyticsInterface analytics, String category) {
+        this.analytics = analytics;
+        this.analyticsCategory = category;
+        if (adapter != null) {
+            adapter.enableAnalytics(analytics, category);
+        }
     }
 }

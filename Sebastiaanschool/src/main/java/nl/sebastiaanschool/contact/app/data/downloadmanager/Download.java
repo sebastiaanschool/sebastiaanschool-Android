@@ -53,6 +53,7 @@ public class Download {
     public static final long SIZE_UNKNOWN = -1L;
 
     @NonNull public final String remoteUrl;
+    @NonNull public final String title;
     public long sizeInBytes = SIZE_UNKNOWN;
     @StatusCode public int statusCode;
     public int lastStatusCode;
@@ -60,8 +61,9 @@ public class Download {
     private String localUri;
     private String localMimeType;
 
-    public Download(@NonNull String url) {
+    public Download(@NonNull String url, @NonNull String title) {
         this.remoteUrl = url;
+        this.title = title;
         this.statusCode = isPdf(url) ? STATUS_PENDING : STATUS_OPEN_ON_WEB;
     }
 

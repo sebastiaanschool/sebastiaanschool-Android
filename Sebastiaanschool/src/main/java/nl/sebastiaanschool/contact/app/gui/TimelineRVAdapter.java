@@ -24,6 +24,7 @@ import net.danlew.android.joda.DateUtils;
 import org.joda.time.Period;
 
 import nl.sebastiaanschool.contact.app.R;
+import nl.sebastiaanschool.contact.app.data.analytics.AnalyticsInterface;
 import nl.sebastiaanschool.contact.app.data.server.BackendInterface;
 import nl.sebastiaanschool.contact.app.data.downloadmanager.DownloadManagerInterface;
 import nl.sebastiaanschool.contact.app.data.downloadmanager.Download;
@@ -49,6 +50,8 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
     private final BackendInterface backendApi;
     private final Context context;
     private RecyclerView recyclerView;
+    private AnalyticsInterface analytics;
+    private String analyticsCategory;
 
     public TimelineRVAdapter(TimelineRVDataSource timelineDataSource, Listener listener,
                              BackendInterface backendApi, final Context context) {
@@ -73,6 +76,11 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
     @Override
     public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
         this.recyclerView = null;
+    }
+
+    public void enableAnalytics(AnalyticsInterface analytics, String category) {
+        this.analytics = analytics;
+        this.analyticsCategory = category;
     }
 
     @Nullable
@@ -179,7 +187,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         if (item.type == TimelineItem.TYPE_NEWSLETTER) {
             final String url = item.documentUrl;
             if (url != null && !this.downloads.containsKey(url)) {
-                final Download download = new Download(url);
+                final Download download = new Download(url, item.title);
                 this.downloads.put(url, download);
                 if (download.statusCode != Download.STATUS_OPEN_ON_WEB) {
                     subscriptions.add(
@@ -289,6 +297,9 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
                 case Download.STATUS_COMPLETED:
                     // fall-through
                 case Download.STATUS_OPEN_ON_WEB:
+                    if (analytics != null) {
+                        analytics.itemSelected(analyticsCategory, download.remoteUrl, download.title);
+                    }
                     launch(download);
                     break;
                 case Download.STATUS_PENDING:
