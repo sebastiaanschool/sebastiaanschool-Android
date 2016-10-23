@@ -13,8 +13,11 @@ import rx.Single;
  */
 public interface NotificationApi {
 
+    // Note: this returns an rx.Single<String> to avoid a Retrofit bug.
+    // https://github.com/square/retrofit/issues/1864
+    // A more appropriate return type would be rx.Completable.
     @POST("/api/enrollment")
-    Completable enroll(@Body EnrollmentRequest request);
+    Single<String> enroll(@Body EnrollmentRequest request);
 
     @DELETE("/api/enrollment")
     Completable disenroll(@Header("Authorization") String authorization);
@@ -23,6 +26,6 @@ public interface NotificationApi {
     Single<GetPushSettingsResponse> getPushSettings(@Header("Authorization") String authorization);
 
     @POST("/api/push-settings")
-    Completable postPushSettings(@Header("Authorization") String authorization,
+    Single<PostPushSettingsResponse> postPushSettings(@Header("Authorization") String authorization,
                                  @Body PostPushSettingsRequest request);
 }
