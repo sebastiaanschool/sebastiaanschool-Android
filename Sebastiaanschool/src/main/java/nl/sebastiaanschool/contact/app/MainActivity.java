@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         if (PushNotificationManager.isTimelineUpdateNotification(intent)) {
             if (viewPager != null) {
                 viewPager.setCurrentItem(0, true);
-                viewPagerAdapter.onTimelineUpdateNotification();
+                viewPagerAdapter.refreshTimelineAndScrollToTop();
             }
         }
     }

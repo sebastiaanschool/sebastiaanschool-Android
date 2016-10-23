@@ -59,8 +59,8 @@ public class NavigationPagerAdapter extends FragmentPagerAdapter {
         return pageTitles[position];
     }
 
-    public void onTimelineUpdateNotification() {
-        ((TimelineFragment) fragments[0]).onActivatedFromNotification();
+    public void refreshTimelineAndScrollToTop() {
+        ((TimelineFragment) fragments[0]).refreshAndScrollToTop();
     }
 
     private class AnalyticsPageChangeListener

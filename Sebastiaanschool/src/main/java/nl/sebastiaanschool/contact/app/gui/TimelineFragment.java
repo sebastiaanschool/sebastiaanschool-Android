@@ -69,7 +69,7 @@ public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter>
         }
     }
 
-    public void onActivatedFromNotification() {
+    public void refreshAndScrollToTop() {
         if (recyclerView != null) {
             recyclerView.smoothScrollToPosition(0);
             if (!adapter.isRefreshing()) {
