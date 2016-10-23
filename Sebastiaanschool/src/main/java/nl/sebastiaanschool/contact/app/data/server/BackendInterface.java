@@ -1,6 +1,7 @@
 package nl.sebastiaanschool.contact.app.data.server;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.squareup.moshi.Moshi;
 
@@ -52,7 +53,7 @@ public class BackendInterface {
 
     private BackendInterface(File cacheDir, final String userAgent) {
         final Cache cache = new Cache(cacheDir, CACHE_SIZE_BYTES);
-        okHttpClient = new OkHttpClient.Builder()
+        okHttpClient = addRequestLoggingTo(new OkHttpClient.Builder()
                 .cache(cache)
                 .addInterceptor(new Interceptor() {
                     @Override
@@ -61,7 +62,7 @@ public class BackendInterface {
                                 .header("User-Agent", userAgent)
                                 .build());
                     }
-                })
+                }))
                 .build();
         final Moshi moshi = new Moshi.Builder()
                 .add(new TimelineJsonConverter())
@@ -79,12 +80,29 @@ public class BackendInterface {
                 .create(NotificationApi.class);
     }
 
+    private static OkHttpClient.Builder addRequestLoggingTo(OkHttpClient.Builder builder) {
+        if (BuildConfig.DEBUG) {
+            builder.addNetworkInterceptor(new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Request request = chain.request();
+                    Response response = chain.proceed(request);
+                    Log.i("SebApp", request.method() + " " + request.url()
+                            + " -> " + response.code());
+                    return response;
+                }
+            });
+        }
+        return builder;
+    }
+
     /**
      * Returns a cold observable that yields the uncompressed content-length of the given URL.
      * @param target an URL.
      * @return its content-length, or {@code -1} if unknown.
      */
     public Single<Download> getDownloadSize(final Download target) {
+        // TODO we're hitting the backend way more than we need to. Apply caching.
         return Single.create(new Single.OnSubscribe<Download>() {
             @Override
             public void call(final SingleSubscriber<? super Download> subscriber) {
