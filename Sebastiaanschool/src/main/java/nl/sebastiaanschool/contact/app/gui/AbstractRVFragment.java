@@ -34,30 +34,18 @@ abstract class AbstractRVFragment<A extends AbstractRVAdapter> extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final Context context = inflater.getContext();
+        View root = inflater.inflate(R.layout.fragment_rv, container, false);
 
-        swipeRefreshLayout = new SwipeRefreshLayout(context);
-        swipeRefreshLayout.setId(R.id.gui__swipe_refresh);
+        swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.gui__swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
 
         adapter = createAdapter();
-        recyclerView = new RecyclerView(context);
-        recyclerView.setId(R.id.gui__recycler_view);
-        recyclerView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
+        recyclerView = (RecyclerView) root.findViewById(R.id.gui__recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new CardMarginsDecorator(context));
-        int top = context.getResources().getDimensionPixelOffset(R.dimen.card_margin_top_first);
-        int bottom = context.getResources().getDimensionPixelOffset(R.dimen.card_margin_bottom_last);
-        recyclerView.setPadding(0, top, 0, bottom);
-        recyclerView.setClipToPadding(false);
 
-        swipeRefreshLayout.addView(recyclerView);
-        return swipeRefreshLayout;
+        return root;
     }
 
     @Override
