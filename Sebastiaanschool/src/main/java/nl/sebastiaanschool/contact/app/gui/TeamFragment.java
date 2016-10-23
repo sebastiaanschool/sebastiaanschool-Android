@@ -37,6 +37,8 @@ public class TeamFragment extends AbstractRVFragment<TeamRVAdapter> {
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", item.email, null));
         intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.team_email_body, item.displayName));
         try {
+            // Don't send an analytics event - tracking un-sent emails is a bit
+            // closer than we want to get.
             startActivity(intent);
         } catch (Exception e) {
             // Fail silently.
