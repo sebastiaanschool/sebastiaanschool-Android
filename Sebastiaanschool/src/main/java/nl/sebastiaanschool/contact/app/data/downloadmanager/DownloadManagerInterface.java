@@ -63,6 +63,11 @@ public class DownloadManagerInterface {
         context.registerReceiver(downloadCompletionReceiver, filter);
     }
 
+    public void destroy(Context context) {
+        context.unregisterReceiver(downloadCompletionReceiver);
+        instance = null;
+    }
+
     /**
      * Returns a hot observable that emits status updates for downloaded files.
      * @return download observable.
