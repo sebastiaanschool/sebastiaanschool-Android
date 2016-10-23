@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import nl.sebastiaanschool.contact.app.R;
 
@@ -21,6 +22,7 @@ abstract class AbstractRVFragment<A extends AbstractRVAdapter> extends Fragment
     private A adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     protected RecyclerView recyclerView;
+    private int refreshCount;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -65,7 +67,15 @@ abstract class AbstractRVFragment<A extends AbstractRVAdapter> extends Fragment
 
     @Override
     public void onRefresh() {
-        adapter.refresh();
+        if (adapter.isRefreshing()) {
+            if (++refreshCount > 3) {
+                Toast.makeText(getContext(), R.string.refresh_in_progress, Toast.LENGTH_SHORT)
+                        .show();
+            }
+        } else {
+            refreshCount = 0;
+            adapter.refresh();
+        }
     }
 
     @Override

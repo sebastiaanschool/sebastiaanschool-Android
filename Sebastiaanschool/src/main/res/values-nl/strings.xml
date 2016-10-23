@@ -43,6 +43,7 @@
     <string name="settings__icons_title">Android Studio Assets</string>
     <string name="settings__icons_summary">Deze app gebruikt vector plaatjes uit Android Studio, beschikbaar onder de CC BY 4.0 licentie. Tik voor meer informatie.</string>
     <string name="team__picture_cdesc">Foto</string>
+    <string name="refresh_in_progress">Al bezig…</string>
     <string-array name="main__page_titles">
         <item>Nieuws</item>
         <item>Agenda</item>

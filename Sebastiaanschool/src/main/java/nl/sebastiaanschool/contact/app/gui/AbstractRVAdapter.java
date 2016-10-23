@@ -31,6 +31,8 @@ abstract class AbstractRVAdapter<I, VH extends RecyclerView.ViewHolder>
     /** Access on main thread only */
     private final List<I> itemsLoading = new ArrayList<>(32);
     private final Listener listener;
+    /** Access on main thread only */
+    private boolean refreshing;
 
     protected AbstractRVAdapter(AbstractRVDataSource<I> dataSource, Listener listener) {
         this.dataSource = dataSource;
@@ -39,10 +41,21 @@ abstract class AbstractRVAdapter<I, VH extends RecyclerView.ViewHolder>
     }
 
     void refresh() {
+        assertOnMainThread();
+        if (refreshing) {
+            throw new IllegalStateException("refresh in progress");
+        }
         subscribe(dataSource.getItems(true));
     }
 
+    boolean isRefreshing() {
+        assertOnMainThread();
+        return refreshing;
+    }
+
     private void subscribe(Observable<I> itemListObservable) {
+        assertOnMainThread();
+        refreshing = true;
         listener.startedLoadingData();
         itemsLoading.clear();
         subscriptions.add(itemListObservable
@@ -83,6 +96,7 @@ abstract class AbstractRVAdapter<I, VH extends RecyclerView.ViewHolder>
         itemsShowing.addAll(itemsLoading);
         itemsLoading.clear();
         notifyDataSetChanged();
+        refreshing = false;
     }
 
     protected void onError(Throwable e) {
