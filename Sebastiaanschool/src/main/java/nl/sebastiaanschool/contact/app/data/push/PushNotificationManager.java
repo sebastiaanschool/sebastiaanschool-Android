@@ -2,10 +2,27 @@ package nl.sebastiaanschool.contact.app.data.push;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.firebase.crash.FirebaseCrash;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.util.UUID;
+
+import nl.sebastiaanschool.contact.app.data.server.EnrollmentRequest;
+import nl.sebastiaanschool.contact.app.data.server.GetPushSettingsResponse;
 import nl.sebastiaanschool.contact.app.data.server.NotificationApi;
+import nl.sebastiaanschool.contact.app.data.server.PostPushSettingsRequest;
+import nl.sebastiaanschool.contact.app.data.server.PostPushSettingsResponse;
+import okhttp3.Credentials;
+import okhttp3.MediaType;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+import retrofit2.adapter.rxjava.HttpException;
+import rx.Single;
+import rx.SingleSubscriber;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 public class PushNotificationManager implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -20,6 +37,7 @@ public class PushNotificationManager implements SharedPreferences.OnSharedPrefer
     public static synchronized void init(Context context, NotificationApi bai) {
         if (instance == null) {
             instance = new PushNotificationManager(context.getApplicationContext(), bai);
+            instance.sync();
         }
     }
 
@@ -36,27 +54,10 @@ public class PushNotificationManager implements SharedPreferences.OnSharedPrefer
         pushPrefs.registerOnSharedPreferenceChangeListener(this);
     }
 
-    public void start() {
+    // TODO handle the Play Services Unavailable scenario (GoogleApiAvailability; getErrorDialog)
+    // https://developers.google.com/android/guides/api-client#ignoring_api_connection_failures
 
-        // 0. Check if Google API client can run; main activity should prompt user to install/update if not
-
-        // 1. Read user preferences, find first launch, push preference and username/password
-        boolean userPrompted = pushPrefs.getBoolean(PREF_PROMPT_SEEN, true);
-
-        // 2. If first launch: main activity should ask user if they want notifications and update PROMPT_SEEN
-
-        // 4. If username and password known, retrieve push status to see if they work.
-        String uuid0 = pushPrefs.getString(PREF_USERNAME, null);
-        String uuid1 = pushPrefs.getString(PREF_PASSWORD, null);
-
-        // 5. If username and password unknown, or failed, enroll
-
-        // 6. Obtain firebase token.
-
-        // 7. Submit firebase token and push-enabled setting.
-        boolean wantsPush = pushPrefs.getBoolean(PREF_ENABLED, false);
-        Log.i("SebApp", "Push: prompted=" + userPrompted + ", enabled=" + wantsPush + ", uuid1=" + uuid0 + ", uuid2=" + uuid1);
-    }
+    // TODO on first launch request user permission to enable push messaging
 
     public boolean isPromptSeen() {
         return pushPrefs.getBoolean(PREF_ENABLED, false);
@@ -66,24 +67,99 @@ public class PushNotificationManager implements SharedPreferences.OnSharedPrefer
         pushPrefs.edit().putBoolean(PREF_PROMPT_SEEN, true).apply();
     }
 
-    public boolean isUserInterested() {
-        return pushPrefs.getBoolean(PREF_ENABLED, false);
-    }
-
-    private void setUserInterested(boolean interested) {
-        pushPrefs.edit().putBoolean(PREF_ENABLED, interested).apply();
-        // TODO trigger sync process at step 4.
-    }
-
-    void submitFirebaseInstanceId(@NonNull String firebaseIID) {
-        // TODO trigger sync process at step 4.
+    void onFirebaseInstanceIdChanged() {
+        Log.i("SebApp", "New Firebase IID");
+        sync();
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (PREF_ENABLED.equals(key)) {
-            boolean enabled = sharedPreferences.getBoolean(PREF_ENABLED, false);
-            this.setUserInterested(enabled);
+            sync();
         }
     }
+
+    private void sync() {
+        final String username = pushPrefs.getString(PREF_USERNAME, null);
+        final String password = pushPrefs.getString(PREF_PASSWORD, null);
+        final boolean enable = pushPrefs.getBoolean(PREF_ENABLED, false);
+        final String token = FirebaseInstanceId.getInstance().getToken();
+        authorize(username, password)
+            .onErrorResumeNext(enroll())
+            .flatMap(new Func1<String, Single<PostPushSettingsResponse>>() {
+                @Override
+                public Single<PostPushSettingsResponse> call(String authorization) {
+                    return submitPushToken(authorization, enable, token);
+                }
+            })
+            .subscribeOn(Schedulers.io())
+            .subscribe(syncSubscriber);
+    }
+
+    /**
+     * Check credentials, return authorization.
+     * @param username a username.
+     * @param password a password.
+     * @return an HTTP Authorization header value.
+     */
+    private Single<String> authorize(String username, String password) {
+        if (username == null || password == null) {
+            return Single.error(new HttpException(Response.error(403,
+                    ResponseBody.create(MediaType.parse("text/plain"), "Forbidden"))));
+        }
+        final String credential = Credentials.basic(username, password);
+        return backend.getPushSettings(credential)
+                .map(new Func1<GetPushSettingsResponse, String>() {
+                    @Override
+                    public String call(GetPushSettingsResponse getPushSettingsResponse) {
+                        return credential;
+                    }
+                });
+    }
+
+    /**
+     * Generate username and password, enroll with backend, store username and password in prefs.
+     * @return an HTTP Authorization header value.
+     */
+    private Single<String> enroll() {
+        final String username = UUID.randomUUID().toString();
+        final String password = UUID.randomUUID().toString();
+        return backend.enroll(new EnrollmentRequest(username, password))
+                .map(new Func1<String, String>() {
+                    @Override
+                    public String call(String dummy) {
+                        pushPrefs.edit()
+                                .putString(PREF_USERNAME, username)
+                                .putString(PREF_PASSWORD, password)
+                                .apply();
+                        return Credentials.basic(username, password);
+                    }
+                });
+    }
+
+    /**
+     * Submit a push notification token.
+     * @param authorization an HTTP authorization header value.
+     * @param enable whether to enable pushes.
+     * @param token the current Firebase Instance ID.
+     * @return the HTTP response body.
+     */
+    private Single<PostPushSettingsResponse> submitPushToken(
+            String authorization, boolean enable, String token) {
+        PostPushSettingsRequest request = new PostPushSettingsRequest(enable, token);
+        return backend.postPushSettings(authorization, request);
+    }
+
+    private SingleSubscriber<PostPushSettingsResponse> syncSubscriber = new SingleSubscriber<PostPushSettingsResponse>() {
+        @Override
+        public void onSuccess(PostPushSettingsResponse response) {
+            Log.i("SebApp", "Push sync: Successful (active=" + response.active + ")");
+        }
+
+        @Override
+        public void onError(Throwable error) {
+            Log.i("SebApp", "Push sync: Failed", error);
+            FirebaseCrash.log("Failed to sync push token: " + error);
+        }
+    };
 }

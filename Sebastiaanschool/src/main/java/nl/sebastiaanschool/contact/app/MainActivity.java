@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
             BackendInterface.init(this);
             DownloadManagerInterface.init(this);
             PushNotificationManager.init(this, BackendInterface.getInstance().getNotificationApi());
-            PushNotificationManager.getInstance().start();
         } finally {
             TraceCompat.endSection();
         }
