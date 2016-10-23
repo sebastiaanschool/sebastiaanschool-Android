@@ -22,9 +22,7 @@ public class NavigationPagerAdapter extends FragmentPagerAdapter {
 
     private final Fragment[] fragments;
 
-    private final ViewPager.OnPageChangeListener analyticsListener;
-
-    public NavigationPagerAdapter(Context context, FragmentManager fm, final AnalyticsInterface analytics) {
+    public NavigationPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         pageNames = new String[]{ "Timeline", "Agenda", "Contact", "Team", "Settings" };
         pageTitles = context.getResources().getStringArray(R.array.main__page_titles);
@@ -34,11 +32,16 @@ public class NavigationPagerAdapter extends FragmentPagerAdapter {
         fragments[2] = ContactFragment.newInstance();
         fragments[3] = TeamFragment.newInstance();
         fragments[4] = SettingsFragment.newInstance();
-        analyticsListener = new AnalyticsPageChangeListener(analytics);
     }
 
-    public ViewPager.OnPageChangeListener analyticsListener() {
-        return analyticsListener;
+    public ViewPager.OnPageChangeListener enableAnalytics(AnalyticsInterface analytics) {
+        for (int i = 0, max = fragments.length; i < max; i++) {
+            Fragment f = fragments[i];
+            if (f instanceof AnalyticsCapableFragment) {
+                ((AnalyticsCapableFragment) f).enableAnalytics(analytics, pageNames[i]);
+            }
+        }
+        return new AnalyticsPageChangeListener(analytics);
     }
 
     @Override

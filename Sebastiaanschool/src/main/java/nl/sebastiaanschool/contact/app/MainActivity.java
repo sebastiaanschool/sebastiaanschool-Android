@@ -49,10 +49,10 @@ public class MainActivity extends AppCompatActivity {
 
         final ViewPager vp = (ViewPager) findViewById(R.id.main__content_container);
         final NavigationPagerAdapter pagerAdapter =
-                new NavigationPagerAdapter(this, getSupportFragmentManager(), analytics);
+                new NavigationPagerAdapter(this, getSupportFragmentManager());
         vp.setAdapter(pagerAdapter);
         vp.setOffscreenPageLimit(5);
-        vp.addOnPageChangeListener(pagerAdapter.analyticsListener());
+        vp.addOnPageChangeListener(pagerAdapter.enableAnalytics(analytics));
 
         TabLayout tl = (TabLayout) findViewById(R.id.detail_tabs);
         tl.setupWithViewPager(vp);
