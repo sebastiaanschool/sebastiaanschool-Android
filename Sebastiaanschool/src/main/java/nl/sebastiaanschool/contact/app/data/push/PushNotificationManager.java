@@ -16,9 +16,6 @@ import nl.sebastiaanschool.contact.app.data.server.NotificationApi;
 import nl.sebastiaanschool.contact.app.data.server.PostPushSettingsRequest;
 import nl.sebastiaanschool.contact.app.data.server.PostPushSettingsResponse;
 import okhttp3.Credentials;
-import okhttp3.MediaType;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Single;
 import rx.SingleSubscriber;
@@ -84,26 +81,9 @@ public class PushNotificationManager implements SharedPreferences.OnSharedPrefer
     private void sync() {
         final String username = pushPrefs.getString(PREF_USERNAME, null);
         final String password = pushPrefs.getString(PREF_PASSWORD, null);
-        final boolean enable = pushPrefs.getBoolean(PREF_ENABLED, false);
-        final String token = FirebaseInstanceId.getInstance().getToken();
         authorize(username, password)
-            .onErrorResumeNext(new Func1<Throwable, Single<String>>() {
-                @Override
-                public Single<String> call(Throwable t) {
-                    if ((t instanceof HttpException) && ((HttpException) t).code() == 403) {
-                        FirebaseCrash.log("Auth failure of stored credentials");
-                        return enroll();
-                    }
-                    return Single.error(t);
-                }
-            })
-            .flatMap(new Func1<String, Single<PostPushSettingsResponse>>() {
-                @Override
-                public Single<PostPushSettingsResponse> call(String authorization) {
-                    submitPreferenceToFirebase(enable);
-                    return submitPushToken(authorization, enable, token);
-                }
-            })
+            .onErrorResumeNext(enrollIfNeeded)
+            .flatMap(submitPushPreference)
             .subscribeOn(Schedulers.io())
             .subscribe(syncSubscriber);
     }
@@ -116,8 +96,7 @@ public class PushNotificationManager implements SharedPreferences.OnSharedPrefer
      */
     private Single<String> authorize(String username, String password) {
         if (username == null || password == null) {
-            return Single.error(new HttpException(Response.error(403,
-                    ResponseBody.create(MediaType.parse("text/plain"), "Forbidden"))));
+            return Single.error(new NoStoredCredentialsException());
         }
         final String credential = Credentials.basic(username, password);
         return backend.getPushSettings(credential)
@@ -128,6 +107,23 @@ public class PushNotificationManager implements SharedPreferences.OnSharedPrefer
                     }
                 });
     }
+
+    /**
+     * If the given throwable is one that justifies (re-)enrollment, enroll.
+     */
+    private Func1<Throwable, Single<String>> enrollIfNeeded = new Func1<Throwable, Single<String>>() {
+        @Override
+        public Single<String> call(Throwable t) {
+            if (t instanceof NoStoredCredentialsException) {
+                return enroll();
+            }
+            if ((t instanceof HttpException) && ((HttpException) t).code() == 403) {
+                FirebaseCrash.log("Auth failure of stored credentials");
+                return enroll();
+            }
+            return Single.error(t);
+        }
+    };
 
     /**
      * Generate username and password, enroll with backend, store username and password in prefs.
@@ -149,26 +145,24 @@ public class PushNotificationManager implements SharedPreferences.OnSharedPrefer
                 });
     }
 
-    private void submitPreferenceToFirebase(boolean enable) {
-        if (enable) {
-            FirebaseMessaging.getInstance().subscribeToTopic(FIREBASE_TOPIC);
-        } else {
-            FirebaseMessaging.getInstance().unsubscribeFromTopic(FIREBASE_TOPIC);
-        }
-    }
-
     /**
-     * Submit a push notification token.
-     * @param authorization an HTTP authorization header value.
-     * @param enable whether to enable pushes.
-     * @param token the current Firebase Instance ID.
-     * @return the HTTP response body.
+     * Submit the current push notification preference to Firebase and to our backend.
      */
-    private Single<PostPushSettingsResponse> submitPushToken(
-            String authorization, boolean enable, String token) {
-        PostPushSettingsRequest request = new PostPushSettingsRequest(enable, token);
-        return backend.postPushSettings(authorization, request);
-    }
+    private Func1<String, Single<PostPushSettingsResponse>> submitPushPreference =
+            new Func1<String, Single<PostPushSettingsResponse>>() {
+        @Override
+        public Single<PostPushSettingsResponse> call(String authorization) {
+            final boolean enable = pushPrefs.getBoolean(PREF_ENABLED, false);
+            final String token = FirebaseInstanceId.getInstance().getToken();
+            if (enable) {
+                FirebaseMessaging.getInstance().subscribeToTopic(FIREBASE_TOPIC);
+            } else {
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(FIREBASE_TOPIC);
+            }
+            PostPushSettingsRequest request = new PostPushSettingsRequest(enable, token);
+            return backend.postPushSettings(authorization, request);
+        }
+    };
 
     private SingleSubscriber<PostPushSettingsResponse> syncSubscriber = new SingleSubscriber<PostPushSettingsResponse>() {
         @Override
@@ -182,4 +176,6 @@ public class PushNotificationManager implements SharedPreferences.OnSharedPrefer
             FirebaseCrash.log("Failed to sync push token: " + error);
         }
     };
+
+    private static class NoStoredCredentialsException extends RuntimeException {}
 }
