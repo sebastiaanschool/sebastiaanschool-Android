@@ -4,20 +4,29 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 
 import nl.sebastiaanschool.contact.app.R;
+import nl.sebastiaanschool.contact.app.data.analytics.AnalyticsInterface;
 
 /**
  * Manages the fragments in our view pager.
  */
 public class NavigationPagerAdapter extends FragmentPagerAdapter {
 
+    /** Page title, for display (localized). */
     private final String[] pageTitles;
+
+    /** Page name, for analytics. */
+    private final String[] pageNames;
 
     private final Fragment[] fragments;
 
-    public NavigationPagerAdapter(Context context, FragmentManager fm) {
+    private final ViewPager.OnPageChangeListener analyticsListener;
+
+    public NavigationPagerAdapter(Context context, FragmentManager fm, final AnalyticsInterface analytics) {
         super(fm);
+        pageNames = new String[]{ "Timeline", "Agenda", "Contact", "Team", "Settings" };
         pageTitles = context.getResources().getStringArray(R.array.main__page_titles);
         fragments = new Fragment[pageTitles.length];
         fragments[0] = TimelineFragment.newInstance();
@@ -25,6 +34,11 @@ public class NavigationPagerAdapter extends FragmentPagerAdapter {
         fragments[2] = ContactFragment.newInstance();
         fragments[3] = TeamFragment.newInstance();
         fragments[4] = SettingsFragment.newInstance();
+        analyticsListener = new AnalyticsPageChangeListener(analytics);
+    }
+
+    public ViewPager.OnPageChangeListener analyticsListener() {
+        return analyticsListener;
     }
 
     @Override
@@ -40,5 +54,19 @@ public class NavigationPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return pageTitles[position];
+    }
+
+    private class AnalyticsPageChangeListener
+            extends ViewPager.SimpleOnPageChangeListener {
+        private final AnalyticsInterface analytics;
+
+        public AnalyticsPageChangeListener(AnalyticsInterface analytics) {
+            this.analytics = analytics;
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            analytics.navigateToTab(pageNames[position]);
+        }
     }
 }

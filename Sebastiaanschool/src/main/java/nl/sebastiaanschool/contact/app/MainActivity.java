@@ -20,6 +20,8 @@ import android.support.v7.widget.Toolbar;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
+import nl.sebastiaanschool.contact.app.data.analytics.AnalyticsInterface;
+import nl.sebastiaanschool.contact.app.data.analytics.FirebaseWrapper;
 import nl.sebastiaanschool.contact.app.data.downloadmanager.DownloadManagerInterface;
 import nl.sebastiaanschool.contact.app.data.push.PushNotificationManager;
 import nl.sebastiaanschool.contact.app.data.server.BackendInterface;
@@ -34,6 +36,8 @@ import nl.sebastiaanschool.contact.app.gui.NavigationPagerAdapter;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private AnalyticsInterface analytics;
+
     @Override
     @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +47,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.action_bar));
 
-        ViewPager vp = (ViewPager) findViewById(R.id.main__content_container);
-        vp.setAdapter(new NavigationPagerAdapter(this, getSupportFragmentManager()));
+        final ViewPager vp = (ViewPager) findViewById(R.id.main__content_container);
+        final NavigationPagerAdapter pagerAdapter =
+                new NavigationPagerAdapter(this, getSupportFragmentManager(), analytics);
+        vp.setAdapter(pagerAdapter);
         vp.setOffscreenPageLimit(5);
+        vp.addOnPageChangeListener(pagerAdapter.analyticsListener());
 
         TabLayout tl = (TabLayout) findViewById(R.id.detail_tabs);
         tl.setupWithViewPager(vp);
@@ -56,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             JodaTimeAndroid.init(this);
             BackendInterface.init(this);
+            analytics = FirebaseWrapper.init(this);
             DownloadManagerInterface.init(this);
             PushNotificationManager.init(this, BackendInterface.getInstance().getNotificationApi());
         } finally {

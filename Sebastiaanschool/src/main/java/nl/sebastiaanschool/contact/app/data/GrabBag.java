@@ -26,7 +26,7 @@ public class GrabBag {
                 .toString();
     }
 
-    private static Locale getResourcesLocale(@NonNull Context context) {
+    public static Locale getResourcesLocale(@NonNull Context context) {
         if (Build.VERSION.SDK_INT >= 24) {
             return context.getResources().getConfiguration().getLocales().get(0);
         } else {

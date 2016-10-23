@@ -105,6 +105,7 @@ dependencies {
     compile "com.squareup.retrofit2:converter-moshi:${project.ext.versions.retrofit}"
     compile "com.squareup.moshi:moshi:${project.ext.versions.moshi}"
     compile "net.danlew:android.joda:${project.ext.versions.jodaTime}"
+    compile "com.google.firebase:firebase-core:${project.ext.versions.firebase}"
     compile "com.google.firebase:firebase-crash:${project.ext.versions.firebase}"
     compile "com.google.firebase:firebase-messaging:${project.ext.versions.firebase}"
     testCompile "junit:junit:${project.ext.versions.junit}"
