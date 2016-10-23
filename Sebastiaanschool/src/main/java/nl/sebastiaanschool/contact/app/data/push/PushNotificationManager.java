@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.UUID;
 
@@ -26,6 +27,7 @@ import rx.schedulers.Schedulers;
 
 public class PushNotificationManager implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private static final String FIREBASE_TOPIC = "sebastiaanschool.app.timeline";
     private static final String PREF_PROMPT_SEEN = "push_prompt_seen";
     private static final String PREF_ENABLED = "push_enabled";
     private static final String PREF_USERNAME = "push_uuid0";
@@ -98,6 +100,7 @@ public class PushNotificationManager implements SharedPreferences.OnSharedPrefer
             .flatMap(new Func1<String, Single<PostPushSettingsResponse>>() {
                 @Override
                 public Single<PostPushSettingsResponse> call(String authorization) {
+                    submitPreferenceToFirebase(enable);
                     return submitPushToken(authorization, enable, token);
                 }
             })
@@ -144,6 +147,14 @@ public class PushNotificationManager implements SharedPreferences.OnSharedPrefer
                         return Credentials.basic(username, password);
                     }
                 });
+    }
+
+    private void submitPreferenceToFirebase(boolean enable) {
+        if (enable) {
+            FirebaseMessaging.getInstance().subscribeToTopic(FIREBASE_TOPIC);
+        } else {
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(FIREBASE_TOPIC);
+        }
     }
 
     /**
