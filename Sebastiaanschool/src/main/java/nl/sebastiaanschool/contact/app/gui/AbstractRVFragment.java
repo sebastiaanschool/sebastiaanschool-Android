@@ -51,6 +51,10 @@ abstract class AbstractRVFragment<A extends AbstractRVAdapter> extends Fragment
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new CardMarginsDecorator(context));
+        int top = context.getResources().getDimensionPixelOffset(R.dimen.card_margin_top_first);
+        int bottom = context.getResources().getDimensionPixelOffset(R.dimen.card_margin_bottom_last);
+        recyclerView.setPadding(0, top, 0, bottom);
+        recyclerView.setClipToPadding(false);
 
         swipeRefreshLayout.addView(recyclerView);
         return swipeRefreshLayout;
