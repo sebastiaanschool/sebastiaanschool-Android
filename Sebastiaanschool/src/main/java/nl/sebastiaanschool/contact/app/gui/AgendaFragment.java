@@ -46,7 +46,7 @@ public class AgendaFragment extends AbstractRVFragment<AgendaRVAdapter>
 
     @Override
     public void onDestroy() {
-        subscriptions.unsubscribe();
+        subscriptions.clear();
         super.onDestroy();
     }
 

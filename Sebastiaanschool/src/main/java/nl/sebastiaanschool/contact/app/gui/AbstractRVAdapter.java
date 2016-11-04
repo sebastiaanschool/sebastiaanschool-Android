@@ -109,7 +109,7 @@ abstract class AbstractRVAdapter<I, VH extends RecyclerView.ViewHolder>
     }
 
     protected void onDestroy() {
-        subscriptions.unsubscribe();
+        subscriptions.clear();
         itemsShowing.clear();
         itemsLoading.clear();
     }
