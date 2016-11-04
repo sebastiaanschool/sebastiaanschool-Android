@@ -111,6 +111,8 @@ public class BackendInterface {
                         .addHeader("Accept", "*/*")
                         .addHeader("Accept-Encoding", "identity") // Disable gzip, or OkHttp discards Content-Length.
                         .build();
+                // We use the async API so that getDownloadSize()s can execute in parallel when we
+                // run through the items in the timeline response.
                 okHttpClient.newCall(req).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
