@@ -16,12 +16,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.os.TraceCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -68,18 +70,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (PushNotificationManager.isTimelineUpdateNotification(intent)) {
+            // To test: adb shell am start -e from '/topics/sebastiaanschool.app.timeline' \
+            //             -a ACTION_MAIN --activity-no-user-action \
+            //             nl.sebastiaanschool.contact.app/.MainActivity
             if (viewPager != null) {
                 viewPager.setCurrentItem(0, true);
-                viewPagerAdapter.refreshTimelineAndScrollToTop();
+                viewPagerAdapter.onTimelineUpdateNotificationTapped();
             }
         }
     }
 
     private void onTimelineUpdateBroadcastReceived() {
-        // TODO show a snackbar
-        // TODO add action to jump to timeline, trigger refresh
-        // TODO if going to timeline organically, trigger refresh
-        // TODO already on timeline, trigger refresh
+        if (viewPagerAdapter.isTimelineCurrentItem(viewPager)) {
+            viewPagerAdapter.onTimelineUpdateBroadcastReceived();
+        } else {
+            final Snackbar sb = Snackbar.make(findViewById(android.R.id.content),
+                    R.string.toast__new_timeline_items_timeline_not_visible, Snackbar.LENGTH_LONG);
+            sb.setAction(R.string.toast__view, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    viewPager.setCurrentItem(0, true);
+                    viewPagerAdapter.onTimelineUpdateNotificationTapped();
+                    sb.dismiss();
+                }
+            });
+            sb.show();
+        }
     }
 
     private void initializeApplicationServices() {

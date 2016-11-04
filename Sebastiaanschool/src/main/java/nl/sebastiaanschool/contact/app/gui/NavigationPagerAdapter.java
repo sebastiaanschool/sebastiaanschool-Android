@@ -21,13 +21,14 @@ public class NavigationPagerAdapter extends FragmentPagerAdapter {
     private final String[] pageNames;
 
     private final Fragment[] fragments;
+    private final TimelineFragment timelineFragment;
 
     public NavigationPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         pageNames = new String[]{ "Timeline", "Agenda", "Contact", "Team", "Settings" };
         pageTitles = context.getResources().getStringArray(R.array.main__page_titles);
         fragments = new Fragment[pageTitles.length];
-        fragments[0] = TimelineFragment.newInstance();
+        fragments[0] = timelineFragment = TimelineFragment.newInstance();
         fragments[1] = AgendaFragment.newInstance();
         fragments[2] = ContactFragment.newInstance();
         fragments[3] = TeamFragment.newInstance();
@@ -59,8 +60,26 @@ public class NavigationPagerAdapter extends FragmentPagerAdapter {
         return pageTitles[position];
     }
 
-    public void refreshTimelineAndScrollToTop() {
-        ((TimelineFragment) fragments[0]).refreshAndScrollToTop();
+    public void onTimelineUpdateNotificationTapped() {
+        if (timelineFragment != null) {
+            timelineFragment.refreshAndScrollToTop();
+        }
+    }
+
+    public void onTimelineUpdateBroadcastReceived() {
+        if (timelineFragment != null) {
+            timelineFragment.onTimelineUpdateBroadcastReceived();
+        }
+    }
+
+    public boolean isTimelineCurrentItem(ViewPager vp) {
+        return vp.getAdapter() == this && vp.getCurrentItem() == 0;
+    }
+
+    public void setTimelineAsCurrentItem(ViewPager vp) {
+        if (vp.getAdapter() == this) {
+            vp.setCurrentItem(0);
+        }
     }
 
     private class AnalyticsPageChangeListener

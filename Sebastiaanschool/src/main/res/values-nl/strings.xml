@@ -44,6 +44,10 @@
     <string name="settings__icons_summary">Deze app gebruikt vector plaatjes uit Android Studio, beschikbaar onder de CC BY 4.0 licentie. Tik voor meer informatie.</string>
     <string name="team__picture_cdesc">Foto</string>
     <string name="refresh_in_progress">Al bezig…</string>
+    <string name="toast__new_timeline_items_timeline_visible">Nieuwe items</string>
+    <string name="toast__scroll_to_top">Naar boven</string>
+    <string name="toast__new_timeline_items_timeline_not_visible">Nieuws bijgewerkt</string>
+    <string name="toast__view">Bekijk</string>
     <string-array name="main__page_titles">
         <item>Nieuws</item>
         <item>Agenda</item>

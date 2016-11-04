@@ -1,12 +1,14 @@
 package nl.sebastiaanschool.contact.app.gui;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import nl.sebastiaanschool.contact.app.R;
 import nl.sebastiaanschool.contact.app.data.analytics.AnalyticsInterface;
 import nl.sebastiaanschool.contact.app.data.server.BackendInterface;
 
@@ -74,6 +76,29 @@ public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter>
             recyclerView.smoothScrollToPosition(0);
             if (!adapter.isRefreshing()) {
                 this.onRefresh();
+            }
+        }
+    }
+
+    public void onTimelineUpdateBroadcastReceived() {
+        if (recyclerView != null) {
+            boolean firstItemNotVisible = 0 < recyclerView.getChildAdapterPosition(
+                    recyclerView.getChildAt(0));
+            if (!adapter.isRefreshing()) {
+                adapter.refresh();
+            }
+            if (firstItemNotVisible) {
+                // We're not scrolled to the top of the list, show a snackbar
+                final Snackbar sb = Snackbar.make(recyclerView,
+                        R.string.toast__new_timeline_items_timeline_visible, Snackbar.LENGTH_LONG);
+                sb.setAction(R.string.toast__scroll_to_top, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        recyclerView.smoothScrollToPosition(0);
+                        sb.dismiss();
+                    }
+                });
+                sb.show();
             }
         }
     }
