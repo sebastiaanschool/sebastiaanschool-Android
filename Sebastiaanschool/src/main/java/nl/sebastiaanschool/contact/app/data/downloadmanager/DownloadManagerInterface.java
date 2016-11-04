@@ -11,6 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 import android.util.Log;
 
+import com.jakewharton.rxrelay.PublishRelay;
+
 import java.io.FileNotFoundException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -22,7 +24,6 @@ import rx.Scheduler;
 import rx.Single;
 import rx.SingleSubscriber;
 import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
 
 /**
  * Implements our download manager interactions.
@@ -33,7 +34,7 @@ public class DownloadManagerInterface {
 
     private final DownloadManager downloadManager;
     private final Scheduler downloadManagerAccessor = Schedulers.io();
-    private final PublishSubject<DownloadEvent> updates = PublishSubject.create();
+    private final PublishRelay<DownloadEvent> updates = PublishRelay.create();
     private final String userAgent;
     private final String downloadDescription;
 
@@ -87,7 +88,7 @@ public class DownloadManagerInterface {
                 case DownloadManager.ACTION_DOWNLOAD_COMPLETE:
                 case DownloadManager.ACTION_NOTIFICATION_CLICKED:
                     long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1L);
-                    updates.onNext(new DownloadEvent(action, downloadId));
+                    updates.call(new DownloadEvent(action, downloadId));
                     break;
             }
         }

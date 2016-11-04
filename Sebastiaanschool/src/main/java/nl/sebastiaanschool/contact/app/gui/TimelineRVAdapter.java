@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.crash.FirebaseCrash;
+import com.jakewharton.rxrelay.PublishRelay;
 
 import net.danlew.android.joda.DateUtils;
 
@@ -33,7 +34,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
 
 import static nl.sebastiaanschool.contact.app.gui.GrabBag.assertOnMainThread;
 
@@ -49,7 +49,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
      * Access on main thread only.
      */
     private final SimpleArrayMap<String, Download> downloads = new SimpleArrayMap<>(20);
-    private final PublishSubject<TimelineItem> itemsClicked = PublishSubject.create();
+    private final PublishRelay<TimelineItem> itemsClicked = PublishRelay.create();
     private final BackendInterface backendApi;
     private final Context context;
     private RecyclerView recyclerView;
@@ -362,7 +362,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
 
         @Override
         public void onClick(View v) {
-            itemsClicked.onNext(mItem);
+            itemsClicked.call(mItem);
         }
 
     }

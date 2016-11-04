@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jakewharton.rxrelay.PublishRelay;
+
 import net.danlew.android.joda.DateUtils;
 
 import org.joda.time.Period;
@@ -15,14 +17,13 @@ import org.joda.time.Period;
 import nl.sebastiaanschool.contact.app.R;
 import nl.sebastiaanschool.contact.app.data.server.AgendaItem;
 import rx.Observable;
-import rx.subjects.PublishSubject;
 
 /**
  * RecyclerView adapter for Agenda Items.
  */
 class AgendaRVAdapter extends AbstractRVAdapter<AgendaItem, AgendaRVAdapter.ViewHolder> {
 
-    private final PublishSubject<AgendaItem> itemsClicked = PublishSubject.create();
+    private final PublishRelay<AgendaItem> itemsClicked = PublishRelay.create();
 
     public AgendaRVAdapter(AgendaRVDataSource agendaDataSource, Listener listener) {
         super(agendaDataSource, listener);
@@ -81,7 +82,7 @@ class AgendaRVAdapter extends AbstractRVAdapter<AgendaItem, AgendaRVAdapter.View
 
         @Override
         public void onClick(View v) {
-            itemsClicked.onNext(mItem);
+            itemsClicked.call(mItem);
         }
     }
 }

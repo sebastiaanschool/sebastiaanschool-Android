@@ -83,6 +83,7 @@ project.ext.versions = [
     retrofit   : '2.1.0',
     rxAndroid  : '1.2.1',
     rxJava     : '1.2.1',
+    rxRelay    : '1.2.0',
     supportLib : '24.2.1',
     testRunner : '0.5',
     testSupport: '2.2.2',
@@ -99,6 +100,7 @@ dependencies {
     compile "com.android.support:support-vector-drawable:${project.ext.versions.supportLib}"
     compile "io.reactivex:rxandroid:${project.ext.versions.rxAndroid}"
     compile "io.reactivex:rxjava:${project.ext.versions.rxJava}"
+    compile "com.jakewharton.rxrelay:rxrelay:${project.ext.versions.rxRelay}"
     compile "com.squareup.okhttp3:okhttp:${project.ext.versions.okhttp}"
     compile "com.squareup.retrofit2:retrofit:${project.ext.versions.retrofit}"
     compile "com.squareup.retrofit2:adapter-rxjava:${project.ext.versions.retrofit}"
