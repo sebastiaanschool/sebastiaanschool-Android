@@ -7,7 +7,6 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.util.SimpleArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -142,8 +141,6 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
                                   View.OnClickListener callback) {
         if (recyclerView != null) {
             Snackbar.make(recyclerView, message, Snackbar.LENGTH_LONG)
-                    .setActionTextColor(ResourcesCompat.getColor(context.getResources(),
-                            R.color.sebastiaan_blue, context.getTheme()))
                     .setAction(actionTitle, callback)
                     .show();
         }
