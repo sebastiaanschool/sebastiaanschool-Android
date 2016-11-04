@@ -1,7 +1,7 @@
 package nl.sebastiaanschool.contact.app.gui;
 
-import nl.sebastiaanschool.contact.app.data.server.BackendInterface;
 import nl.sebastiaanschool.contact.app.data.server.BackendApi;
+import nl.sebastiaanschool.contact.app.data.server.BackendInterface;
 import rx.Observable;
 
 /**
@@ -26,7 +26,7 @@ abstract class AbstractRVDataSource<I> {
 
     public Observable<I> getItems(boolean force) {
         if (items == null || force) {
-            items = loadItems(backend).retry(2).cache();
+            items = loadItems(backend).retry(2).replay().autoConnect();
         }
         return items;
     }
