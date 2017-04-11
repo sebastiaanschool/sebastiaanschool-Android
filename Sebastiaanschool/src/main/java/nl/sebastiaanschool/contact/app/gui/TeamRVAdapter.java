@@ -7,17 +7,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jakewharton.rxrelay.PublishRelay;
+
 import nl.sebastiaanschool.contact.app.R;
 import nl.sebastiaanschool.contact.app.data.server.TeamItem;
 import rx.Observable;
-import rx.subjects.PublishSubject;
 
 /**
  * RecyclerView adapter for Agenda Items.
  */
 class TeamRVAdapter extends AbstractRVAdapter<TeamItem, TeamRVAdapter.ViewHolder> {
 
-    private final PublishSubject<TeamItem> itemsClicked = PublishSubject.create();
+    private final PublishRelay<TeamItem> itemsClicked = PublishRelay.create();
 
 
     public TeamRVAdapter(TeamRVDataSource teamDataSource, Listener listener) {
@@ -72,7 +73,7 @@ class TeamRVAdapter extends AbstractRVAdapter<TeamItem, TeamRVAdapter.ViewHolder
 
         @Override
         public void onClick(View v) {
-            itemsClicked.onNext(mItem);
+            itemsClicked.call(mItem);
         }
     }
 }

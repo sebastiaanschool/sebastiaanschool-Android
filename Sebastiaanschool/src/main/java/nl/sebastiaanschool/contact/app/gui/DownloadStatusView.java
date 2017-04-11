@@ -15,6 +15,8 @@ import android.widget.TextView;
 import nl.sebastiaanschool.contact.app.R;
 import nl.sebastiaanschool.contact.app.data.downloadmanager.Download;
 
+import static nl.sebastiaanschool.contact.app.gui.GrabBag.assertOnMainThread;
+
 /**
  * Displays newsletter download status.
  */
@@ -75,6 +77,7 @@ public class DownloadStatusView extends FrameLayout {
     }
 
     public void setStatus(@NonNull Download status) {
+        assertOnMainThread();
         this.status = status;
         updateStatusImage(status.statusCode);
         updateSizeLabel();

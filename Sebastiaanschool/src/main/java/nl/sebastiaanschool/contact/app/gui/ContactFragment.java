@@ -7,16 +7,24 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.util.List;
 
 import nl.sebastiaanschool.contact.app.R;
+import nl.sebastiaanschool.contact.app.data.analytics.AnalyticsInterface;
 
-public class ContactFragment extends Fragment implements View.OnClickListener {
+public class ContactFragment extends Fragment
+        implements View.OnClickListener, AnalyticsCapableFragment {
+
+    private AnalyticsInterface analytics;
+    private String analyticsCategory;
 
     public ContactFragment() {
         // Required empty public constructor
@@ -51,16 +59,31 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void enableAnalytics(AnalyticsInterface analytics, String category) {
+        this.analytics = analytics;
+        this.analyticsCategory = category;
+    }
+
+    @Override
     public void onClick(View v) {
         if (v == callButton) {
             callSebastiaan();
         } else if (v == twitterButton) {
+            if (analytics != null) {
+                analytics.itemSelected(analyticsCategory, "twitter", "Twitter Page");
+            }
             String twitterUrl = getString(R.string.contact__twitter_url);
             GrabBag.openUri(getContext(), twitterUrl);
         } else if (v == yurlsButton) {
+            if (analytics != null) {
+                analytics.itemSelected(analyticsCategory, "yurls", "Yurls Page");
+            }
             String yurlsUrl = getString(R.string.contact__yurls_url);
             GrabBag.openUri(getContext(), yurlsUrl);
         } else if (v == homepageButton) {
+            if (analytics != null) {
+                analytics.itemSelected(analyticsCategory, "home", "Sebastiaanschool Homepage");
+            }
             String homepageUrl = getString(R.string.contact__homepage_url);
             GrabBag.openUri(getContext(), homepageUrl);
         }
@@ -74,6 +97,9 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         boolean fail = handlers.isEmpty();
         if (!fail) {
             try {
+                if (analytics != null) {
+                    analytics.itemSelected(analyticsCategory, "call", "Call Sebastiaanschool");
+                }
                 startActivity(dial);
             } catch (Exception e) {
                 fail = true;
@@ -81,6 +107,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         }
         if (fail) {
             // Unlikely to occur. Tablets generally register their contacts app to handle tel: URI's.
+            FirebaseCrash.logcat(Log.DEBUG, "CF", "No handler for tel: URI");
             new AlertDialog.Builder(getActivity())
                     .setCancelable(true)
                     .setMessage(R.string.call_failed_dialog_body)

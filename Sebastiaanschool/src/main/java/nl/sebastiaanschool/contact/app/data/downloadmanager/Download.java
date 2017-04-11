@@ -11,7 +11,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import rx.Single;
-import rx.SingleSubscriber;
 
 /**
  * Mutable state for presenting download feedback in the UI.
@@ -53,6 +52,7 @@ public class Download {
     public static final long SIZE_UNKNOWN = -1L;
 
     @NonNull public final String remoteUrl;
+    @NonNull public final String title;
     public long sizeInBytes = SIZE_UNKNOWN;
     @StatusCode public int statusCode;
     public int lastStatusCode;
@@ -60,8 +60,9 @@ public class Download {
     private String localUri;
     private String localMimeType;
 
-    public Download(@NonNull String url) {
+    public Download(@NonNull String url, @NonNull String title) {
         this.remoteUrl = url;
+        this.title = title;
         this.statusCode = isPdf(url) ? STATUS_PENDING : STATUS_OPEN_ON_WEB;
     }
 
@@ -91,19 +92,14 @@ public class Download {
         if (!(statusCode == STATUS_COMPLETED || statusCode == STATUS_OPEN_ON_WEB)) {
             return Single.error(new IllegalStateException());
         }
-        return Single.create(new Single.OnSubscribe<Intent>() {
-            @Override
-            public void call(SingleSubscriber<? super Intent> singleSubscriber) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                if (statusCode == STATUS_COMPLETED) {
-                    intent.setDataAndType(Uri.parse(localUri), localMimeType);
-                } else if (statusCode == STATUS_OPEN_ON_WEB) {
-                    intent.setData(Uri.parse(remoteUrl));
-                }
-                singleSubscriber.onSuccess(intent);
-            }
-        });
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (statusCode == STATUS_COMPLETED) {
+            intent.setDataAndType(Uri.parse(localUri), localMimeType);
+        } else if (statusCode == STATUS_OPEN_ON_WEB) {
+            intent.setData(Uri.parse(remoteUrl));
+        }
+        return Single.just(intent);
     }
 
     @Override

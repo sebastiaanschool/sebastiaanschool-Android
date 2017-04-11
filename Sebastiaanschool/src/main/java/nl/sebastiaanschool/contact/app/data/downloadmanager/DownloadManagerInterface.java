@@ -1,4 +1,4 @@
-package nl.sebastiaanschool.contact.app.data;
+package nl.sebastiaanschool.contact.app.data.downloadmanager;
 
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
@@ -11,18 +11,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 import android.util.Log;
 
+import com.jakewharton.rxrelay.PublishRelay;
+
 import java.io.FileNotFoundException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.concurrent.Callable;
 
 import nl.sebastiaanschool.contact.app.R;
-import nl.sebastiaanschool.contact.app.data.downloadmanager.Download;
+import nl.sebastiaanschool.contact.app.data.GrabBag;
 import rx.Observable;
 import rx.Scheduler;
 import rx.Single;
-import rx.SingleSubscriber;
 import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
 
 /**
  * Implements our download manager interactions.
@@ -33,16 +34,15 @@ public class DownloadManagerInterface {
 
     private final DownloadManager downloadManager;
     private final Scheduler downloadManagerAccessor = Schedulers.io();
-    private final PublishSubject<DownloadEvent> updates = PublishSubject.create();
-    private final Context context;
+    private final PublishRelay<DownloadEvent> updates = PublishRelay.create();
     private final String userAgent;
+    private final String downloadDescription;
 
     public static synchronized void init(Context context) {
-        if (instance != null) {
-            throw new IllegalStateException("Already initialised.");
+        if (instance == null) {
+            instance = new DownloadManagerInterface(context.getApplicationContext());
+            instance.registerReceiver(context);
         }
-        instance = new DownloadManagerInterface(context);
-        instance.registerReceiver();
     }
 
     public static synchronized DownloadManagerInterface getInstance() {
@@ -53,15 +53,20 @@ public class DownloadManagerInterface {
     }
 
     private DownloadManagerInterface(Context context) {
-        this.context = context;
         this.userAgent = GrabBag.constructUserAgent(context);
+        this.downloadDescription = context.getString(R.string.download_newsletter_description);
         downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
     }
 
-    private void registerReceiver() {
+    private void registerReceiver(Context context) {
         IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
         filter.addAction(DownloadManager.ACTION_NOTIFICATION_CLICKED);
         context.registerReceiver(downloadCompletionReceiver, filter);
+    }
+
+    public void destroy(Context context) {
+        context.unregisterReceiver(downloadCompletionReceiver);
+        instance = null;
     }
 
     /**
@@ -83,7 +88,7 @@ public class DownloadManagerInterface {
                 case DownloadManager.ACTION_DOWNLOAD_COMPLETE:
                 case DownloadManager.ACTION_NOTIFICATION_CLICKED:
                     long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1L);
-                    updates.onNext(new DownloadEvent(action, downloadId));
+                    updates.call(new DownloadEvent(action, downloadId));
                     break;
             }
         }
@@ -97,9 +102,9 @@ public class DownloadManagerInterface {
      *      other exception if an error occured.
      */
     public Single<Download> findExistingEntry(@NonNull final Download download) {
-        return rx.Single.create(new Single.OnSubscribe<Download>() {
+        return Single.fromCallable(new Callable<Download>() {
             @Override
-            public void call(SingleSubscriber<? super Download> singleSubscriber) {
+            public Download call() throws Exception {
                 Log.i("DM", "Find exiting entry: id" + download.downloadManagerId);
                 DownloadManager.Query query = new DownloadManager.Query();
                 if (download.downloadManagerId != 0) {
@@ -107,7 +112,7 @@ public class DownloadManagerInterface {
                 }
                 Cursor cursor = downloadManager.query(query);
                 try {
-                    if (cursor.moveToFirst()) {
+                    if (cursor != null && cursor.moveToFirst()) {
                         while (!cursor.isAfterLast()) {
                             String remoteUri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_URI));
                             if (download.remoteUrl.equals(remoteUri)) {
@@ -133,19 +138,20 @@ public class DownloadManagerInterface {
                                         statusCode = Download.STATUS_PENDING;
                                 }
                                 Log.i("DM", "Find exiting entry: id" + download.downloadManagerId + " dmstatus=" + dmStatus + " ourstatus=" + statusCode);
-                                singleSubscriber.onSuccess(
-                                        download.withDownloadManagerId(id)
-                                                .withStatusCode(statusCode)
-                                                .withLocalFile(localUri, mediaType)
-                                                .withSizeInBytes(sizeInBytes));
+                                return download.withDownloadManagerId(id)
+                                               .withStatusCode(statusCode)
+                                               .withLocalFile(localUri, mediaType)
+                                               .withSizeInBytes(sizeInBytes);
                             }
                             cursor.moveToNext();
                         }
                     }
                 } finally {
-                    cursor.close();
+                    if (cursor != null) {
+                        cursor.close();
+                    }
                 }
-                singleSubscriber.onError(new FileNotFoundException());
+                throw new FileNotFoundException();
             }
         }).subscribeOn(downloadManagerAccessor);
     }
@@ -157,21 +163,20 @@ public class DownloadManagerInterface {
      * @param download a download.
      */
     public Single<Download> enqueueDownload(@NonNull final Download download) {
-        return Single.create(new Single.OnSubscribe<Download>() {
-             @Override
-             public void call(SingleSubscriber<? super Download> singleSubscriber) {
-                 Uri uri = Uri.parse(download.remoteUrl);
-                 DownloadManager.Request request = new DownloadManager.Request(uri);
-                 request.addRequestHeader("User-Agent", userAgent);
-                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-                 request.setDescription(context.getString(R.string.download_newsletter_description));
-                 request.setTitle(uri.getLastPathSegment());
-                 long downloadId = downloadManager.enqueue(request);
-                 singleSubscriber.onSuccess(
-                         download.withDownloadManagerId(downloadId)
-                                 .withStatusCode(Download.STATUS_DOWNLOADING));
-             }
-         }).subscribeOn(downloadManagerAccessor);
+        return Single.fromCallable(new Callable<Download>() {
+            @Override
+            public Download call() throws Exception {
+                Uri uri = Uri.parse(download.remoteUrl);
+                DownloadManager.Request request = new DownloadManager.Request(uri);
+                request.addRequestHeader("User-Agent", userAgent);
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                request.setDescription(downloadDescription);
+                request.setTitle(uri.getLastPathSegment());
+                long downloadId = downloadManager.enqueue(request);
+                return download.withDownloadManagerId(downloadId)
+                                .withStatusCode(Download.STATUS_DOWNLOADING);
+            }
+        }).subscribeOn(downloadManagerAccessor);
     }
 
     /**
@@ -180,14 +185,14 @@ public class DownloadManagerInterface {
      * @return a cold observable for the removal.
      */
     public Single<Download> remove(@NonNull final Download download) {
-        return Single.create(new Single.OnSubscribe<Download>() {
+        return Single.fromCallable(new Callable<Download>() {
             @Override
-            public void call(SingleSubscriber<? super Download> singleSubscriber) {
+            public Download call() throws Exception {
                 int numRemoved = downloadManager.remove(download.downloadManagerId);
                 if (numRemoved > 0) {
-                    singleSubscriber.onSuccess(download.withStatusCode(Download.STATUS_PENDING));
+                    return download.withStatusCode(Download.STATUS_PENDING);
                 } else {
-                    singleSubscriber.onError(new FileNotFoundException());
+                    throw new FileNotFoundException();
                 }
             }
         }).subscribeOn(downloadManagerAccessor);
@@ -201,7 +206,7 @@ public class DownloadManagerInterface {
         public final String type;
         public final long downloadManagerId;
 
-        public DownloadEvent(String type, long downloadManagerId) {
+        DownloadEvent(String type, long downloadManagerId) {
             this.type = type;
             this.downloadManagerId = downloadManagerId;
         }

@@ -6,10 +6,8 @@
         <!-- Push notifications are disabled for now, we don't have support on the new platform yet. -->
         <!--suppress AndroidElementNotAllowed -->
         <SwitchPreferenceCompat
-            android:defaultValue="true"
-            android:key="pref_push_news"
-            android:checked="false"
-            android:enabled="false"
+            android:defaultValue="false"
+            android:key="push_enabled"
             android:title="@string/settings__push_news" />
         <Preference
             android:key="pref_push_view_downlods"

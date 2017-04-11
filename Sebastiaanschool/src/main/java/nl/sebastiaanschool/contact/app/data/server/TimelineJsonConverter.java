@@ -8,7 +8,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
- * Handles polymorphism when parsing the {@code /timeline} API call.
+ * Handles data conversion when parsing the {@code /timeline} API call.
  */
 public class TimelineJsonConverter {
 
@@ -27,11 +27,11 @@ public class TimelineJsonConverter {
                 ? dtp.parseDateTime(item.publishedAt)
                 : new DateTime(2000, 1, 1, 0, 0);
         if ("newsletter".equals(item.type)) {
-            result = TimelineItem.newsletter(item.title, item.documentUrl, published);
+            result = TimelineItem.newsletter(item.url, item.title, item.documentUrl, published);
         } else if ("bulletin".equals(item.type)) {
-            result = TimelineItem.bulletin(item.title, item.body, published);
+            result = TimelineItem.bulletin(item.url, item.title, item.body, published);
         } else {
-            result = TimelineItem.unknown(item.title, published);
+            result = TimelineItem.unknown(item.url, item.title, published);
         }
         return result;
     }

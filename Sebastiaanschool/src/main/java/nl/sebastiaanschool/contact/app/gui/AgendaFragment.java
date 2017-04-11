@@ -2,14 +2,21 @@ package nl.sebastiaanschool.contact.app.gui;
 
 
 import android.content.Intent;
+import android.util.Log;
 
+import com.google.firebase.crash.FirebaseCrash;
+
+import nl.sebastiaanschool.contact.app.data.analytics.AnalyticsInterface;
 import nl.sebastiaanschool.contact.app.data.server.AgendaItem;
 import rx.functions.Action1;
 import rx.internal.util.SubscriptionList;
 
-public class AgendaFragment extends AbstractRVFragment<AgendaRVAdapter> {
+public class AgendaFragment extends AbstractRVFragment<AgendaRVAdapter>
+        implements AnalyticsCapableFragment {
 
     private final SubscriptionList subscriptions = new SubscriptionList();
+    private AnalyticsInterface analytics;
+    private String analyticsCategory;
 
     public AgendaFragment() {
         // Required empty public constructor
@@ -32,8 +39,14 @@ public class AgendaFragment extends AbstractRVFragment<AgendaRVAdapter> {
     }
 
     @Override
+    public void enableAnalytics(AnalyticsInterface analytics, String category) {
+        this.analytics = analytics;
+        this.analyticsCategory = category;
+    }
+
+    @Override
     public void onDestroy() {
-        subscriptions.unsubscribe();
+        subscriptions.clear();
         super.onDestroy();
     }
 
@@ -47,10 +60,13 @@ public class AgendaFragment extends AbstractRVFragment<AgendaRVAdapter> {
             intent.putExtra("endTime", item.end.getMillis());
         }
         try {
+            if (analytics != null) {
+                analytics.itemSelected(analyticsCategory, item.url, item.title);
+            }
             getActivity().startActivity(intent);
         } catch (Exception e) {
             // Fail silently.
-            android.util.Log.e("AgendaFragment", "Failed to ACTION_EDIT a vnd.android.cursor.item/event", e);
+            FirebaseCrash.logcat(Log.DEBUG, "AF", "No handler for calendar event. " + e.toString());
         }
     }
 }

@@ -7,7 +7,6 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.util.SimpleArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,21 +16,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.crash.FirebaseCrash;
+import com.jakewharton.rxrelay.PublishRelay;
+
 import net.danlew.android.joda.DateUtils;
 
 import org.joda.time.Period;
 
 import nl.sebastiaanschool.contact.app.R;
-import nl.sebastiaanschool.contact.app.data.BackendInterface;
-import nl.sebastiaanschool.contact.app.data.DownloadManagerInterface;
+import nl.sebastiaanschool.contact.app.data.analytics.AnalyticsInterface;
 import nl.sebastiaanschool.contact.app.data.downloadmanager.Download;
+import nl.sebastiaanschool.contact.app.data.downloadmanager.DownloadManagerInterface;
+import nl.sebastiaanschool.contact.app.data.server.BackendInterface;
 import nl.sebastiaanschool.contact.app.data.server.TimelineItem;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
+
+import static nl.sebastiaanschool.contact.app.gui.GrabBag.assertOnMainThread;
 
 /**
  * RecyclerView adapter for Timeline Items.
@@ -41,12 +45,16 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
     /**
      * Downloads are kept separately from the list items because this makes the Rx flows simpler.
      * Note that downloads are <b>not</b> immutable; instances held in this map <b>do</b> change.
+     *
+     * Access on main thread only.
      */
     private final SimpleArrayMap<String, Download> downloads = new SimpleArrayMap<>(20);
-    private final PublishSubject<TimelineItem> itemsClicked = PublishSubject.create();
+    private final PublishRelay<TimelineItem> itemsClicked = PublishRelay.create();
     private final BackendInterface backendApi;
     private final Context context;
     private RecyclerView recyclerView;
+    private AnalyticsInterface analytics;
+    private String analyticsCategory;
 
     public TimelineRVAdapter(TimelineRVDataSource timelineDataSource, Listener listener,
                              BackendInterface backendApi, final Context context) {
@@ -65,6 +73,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
         this.recyclerView = recyclerView;
     }
 
@@ -73,8 +82,14 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         this.recyclerView = null;
     }
 
+    public void enableAnalytics(AnalyticsInterface analytics, String category) {
+        this.analytics = analytics;
+        this.analyticsCategory = category;
+    }
+
     @Nullable
     private Download findDownloadByDownloadManagerId(long dmId) {
+        assertOnMainThread();
         for (int i = 0, max = downloads.size(); i < max; i++) {
             Download d = downloads.valueAt(i);
             if (d.downloadManagerId == dmId) {
@@ -126,8 +141,6 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
                                   View.OnClickListener callback) {
         if (recyclerView != null) {
             Snackbar.make(recyclerView, message, Snackbar.LENGTH_LONG)
-                    .setActionTextColor(ResourcesCompat.getColor(context.getResources(),
-                            R.color.sebastiaan_blue, context.getTheme()))
                     .setAction(actionTitle, callback)
                     .show();
         }
@@ -174,10 +187,11 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
 
     @Override
     protected void onNext(final TimelineItem item) {
+        assertOnMainThread();
         if (item.type == TimelineItem.TYPE_NEWSLETTER) {
             final String url = item.documentUrl;
             if (url != null && !this.downloads.containsKey(url)) {
-                final Download download = new Download(url);
+                final Download download = new Download(url, item.title);
                 this.downloads.put(url, download);
                 if (download.statusCode != Download.STATUS_OPEN_ON_WEB) {
                     subscriptions.add(
@@ -204,10 +218,12 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
         @Override
         public void onError(Throwable e) {
             // Ignored
+            FirebaseCrash.logcat(Log.DEBUG, "SebApp", "TRVA DS Last-Resort: " + e.toString());
         }
 
         @Override
         public void onNext(final Download download) {
+            assertOnMainThread();
             Log.d("Timeline", "onNext: " + download);
             downloads.put(download.remoteUrl, download);
             for (int position = 0, max = itemsShowing.size(); position < max; position++) {
@@ -247,6 +263,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
     private final Func1<TimelineItem, Download> getDownloadForNewsletter = new Func1<TimelineItem, Download>() {
         @Override
         public Download call(TimelineItem timelineItem) {
+            assertOnMainThread();
             return downloads.get(timelineItem.documentUrl);
         }
     };
@@ -286,6 +303,9 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
                 case Download.STATUS_COMPLETED:
                     // fall-through
                 case Download.STATUS_OPEN_ON_WEB:
+                    if (analytics != null) {
+                        analytics.itemSelected(analyticsCategory, download.remoteUrl, download.title);
+                    }
                     launch(download);
                     break;
                 case Download.STATUS_PENDING:
@@ -342,7 +362,7 @@ class TimelineRVAdapter extends AbstractRVAdapter<TimelineItem, TimelineRVAdapte
 
         @Override
         public void onClick(View v) {
-            itemsClicked.onNext(mItem);
+            itemsClicked.call(mItem);
         }
 
     }

@@ -6,10 +6,9 @@ import retrofit2.http.GET;
 import rx.Single;
 
 /**
- * Retrofit binding interface for our backend service.
+ * Retrofit binding interface for getting our data.
  */
 public interface BackendApi {
-
     @GET("/api/timeline/")
     Single<List<TimelineItem>> getTimeline();
 

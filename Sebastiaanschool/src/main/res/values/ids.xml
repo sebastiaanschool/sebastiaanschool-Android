@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="gui__recycler_view" type="id"/>
-    <item name="gui__swipe_refresh" type="id"/>
-
     <!-- Show download_cancelled same as download_in_progress; it lasts a few milliseconds. -->
     <item name="ic_download_cancelled_24dp" type="drawable">@drawable/ic_download_in_progress_24dp</item>
     <item name="download_cancelled" type="string">@string/download_in_progress</item>

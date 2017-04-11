@@ -1,18 +1,26 @@
 package nl.sebastiaanschool.contact.app.gui;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import nl.sebastiaanschool.contact.app.data.BackendInterface;
+import nl.sebastiaanschool.contact.app.R;
+import nl.sebastiaanschool.contact.app.data.analytics.AnalyticsInterface;
+import nl.sebastiaanschool.contact.app.data.server.BackendInterface;
 
 /**
  * A fragment representing a list of Items.
  */
-public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter> {
+public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter>
+        implements AnalyticsCapableFragment {
+
+    private TimelineRVAdapter adapter;
+    private AnalyticsInterface analytics;
+    private String analyticsCategory;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -28,8 +36,10 @@ public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter> {
 
     @Override
     protected TimelineRVAdapter createAdapter() {
-        return new TimelineRVAdapter(TimelineRVDataSource.getInstance(),
+        adapter = new TimelineRVAdapter(TimelineRVDataSource.getInstance(),
                 this, BackendInterface.getInstance(), getContext());
+        adapter.enableAnalytics(analytics, analyticsCategory);
+        return adapter;
     }
 
     @Override
@@ -40,6 +50,8 @@ public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter> {
             public boolean animateChange(RecyclerView.ViewHolder oldHolder,
                                          RecyclerView.ViewHolder newHolder,
                                          int fromX, int fromY, int toX, int toY) {
+                // Suppress itemChanged events, these fire when download state changes and we don't
+                // want the list item to blink if that happens.
                 dispatchChangeFinished(oldHolder, true);
                 if (newHolder != null && newHolder != oldHolder) {
                     dispatchChangeFinished(newHolder, false);
@@ -48,5 +60,46 @@ public class TimelineFragment extends AbstractRVFragment<TimelineRVAdapter> {
             }
         });
         return view;
+    }
+
+    @Override
+    public void enableAnalytics(AnalyticsInterface analytics, String category) {
+        this.analytics = analytics;
+        this.analyticsCategory = category;
+        if (adapter != null) {
+            adapter.enableAnalytics(analytics, category);
+        }
+    }
+
+    public void refreshAndScrollToTop() {
+        if (recyclerView != null) {
+            recyclerView.smoothScrollToPosition(0);
+            if (!adapter.isRefreshing()) {
+                this.onRefresh();
+            }
+        }
+    }
+
+    public void onTimelineUpdateBroadcastReceived() {
+        if (recyclerView != null) {
+            boolean firstItemNotVisible = 0 < recyclerView.getChildAdapterPosition(
+                    recyclerView.getChildAt(0));
+            if (!adapter.isRefreshing()) {
+                adapter.refresh();
+            }
+            if (firstItemNotVisible) {
+                // We're not scrolled to the top of the list, show a snackbar
+                final Snackbar sb = Snackbar.make(recyclerView,
+                        R.string.toast__new_timeline_items_timeline_visible, Snackbar.LENGTH_LONG);
+                sb.setAction(R.string.toast__scroll_to_top, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        recyclerView.smoothScrollToPosition(0);
+                        sb.dismiss();
+                    }
+                });
+                sb.show();
+            }
+        }
     }
 }

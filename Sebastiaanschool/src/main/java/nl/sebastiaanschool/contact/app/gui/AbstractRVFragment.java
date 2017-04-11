@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import nl.sebastiaanschool.contact.app.R;
 
@@ -21,6 +22,7 @@ abstract class AbstractRVFragment<A extends AbstractRVAdapter> extends Fragment
     private A adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     protected RecyclerView recyclerView;
+    private int refreshCount;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -32,26 +34,18 @@ abstract class AbstractRVFragment<A extends AbstractRVAdapter> extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final Context context = inflater.getContext();
+        View root = inflater.inflate(R.layout.fragment_rv, container, false);
 
-        swipeRefreshLayout = new SwipeRefreshLayout(context);
-        swipeRefreshLayout.setId(R.id.gui__swipe_refresh);
+        swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.gui__swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
 
         adapter = createAdapter();
-        recyclerView = new RecyclerView(context);
-        recyclerView.setId(R.id.gui__recycler_view);
-        recyclerView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
+        recyclerView = (RecyclerView) root.findViewById(R.id.gui__recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new CardMarginsDecorator(context));
 
-        swipeRefreshLayout.addView(recyclerView);
-        return swipeRefreshLayout;
+        return root;
     }
 
     @Override
@@ -65,7 +59,15 @@ abstract class AbstractRVFragment<A extends AbstractRVAdapter> extends Fragment
 
     @Override
     public void onRefresh() {
-        adapter.refresh();
+        if (adapter.isRefreshing()) {
+            if (++refreshCount > 3) {
+                Toast.makeText(getContext(), R.string.refresh_in_progress, Toast.LENGTH_SHORT)
+                        .show();
+            }
+        } else {
+            refreshCount = 0;
+            adapter.refresh();
+        }
     }
 
     @Override

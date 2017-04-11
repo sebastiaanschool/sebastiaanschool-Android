@@ -16,6 +16,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Looper;
 import android.support.annotation.DrawableRes;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.res.ResourcesCompat;
@@ -29,7 +30,6 @@ import nl.sebastiaanschool.contact.app.R;
 
 /**
  * This class is normally called {@code SomethingUtility}, but that's boring.
- * Created by barend on 6-11-13.
  */
 final class GrabBag {
 
@@ -105,6 +105,18 @@ final class GrabBag {
             }
         }
         return result;
+    }
+
+    static void assertOnMainThread() {
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            throw new IllegalStateException("not on main thread");
+        }
+    }
+
+    static void assertNotOnMainThread() {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            throw new IllegalStateException("on main thread");
+        }
     }
 
     private GrabBag() {}

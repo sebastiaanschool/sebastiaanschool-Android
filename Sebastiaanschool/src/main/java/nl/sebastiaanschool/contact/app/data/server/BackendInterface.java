@@ -1,4 +1,4 @@
-package nl.sebastiaanschool.contact.app.data;
+package nl.sebastiaanschool.contact.app.data.server;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,10 +9,8 @@ import java.io.File;
 import java.io.IOException;
 
 import nl.sebastiaanschool.contact.app.BuildConfig;
+import nl.sebastiaanschool.contact.app.data.GrabBag;
 import nl.sebastiaanschool.contact.app.data.downloadmanager.Download;
-import nl.sebastiaanschool.contact.app.data.server.AgendaJsonConverter;
-import nl.sebastiaanschool.contact.app.data.server.BackendApi;
-import nl.sebastiaanschool.contact.app.data.server.TimelineJsonConverter;
 import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -35,14 +33,15 @@ public class BackendInterface {
     private static final long CACHE_SIZE_BYTES = 512 * 1024;
     private static BackendInterface instance;
 
-    public final BackendApi connector;
+    private final BackendApi backendApi;
+    private final NotificationApi notificationApi;
     private final OkHttpClient okHttpClient;
 
     public static synchronized void init(Context context) {
-        if (instance != null) {
-            throw new IllegalStateException("Already initialised.");
+        if (instance == null) {
+            instance = new BackendInterface(context.getApplicationContext().getCacheDir(),
+                    GrabBag.constructUserAgent(context));
         }
-        instance = new BackendInterface(context.getCacheDir(), GrabBag.constructUserAgent(context));
     }
 
     public static synchronized BackendInterface getInstance() {
@@ -54,7 +53,7 @@ public class BackendInterface {
 
     private BackendInterface(File cacheDir, final String userAgent) {
         final Cache cache = new Cache(cacheDir, CACHE_SIZE_BYTES);
-        okHttpClient = new OkHttpClient.Builder()
+        okHttpClient = addRequestLoggingTo(new OkHttpClient.Builder()
                 .cache(cache)
                 .addInterceptor(new Interceptor() {
                     @Override
@@ -63,7 +62,7 @@ public class BackendInterface {
                                 .header("User-Agent", userAgent)
                                 .build());
                     }
-                })
+                }))
                 .build();
         final Moshi moshi = new Moshi.Builder()
                 .add(new TimelineJsonConverter())
@@ -75,8 +74,26 @@ public class BackendInterface {
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
-        connector = retrofit
+        backendApi = retrofit
                 .create(BackendApi.class);
+        notificationApi = retrofit
+                .create(NotificationApi.class);
+    }
+
+    private static OkHttpClient.Builder addRequestLoggingTo(OkHttpClient.Builder builder) {
+        if (BuildConfig.DEBUG) {
+            builder.addNetworkInterceptor(new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Request request = chain.request();
+                    Response response = chain.proceed(request);
+                    Log.i("SebApp", request.method() + " " + request.url()
+                            + " -> " + response.code());
+                    return response;
+                }
+            });
+        }
+        return builder;
     }
 
     /**
@@ -94,10 +111,11 @@ public class BackendInterface {
                         .addHeader("Accept", "*/*")
                         .addHeader("Accept-Encoding", "identity") // Disable gzip, or OkHttp discards Content-Length.
                         .build();
+                // We use the async API so that getDownloadSize()s can execute in parallel when we
+                // run through the items in the timeline response.
                 okHttpClient.newCall(req).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Log.d("BINF", "Download size error: " + e + " of " + target);
                         // We're not propagating the error, simply "size unknown".
                         subscriber.onSuccess(target.withSizeInBytes(Download.SIZE_UNKNOWN));
                     }
@@ -111,14 +129,20 @@ public class BackendInterface {
                         try {
                             sizeInBytes = Long.parseLong(contentLength);
                         } catch (NumberFormatException e) {
-                            Log.d("BINF", "Download size: NFE on " + contentLength + " of " + target);
                             sizeInBytes = -1;
                         }
-                        Log.d("BINF", "Download size: " + sizeInBytes + " of " + target);
                         subscriber.onSuccess(target.withSizeInBytes(sizeInBytes));
                     }
                 });
             }
         });
+    }
+
+    public BackendApi getBackendApi() {
+        return backendApi;
+    }
+
+    public NotificationApi getNotificationApi() {
+        return notificationApi;
     }
 }
